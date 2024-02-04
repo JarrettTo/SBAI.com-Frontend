@@ -3,36 +3,34 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-type INBAGames = {
-    homeTeam : string,
-    homeTeamLogo : string,
-    awayTeam : string,
-    awayTeamLogo : string,
-    schedule: Date,
-    
-}
-const sample1 : INBAGames = {
-    homeTeam: "Lakers",
+import GameDisplay from '../components/GameDisplay'
+import { INBAGame} from '../types/Game';
+const sample1 : INBAGame = {
+    id: 1,
+    homeTeam: "Los Angeles Lakers",
     homeTeamLogo: "lakers.jpeg",
-    awayTeam: "Warriors",
+    awayTeam: "Golden State Warriors",
     awayTeamLogo: "warriors.jpeg",
     schedule: new Date("February 8 2024")
 }
-const sample2 : INBAGames = {
-    homeTeam: "Bucks",
+const sample2 : INBAGame = {
+    id: 2,
+    homeTeam: "Toronto Raptors",
     homeTeamLogo: "lakers.jpeg",
-    awayTeam: "Sixers",
+    awayTeam: "Boston Celtics",
     awayTeamLogo: "warriors.jpeg",
     schedule: new Date("February 8 2024")
 }
-const sample3 : INBAGames = {
+const sample3 : INBAGame = {
+    id: 3,
     homeTeam: "Heat",
     homeTeamLogo: "lakers.jpeg",
     awayTeam: "Nuggets",
     awayTeamLogo: "warriors.jpeg",
     schedule: new Date("February 8 2024")
 }
-const sample4 : INBAGames = {
+const sample4 : INBAGame = {
+    id: 4,
     homeTeam: "Pacers",
     homeTeamLogo: "lakers.jpeg",
     awayTeam: "Thunder",
@@ -40,7 +38,7 @@ const sample4 : INBAGames = {
     schedule: new Date("February 8 2024")
 }
 const HomePage = () => {
-    const [NBAGames, setNBAGames] = useState<INBAGames[]>([sample1, sample2, sample3, sample4])
+    const [NBAGames, setNBAGames] = useState<INBAGame[]>([sample1, sample2])
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -106,7 +104,7 @@ const HomePage = () => {
             <div
                 style={{
                     marginTop: '60px',
-                    width: '90%',
+                    width: '80%',
           
                     height: '40vh',
                     backgroundColor: '#fff', // Set the background color
@@ -116,7 +114,17 @@ const HomePage = () => {
                     
                 }}
              >
-
+                {NBAGames.map((game) => (
+                    <GameDisplay 
+                        key={game.id} 
+                        id={game.id} 
+                        homeTeam={game.homeTeam}
+                        homeTeamLogo={game.homeTeamLogo}
+                        awayTeam={game.awayTeam}
+                        awayTeamLogo={game.awayTeamLogo}
+                        schedule={game.schedule}
+                    />
+                ))}
             </div>
         </div>
     )
