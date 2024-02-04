@@ -52,7 +52,7 @@ const HomePage = () => {
       };
     
     return (
-        <div style={{display : "flex", flexDirection : "column", alignItems:"center", height: "100vh"}} >
+        <div style={{display : "flex", flexDirection : "column", alignItems:"center", height: "100vh", overflow: 'hidden'}} >
             <div style={{display : "flex", flexDirection : "column",alignItems:"center",justifyContent:"center", marginTop: '105px'}}>
                 <h1 style={{fontWeight: 700, fontSize:'80px'}}>Sports Betting AI</h1>
                 <div>
@@ -102,6 +102,21 @@ const HomePage = () => {
                         Predict
                     </Button>
                 </div>
+            </div>
+            <div
+                style={{
+                    marginTop: '60px',
+                    width: '90%',
+          
+                    height: '40vh',
+                    backgroundColor: '#fff', // Set the background color
+                    color: '#aaa', // Set the text color to gray
+                    borderRadius: '10px', // Rounded corners
+                    textTransform: 'none', // Avoid uppercase transformation
+                    
+                }}
+             >
+
             </div>
         </div>
     )
