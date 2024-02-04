@@ -1,21 +1,21 @@
 import React from 'react';
 import { INBAGame} from '../types/Game';
 import * as NBAIcons from 'react-nba-logos';
+import { Button } from '@mui/material';
 const GameDisplay: React.FC<INBAGame> = (props) =>{
    const {id, homeTeam, homeTeamLogo, awayTeam, awayTeamLogo, schedule} = props;
    const teamIconMap = {
-        "Toronto Raptors": NBAIcons.TOR,
+        //TODO: Complete for All NBA Teams
         "TOR": NBAIcons.TOR,
-        "Boston Celtics": NBAIcons.BOS,
         "BOS": NBAIcons.BOS,
         // Add more teams here following the same pattern
-        "Los Angeles Lakers": NBAIcons.LAL,
         "LAL": NBAIcons.LAL,
-        "Golden State Warriors": NBAIcons.GSW,
         "GSW": NBAIcons.GSW,
+        
         // Continue for all NBA teams
     };
     const teamAbbMap = {
+        //TODO: Complete for All NBA Teams
         "Toronto Raptors": "TOR",
         "Boston Celtics": "BOS",
         "Los Angeles Lakers": "LAL",
@@ -40,32 +40,91 @@ const GameDisplay: React.FC<INBAGame> = (props) =>{
           }).format(gameDate);
         return scheduleFormatted
     }
+    const handleBoxScoreClick= ()=>{
+        //TODO: Redirect to page that shows box score of game
+    }
+    const handleOddsClick= ()=>{
+        //TODO: Redirect to page that shows Odds of game
+    }
+    const handlePredictClick= ()=>{
+        //TODO: Either redirect/dropdown and show predictions of AI Model from API
+    }
    return(
-    <div style={{marginLeft: '30px', display: 'flex', flexDirection: 'row', alignItems: 'center', width:'60%',justifyContent: 'space-between'}}>
-        <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-            <div>{getTeamIcon(homeTeam)}</div>
-            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'start'}}>
-                <p style={{fontSize:'20px', fontWeight:'800', color: "black"}}>{teamAbbMap[homeTeam]}</p>
+    <div style={{display: 'flex', flexDirection:'row', justifyContent: 'space-between', marginTop: '20px' }}>
+    
+        <div style={{marginLeft: '30px', display: 'flex', flexDirection: 'row', alignItems: 'center', width:'60%',justifyContent: 'space-between'}}>
+            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                <div>{getTeamIcon(teamAbbMap[homeTeam])}</div>
+                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'start', marginLeft: '10px'}}>
+                    <p style={{fontSize:'20px', fontWeight:'800', color: "black"}}>{teamAbbMap[homeTeam]}</p>
 
-                <p style={{fontSize:'14px', fontWeight:'400'}}>{homeTeam}</p>
+                    <p style={{fontSize:'14px', fontWeight:'400'}}>{homeTeam}</p>
 
+                </div>
+                
             </div>
-            
-        </div>
-        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-            <p>VS</p>
-            <p>{formatTime(schedule)}</p>
-        </div>
-        <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-            
-            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'end'}}>
-                <p style={{fontSize:'20px', fontWeight:'800', color: "black"}}>{teamAbbMap[awayTeam]}</p>
-
-                <p style={{fontSize:'14px', fontWeight:'400'}}>{awayTeam}</p>
-
+            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                <p style={{fontSize:'20px', fontWeight:'800', color: "black"}}>VS</p>
+                <p style={{fontSize:'14px', fontWeight:'400'}}>{formatTime(schedule)}</p>
             </div>
-            <div>{getTeamIcon(awayTeam)}</div>
-            
+            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                
+                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'end',  marginRight: '10px'}}>
+                    <p style={{fontSize:'20px', fontWeight:'800', color: "black"}}>{teamAbbMap[awayTeam]}</p>
+
+                    <p style={{fontSize:'14px', fontWeight:'400'}}>{awayTeam}</p>
+
+                </div>
+                <div>{getTeamIcon(teamAbbMap[awayTeam])}</div>
+                
+            </div>
+        </div>
+        <div style={{display:'flex', flexDirection:'row', alignItems: 'center', marginRight: '30px'}}>
+            <Button
+                variant="contained"
+                onClick={handleBoxScoreClick}
+                style={{
+                    fontSize:'14px',
+                    width: '120px',
+                    backgroundColor: '#EEEEEE', // Set the background color
+                    color: 'black', // Set the text color to gray
+                    borderRadius: '10px', // Rounded corners
+                    textTransform: 'none', // Avoid uppercase transformation
+                    marginRight:'10px'
+                }}
+            >
+                Box Score
+            </Button>
+            <Button
+                variant="contained"
+                onClick={handleOddsClick}
+                style={{
+                    fontSize:'14px',
+                    width: '80px',
+                    backgroundColor: '#EEEEEE', // Set the background color
+                    color: 'black', // Set the text color to gray
+                    borderRadius: '10px', // Rounded corners
+                    textTransform: 'none', // Avoid uppercase transformation
+                    marginRight:'10px'
+                }}
+            >
+                Odds
+            </Button>
+            <Button
+                variant="contained"
+                onClick={handlePredictClick}
+                style={{
+                    fontSize:'14px',
+                    width: '80px',
+                    backgroundColor: '#068FFF', // Set the background color
+                    color: '#EEEEEE', // Set the text color to gray
+                    borderRadius: '10px', // Rounded corners
+                    textTransform: 'none', // Avoid uppercase transformation
+                    marginRight:'10px'
+                }}
+            >
+                Predict
+            </Button>
         </div>
     </div>
    )

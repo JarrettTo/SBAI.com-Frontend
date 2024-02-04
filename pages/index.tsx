@@ -23,22 +23,22 @@ const sample2 : INBAGame = {
 }
 const sample3 : INBAGame = {
     id: 3,
-    homeTeam: "Heat",
+    homeTeam: "Toronto Raptors",
     homeTeamLogo: "lakers.jpeg",
-    awayTeam: "Nuggets",
+    awayTeam: "Boston Celtics",
     awayTeamLogo: "warriors.jpeg",
     schedule: new Date("February 8 2024")
 }
 const sample4 : INBAGame = {
     id: 4,
-    homeTeam: "Pacers",
+    homeTeam: "Toronto Raptors",
     homeTeamLogo: "lakers.jpeg",
-    awayTeam: "Thunder",
+    awayTeam: "Boston Celtics",
     awayTeamLogo: "warriors.jpeg",
     schedule: new Date("February 8 2024")
 }
 const HomePage = () => {
-    const [NBAGames, setNBAGames] = useState<INBAGame[]>([sample1, sample2])
+    const [NBAGames, setNBAGames] = useState<INBAGame[]>([sample1, sample2, sample3, sample4, sample4, sample4])
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -53,6 +53,7 @@ const HomePage = () => {
         <div style={{display : "flex", flexDirection : "column", alignItems:"center", height: "100vh", overflow: 'hidden'}} >
             <div style={{display : "flex", flexDirection : "column",alignItems:"center",justifyContent:"center", marginTop: '105px'}}>
                 <h1 style={{fontWeight: 700, fontSize:'80px'}}>Sports Betting AI</h1>
+                <p style={{fontWeight: 500, fontSize:'15px', width: '30vw', textAlign:'center', marginBottom: '30px'}}>Select an upcoming NBA game and click the predict button to generate a prediciton using our latest AI Model!</p>
                 <div>
                     <Button
                         variant="contained"
@@ -106,11 +107,12 @@ const HomePage = () => {
                     marginTop: '60px',
                     width: '80%',
           
-                    height: '40vh',
+                    minHeight: '30vw',
                     backgroundColor: '#fff', // Set the background color
                     color: '#aaa', // Set the text color to gray
                     borderRadius: '10px', // Rounded corners
                     textTransform: 'none', // Avoid uppercase transformation
+                    overflow: 'auto',
                     
                 }}
              >
