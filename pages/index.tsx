@@ -1,5 +1,5 @@
 const HomePage = () => {
-    return <div>Welcome to Next.js!</div>;
+    return <div>Sports Betting AI</div>;
   };
   
 export default HomePage;
