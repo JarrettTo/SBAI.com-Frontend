@@ -44,7 +44,14 @@ const HomePage = () => {
 
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
+        if (event.currentTarget.classList.contains('select-game-button')) {
+            // Handle the "Select an NBA Game" button action
+            setAnchorEl(event.currentTarget);
+          } else if (event.currentTarget.classList.contains('predict-button')) {
+            // Handle the "Predict" button action
+            // Add your logic for the "Predict" button action here
+            console.log('Predict button clicked');
+          }
       };
     
       const handleClose = () => {
@@ -76,6 +83,7 @@ const HomePage = () => {
                 <div>
                     <Button
                         variant="contained"
+                        className="select-game-button"
                         endIcon={<ArrowDropDownIcon />}
                         onClick={handleClick}
                         style={{
@@ -126,6 +134,7 @@ const HomePage = () => {
                     </Menu>
                     <Button
                         variant="contained"
+                        className="predict-button"
                         onClick={handleClick}
                         style={{
                             fontSize:'20px',
