@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import GameDisplay from '../components/GameDisplay'
-import { INBAGame} from '../types/Game';
+import { INBAGame } from '../types/Game';
 const sample1 : INBAGame = {
     id: 1,
     homeTeam: "Los Angeles Lakers",
@@ -40,14 +40,40 @@ const sample4 : INBAGame = {
 const HomePage = () => {
     const [NBAGames, setNBAGames] = useState<INBAGame[]>([sample1, sample2, sample3, sample4, sample4, sample4])
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [selectedGame, setSelectedGame] = useState<INBAGame | null>(null);
+
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
+        if (event.currentTarget.classList.contains('select-game-button')) {
+            // Handle the "Select an NBA Game" button action
+            setAnchorEl(event.currentTarget);
+          } else if (event.currentTarget.classList.contains('predict-button')) {
+            // Handle the "Predict" button action
+            // Add your logic for the "Predict" button action here
+            console.log('Predict button clicked');
+          }
       };
     
       const handleClose = () => {
         setAnchorEl(null);
       };
+
+      const handleGameSelect = (game: INBAGame) => {
+        setSelectedGame(game);
+        handleClose();
+      };
+
+      const formatTime = (gameDate: Date) => {
+        return new Intl.DateTimeFormat('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: '2-digit',
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true,
+        }).format(gameDate);
+      };
+      
     
     return (
         <div style={{display : "flex", flexDirection : "column", alignItems:"center", height: "100vh", overflow: 'hidden'}} >
@@ -57,19 +83,23 @@ const HomePage = () => {
                 <div>
                     <Button
                         variant="contained"
+                        className="select-game-button"
                         endIcon={<ArrowDropDownIcon />}
                         onClick={handleClick}
                         style={{
                             fontSize:'20px',
-                            width: '40vw',
+                            width: '50vw',
                             backgroundColor: '#fff', // Set the background color
                             color: '#aaa', // Set the text color to gray
                             borderRadius: '10px', // Rounded corners
                             textTransform: 'none', // Avoid uppercase transformation
-                            marginRight:'30px'
+                            marginRight:'30px',
+                            whiteSpace: 'pre-line',
                         }}
                     >
-                        Select an NBA Game
+                        {selectedGame
+                            ? `${selectedGame.homeTeam} vs ${selectedGame.awayTeam} \n${formatTime(selectedGame.schedule)}`
+                            : 'Select an NBA Game'}
                     </Button>
                 
                     <Menu
@@ -78,16 +108,33 @@ const HomePage = () => {
                         open={open}
                         onClose={handleClose}
                         MenuListProps={{
-                        'aria-labelledby': 'basic-button',
+                            'aria-labelledby': 'basic-button',
                         }}
-                        style={{ borderRadius: '20px' }} // Apply rounded corners to the Menu as well
+                        PaperProps={{
+                            style: {
+                                borderRadius: '10px', // Rounded corners
+                                width: '50vw',
+                                
+                            },
+                        }}
                     >
-                        <MenuItem onClick={handleClose}>Option 1</MenuItem>
-                        <MenuItem onClick={handleClose}>Option 2</MenuItem>
-                        <MenuItem onClick={handleClose}>Option 3</MenuItem>
+                        {NBAGames.map((game) => (
+                            <MenuItem key={game.id} onClick={() => handleGameSelect(game)}>
+                                <GameDisplay
+                                    id={game.id}
+                                    homeTeam={game.homeTeam}
+                                    homeTeamLogo={game.homeTeamLogo}
+                                    awayTeam={game.awayTeam}
+                                    awayTeamLogo={game.awayTeamLogo}
+                                    schedule={game.schedule}
+                                    isInDropdown={true}
+                                />
+                            </MenuItem>
+                        ))}
                     </Menu>
                     <Button
                         variant="contained"
+                        className="predict-button"
                         onClick={handleClick}
                         style={{
                             fontSize:'20px',
