@@ -53,27 +53,29 @@ const GameDisplay: React.FC<INBAGame> = (props) =>{
     <div style={{display: 'flex', flexDirection:'row', justifyContent: 'space-between', marginTop: '20px' }}>
     
         <div style={{marginLeft: '30px', display: 'flex', flexDirection: 'row', alignItems: 'center', width:'60%',justifyContent: 'space-between'}}>
-            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', width:'33%'}}>
                 <div>{getTeamIcon(teamAbbMap[homeTeam])}</div>
                 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'start', marginLeft: '10px'}}>
                     <p style={{fontSize:'20px', fontWeight:'800', color: "black"}}>{teamAbbMap[homeTeam]}</p>
 
                     <p style={{fontSize:'14px', fontWeight:'400'}}>{homeTeam}</p>
 
+                    <p style={{fontSize:'14px', fontWeight:'400'}}>(Home)</p>
                 </div>
                 
             </div>
-            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', width:'33%'}}>
                 <p style={{fontSize:'20px', fontWeight:'800', color: "black"}}>VS</p>
                 <p style={{fontSize:'14px', fontWeight:'400'}}>{formatTime(schedule)}</p>
             </div>
-            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', width:'33%', justifyContent:'end'}}>
                 
-                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'end',  marginRight: '10px'}}>
+                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'end', marginRight: '10px'}}>
                     <p style={{fontSize:'20px', fontWeight:'800', color: "black"}}>{teamAbbMap[awayTeam]}</p>
 
                     <p style={{fontSize:'14px', fontWeight:'400'}}>{awayTeam}</p>
 
+                    <p style={{fontSize:'14px', fontWeight:'400'}}>(Away)</p>
                 </div>
                 <div>{getTeamIcon(teamAbbMap[awayTeam])}</div>
                 
