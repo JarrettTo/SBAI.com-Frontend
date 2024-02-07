@@ -119,7 +119,7 @@ const HomePage = () => {
                         }}
                     >
                         {NBAGames.map((game) => (
-                            <MenuItem key={game.id} onClick={() => handleGameSelect(game)} style={{justifyContent:'center'}}>
+                            <MenuItem key={game.id} onClick={() => handleGameSelect(game)} style={{}}>
                                 <GameDisplay
                                     id={game.id}
                                     homeTeam={game.homeTeam}

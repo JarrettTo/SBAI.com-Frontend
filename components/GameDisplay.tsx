@@ -55,9 +55,9 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
         //TODO: Either redirect/dropdown and show predictions of AI Model from API
     }
    return(
-    <div style={{display: 'flex', flexDirection:'row', justifyContent: 'space-between', marginTop: '20px'}}>
+    <div style={{display: 'flex', flexDirection:'row', justifyContent: 'space-between', marginTop: '20px', marginBottom: '20px', marginLeft: '30px', marginRight: '30px', width: '100%'}}>
     
-        <div style={{marginLeft: '30px', display: 'flex', flexDirection: 'row', alignItems: 'center', width:'60%',justifyContent: 'space-between'}}>
+        <div style={{marginLeft: '0px', display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', justifyContent: 'space-between'}}>
             <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', width: '33%'}}>
                 <div>{getTeamIcon(teamAbbMap[homeTeam])}</div>
                 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'start', marginLeft: '10px'}}>
@@ -87,7 +87,7 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
             </div>
         </div>
         {isInDropdown ? null : (
-        <div style={{display:'flex', flexDirection:'row', alignItems: 'center', marginRight: '30px'}}>
+        <div style={{display:'flex', flexDirection:'row', justifyContent: 'end', alignItems: 'center', marginRight: '40px', width: '40%'}}>
             <Button
                 variant="contained"
                 onClick={handleBoxScoreClick}
