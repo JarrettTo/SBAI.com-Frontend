@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState} from 'react';
 import { INBAGame} from '../types/Game';
 import * as NBAIcons from 'react-nba-logos';
 import { Button } from '@mui/material';
+import { getDailyGameSchedules } from '../pages/api/nba_games'
 
 interface GameDisplayProps extends INBAGame {
     isInDropdown?: boolean;
@@ -9,6 +10,21 @@ interface GameDisplayProps extends INBAGame {
 
 const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
    const {id, homeTeam, homeTeamLogo, awayTeam, awayTeamLogo, schedule,  isInDropdown = false,} = props;
+   const [gameSchedules, setGameSchedules] = useState<INBAGame[]>([]);
+
+   useEffect(() => {
+    const fetchGameSchedules = async () => {
+        try {
+            const apiKey = 'z6n8shdh69pfkjz5r2ycfxdp'; // Use the provided API key
+            const schedules = await getDailyGameSchedules(apiKey); // Fetch game schedules
+            setGameSchedules(schedules);
+        } catch (error) {
+            console.error('Error fetching game schedules:', error);
+        }
+    };
+
+    fetchGameSchedules();
+}, []);
    const teamIconMap = {
         //TODO: Complete for All NBA Teams
         "TOR": NBAIcons.TOR,

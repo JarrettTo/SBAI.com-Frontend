@@ -43,6 +43,8 @@ const HomePage = () => {
     const [selectedGame, setSelectedGame] = useState<INBAGame | null>(null);
 
     const open = Boolean(anchorEl);
+
+
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         if (event.currentTarget.classList.contains('select-game-button')) {
             // Handle the "Select an NBA Game" button action
@@ -76,6 +78,7 @@ const HomePage = () => {
       
     
     return (
+        
         <div style={{display : "flex", flexDirection : "column", alignItems:"center", height: "100vh", overflow: 'hidden'}} >
             <div style={{display : "flex", flexDirection : "column",alignItems:"center",justifyContent:"center", marginTop: '105px'}}>
                 <h1 style={{fontWeight: 700, fontSize:'80px'}}>Sports Betting AI</h1>
