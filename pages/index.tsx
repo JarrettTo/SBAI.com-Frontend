@@ -119,7 +119,7 @@ const HomePage = () => {
                         }}
                     >
                         {NBAGames.map((game) => (
-                            <MenuItem key={game.id} onClick={() => handleGameSelect(game)}>
+                            <MenuItem key={game.id} onClick={() => handleGameSelect(game)} style={{justifyContent:'center'}}>
                                 <GameDisplay
                                     id={game.id}
                                     homeTeam={game.homeTeam}
@@ -128,6 +128,7 @@ const HomePage = () => {
                                     awayTeamLogo={game.awayTeamLogo}
                                     schedule={game.schedule}
                                     isInDropdown={true}
+                                    
                                 />
                             </MenuItem>
                         ))}
