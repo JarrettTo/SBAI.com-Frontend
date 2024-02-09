@@ -3,29 +3,31 @@ import { INBAGame} from '../types/Game';
 import * as NBAIcons from 'react-nba-logos';
 import { Button } from '@mui/material';
 import { getDailyGameSchedules } from '../pages/api/nba_games'
+import axios from 'axios';
 
 interface GameDisplayProps extends INBAGame {
     isInDropdown?: boolean;
-  }
+    }
 
 const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
-   const {id, homeTeam, homeTeamLogo, awayTeam, awayTeamLogo, schedule,  isInDropdown = false,} = props;
-   const [gameSchedules, setGameSchedules] = useState<INBAGame[]>([]);
+    const {id, homeTeam, homeTeamLogo, awayTeam, awayTeamLogo, schedule,  isInDropdown = false,} = props;
+    const [gameSchedules, setGameSchedules] = useState<INBAGame[]>([]);
 
-   useEffect(() => {
     const fetchGameSchedules = async () => {
-        try {
-            const apiKey = 'z6n8shdh69pfkjz5r2ycfxdp'; // Use the provided API key
-            const schedules = await getDailyGameSchedules(apiKey); // Fetch game schedules
-            setGameSchedules(schedules);
-        } catch (error) {
-            console.error('Error fetching game schedules:', error);
+    try {
+        const response = await axios.get('/api/nba_games',{
+        params: {
+            api_key: 'z6n8shdh69pfkjz5r2ycfxdp',
+            },
+        });
+        setGameSchedules(response.data);
+        console.log(response.data);
+    } catch (error) {
+        console.error('Error fetching game schedules:', error);
         }
     };
 
-    fetchGameSchedules();
-}, []);
-   const teamIconMap = {
+    const teamIconMap = {
         //TODO: Complete for All NBA Teams
         "TOR": NBAIcons.TOR,
         "BOS": NBAIcons.BOS,
@@ -58,7 +60,7 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
             hour: 'numeric',
             minute: '2-digit',
             hour12: true,
-          }).format(gameDate);
+        }).format(gameDate);
         return scheduleFormatted
     }
     const handleBoxScoreClick= ()=>{
@@ -70,7 +72,7 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
     const handlePredictClick= ()=>{
         //TODO: Either redirect/dropdown and show predictions of AI Model from API
     }
-   return(
+    return(
     <div style={{display: 'flex', flexDirection:'row', justifyContent: 'space-between', marginTop: '20px'}}>
     
         <div style={{marginLeft: '30px', display: 'flex', flexDirection: 'row', alignItems: 'center', width:'60%',justifyContent: 'space-between'}}>
