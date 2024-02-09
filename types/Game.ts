@@ -15,3 +15,30 @@ export type INBATeam = {
     logo: string;
     home: boolean; 
 }
+
+export type INBABoxScore = {
+    id : number;
+    position : string;
+    player : string;
+    minuite : number;
+    fieldGoalsMade : number;
+    fieldGoalsAttempted : number;
+    fieldGoalsPercentage : number;
+    threePointstMade : number;
+    threePointsAttempted : number;
+    threePointsPercentage : number;
+    freeThrowsMade : number;
+    freeThrowsAttempted : number;
+    freeThrowsPercentage : number;
+    offensiveRebounds : number;
+    defensiveRebounds : number;
+    totalRebounds : number;
+    assists : number;
+    steals : number;
+    blocks : number;
+    turnovers : number;
+    personalFouls : number;
+    points : number;
+    plusMinus : number;
+
+}

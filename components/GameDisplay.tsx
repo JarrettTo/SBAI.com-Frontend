@@ -2,6 +2,7 @@ import React from 'react';
 import { INBAGame} from '../types/Game';
 import * as NBAIcons from 'react-nba-logos';
 import { Button } from '@mui/material';
+import Link from 'next/link';
 
 interface GameDisplayProps extends INBAGame {
     isInDropdown?: boolean;
@@ -101,7 +102,9 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
                     marginRight:'10px'
                 }}
             >
-                Box Score
+                <Link href="/box-score" target='blank'>
+                    Box Score
+                </Link>
             </Button>
             <Button
                 variant="contained"
