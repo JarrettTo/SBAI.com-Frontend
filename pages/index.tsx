@@ -5,6 +5,12 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import GameDisplay from '../components/GameDisplay'
 import { INBAGame } from '../types/Game';
+import { getDailyGameSchedules } from '../pages/api/nba_games'
+import axios from 'axios';
+
+
+
+
 const sample1 : INBAGame = {
     id: 1,
     homeTeam: "Los Angeles Lakers",
@@ -38,10 +44,28 @@ const sample4 : INBAGame = {
     schedule: new Date("February 8 2024")
 }
 const HomePage = () => {
-    const [NBAGames, setNBAGames] = useState<INBAGame[]>([sample1, sample2, sample3, sample4, sample4, sample4])
+    const [NBAGames, setNBAGames] = useState<INBAGame[]>([])
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [selectedGame, setSelectedGame] = useState<INBAGame | null>(null);
-
+    const [gameSchedules, setGameSchedules] = useState<INBAGame[]>([]);
+    const fetchGameSchedules = async () => {
+        try {
+            const response = await axios.get('/api/nba_games',{
+            params: {
+                api_key: 'z6n8shdh69pfkjz5r2ycfxdp',
+                },
+            });
+            setGameSchedules(response.data);
+            console.log(response.data);
+        } catch (error) {
+            console.error('Error fetching game schedules:', error);
+            }
+        };
+    
+        useEffect(() => {
+            // Fetch NBA game schedules when the component mounts
+            fetchGameSchedules();
+        }, []);
     const open = Boolean(anchorEl);
 
 
@@ -121,7 +145,7 @@ const HomePage = () => {
                             },
                         }}
                     >
-                        {NBAGames.map((game) => (
+                        {gameSchedules.map((game) => (
                             <MenuItem key={game.id} onClick={() => handleGameSelect(game)} style={{justifyContent:'center'}}>
                                 <GameDisplay
                                     id={game.id}

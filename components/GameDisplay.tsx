@@ -31,10 +31,33 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
         //TODO: Complete for All NBA Teams
         "TOR": NBAIcons.TOR,
         "BOS": NBAIcons.BOS,
-        // Add more teams here following the same pattern
         "LAL": NBAIcons.LAL,
         "GSW": NBAIcons.GSW,
-        
+        "CHI": NBAIcons.CHI,
+        "MIA": NBAIcons.MIA,
+        "PHI": NBAIcons.PHI,
+        "HOU": NBAIcons.HOU,
+        "DAL": NBAIcons.DAL,
+        "BKN": NBAIcons.BKN,
+        "DEN": NBAIcons.DEN,
+        "UTA": NBAIcons.UTA,
+        "MIL": NBAIcons.MIL,
+        "LAC": NBAIcons.LAC,
+        "POR": NBAIcons.POR,
+        "PHX": NBAIcons.PHX,
+        "ATL": NBAIcons.ATL,
+        "IND": NBAIcons.IND,
+        "MEM": NBAIcons.MEM,
+        "NOP": NBAIcons.NOP,
+        "WAS": NBAIcons.WAS,
+        "CHA": NBAIcons.CHA,
+        "SAC": NBAIcons.SAC,
+        "MIN": NBAIcons.MIN,
+        "ORL": NBAIcons.ORL,
+        "SAS": NBAIcons.SAS,
+        "DET": NBAIcons.DET,
+        "CLE": NBAIcons.CLE,
+        "OKC": NBAIcons.OKC
         // Continue for all NBA teams
     };
     const teamAbbMap = {
@@ -43,6 +66,31 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
         "Boston Celtics": "BOS",
         "Los Angeles Lakers": "LAL",
         "Golden State Warriors": "GSW",
+        "Chicago Bulls": "CHI",
+        "Miami Heat": "MIA",
+        "Philadelphia 76ers": "PHI",
+        "Houston Rockets": "HOU",
+        "Dallas Mavericks": "DAL",
+        "Brooklyn Nets": "BKN",
+        "Denver Nuggets": "DEN",
+        "Utah Jazz": "UTA",
+        "Milwaukee Bucks": "MIL",
+        "Los Angeles Clippers": "LAC",
+        "Portland Trail Blazers": "POR",
+        "Phoenix Suns": "PHX",
+        "Atlanta Hawks": "ATL",
+        "Indiana Pacers": "IND",
+        "Memphis Grizzlies": "MEM",
+        "New Orleans Pelicans": "NOP",
+        "Washington Wizards": "WAS",
+        "Charlotte Hornets": "CHA",
+        "Sacramento Kings": "SAC",
+        "Minnesota Timberwolves": "MIN",
+        "Orlando Magic": "ORL",
+        "San Antonio Spurs": "SAS",
+        "Detroit Pistons": "DET",
+        "Cleveland Cavaliers": "CLE",
+        "Oklahoma City Thunder": "OKC"
         // Continue for all NBA teams
     };
     const getTeamIcon = (teamName: string) => {
