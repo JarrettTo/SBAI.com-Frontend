@@ -12,20 +12,6 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
     const {id, homeTeam, homeTeamLogo, awayTeam, awayTeamLogo, schedule,  isInDropdown = false,} = props;
     const [gameSchedules, setGameSchedules] = useState<INBAGame[]>([]);
 
-    const fetchGameSchedules = async () => {
-    try {
-        const response = await axios.get('/api/nba_games',{
-        params: {
-            api_key: 'z6n8shdh69pfkjz5r2ycfxdp',
-            },
-        });
-        setGameSchedules(response.data);
-        console.log(response.data);
-    } catch (error) {
-        console.error('Error fetching game schedules:', error);
-        }
-    };
-
     const teamIconMap = {
         //TODO: Complete for All NBA Teams
         "TOR": NBAIcons.TOR,
