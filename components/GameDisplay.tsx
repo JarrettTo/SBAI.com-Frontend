@@ -1,8 +1,8 @@
 import React, { useEffect, useState} from 'react';
+import { useRouter } from 'next/router';
 import { INBAGame} from '../types/Game';
 import * as NBAIcons from 'react-nba-logos';
 import { Button } from '@mui/material';
-import Link from 'next/link';
 
 interface GameDisplayProps extends INBAGame {
     isInDropdown?: boolean;
@@ -92,8 +92,10 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
         }).format(gameDate);
         return scheduleFormatted
     }
+
     const handleBoxScoreClick= ()=>{
         //TODO: Redirect to page that shows box score of game
+        window.open('/box-score', '_blank');
     }
     const handleOddsClick= ()=>{
         //TODO: Redirect to page that shows Odds of game
@@ -148,9 +150,7 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
                     marginRight:'10px'
                 }}
             >
-                <Link href="/box-score" target='blank'>
-                    Box Score
-                </Link>
+                Box Score
             </Button>
             <Button
                 variant="contained"
