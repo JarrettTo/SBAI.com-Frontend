@@ -10,36 +10,12 @@ interface GameDisplayProps extends INBAGame {
 const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
     const {id, homeTeam, homeTeamLogo, awayTeam, awayTeamLogo, schedule,  isInDropdown = false,} = props;
     const teamIconMap = {
+        //TODO: Complete for All NBA Teams
         "TOR": NBAIcons.TOR,
         "BOS": NBAIcons.BOS,
         "LAL": NBAIcons.LAL,
         "GSW": NBAIcons.GSW,
-        "ATL": NBAIcons.ATL,
-        "BKN": NBAIcons.BKN,
-        "CHA": NBAIcons.CHA,
-        "CHI": NBAIcons.CHI,
-        "CLE": NBAIcons.CLE,
-        "DAL": NBAIcons.DAL,
-        "DEN": NBAIcons.DEN,
-        "DET": NBAIcons.DET,
-        "HOU": NBAIcons.HOU,
-        "IND": NBAIcons.IND,
-        "LAC": NBAIcons.LAC,
-        "MEM": NBAIcons.MEM,
-        "MIA": NBAIcons.MIA,
-        "MIL": NBAIcons.MIL,
-        "MIN": NBAIcons.MIN,
-        "NOP": NBAIcons.NOP,
-        "NYK": NBAIcons.NYK,
-        "OKC": NBAIcons.OKC,
-        "ORL": NBAIcons.ORL,
-        "PHI": NBAIcons.PHI,
-        "PHX": NBAIcons.PHX,
-        "POR": NBAIcons.POR,
-        "SAC": NBAIcons.SAC,
-        "SAS": NBAIcons.SAS,
-        "UTA": NBAIcons.UTA,
-        "WAS": NBAIcons.WAS,
+        // Continue for all NBA teams
     };
     const teamAbbMap = {
         //TODO: Complete for All NBA Teams
