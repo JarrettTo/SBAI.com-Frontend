@@ -2,7 +2,6 @@ import React, { useEffect, useState} from 'react';
 import { INBAGame} from '../types/Game';
 import * as NBAIcons from 'react-nba-logos';
 import { Button } from '@mui/material';
-import { getDailyGameSchedules } from '../pages/api/nba_games'
 import axios from 'axios';
 
 interface GameDisplayProps extends INBAGame {
