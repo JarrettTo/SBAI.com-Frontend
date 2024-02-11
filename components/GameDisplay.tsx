@@ -2,7 +2,6 @@ import React, { useEffect, useState} from 'react';
 import { INBAGame} from '../types/Game';
 import * as NBAIcons from 'react-nba-logos';
 import { Button } from '@mui/material';
-import axios from 'axios';
 
 interface GameDisplayProps extends INBAGame {
     isInDropdown?: boolean;
@@ -11,12 +10,10 @@ interface GameDisplayProps extends INBAGame {
 const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
     const {id, homeTeam, homeTeamLogo, awayTeam, awayTeamLogo, schedule,  isInDropdown = false,} = props;
     const teamIconMap = {
-        //TODO: Complete for All NBA Teams
         "TOR": NBAIcons.TOR,
         "BOS": NBAIcons.BOS,
         "LAL": NBAIcons.LAL,
         "GSW": NBAIcons.GSW,
-        // Continue for all NBA teams
     };
     const teamAbbMap = {
         //TODO: Complete for All NBA Teams
