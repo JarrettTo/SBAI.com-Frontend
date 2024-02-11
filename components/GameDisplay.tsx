@@ -2,7 +2,6 @@ import React, { useEffect, useState} from 'react';
 import { INBAGame} from '../types/Game';
 import * as NBAIcons from 'react-nba-logos';
 import { Button } from '@mui/material';
-import { useState, useEffect } from "react";
 
 interface GameDisplayProps extends INBAGame {
     isInDropdown?: boolean;
