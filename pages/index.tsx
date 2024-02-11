@@ -12,7 +12,6 @@ dotenv.config();
 
 
 const HomePage = () => {
-    const [NBAGames, setNBAGames] = useState<INBAGame[]>([])
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [selectedGame, setSelectedGame] = useState<INBAGame | null>(null);
     const [gameSchedules, setGameSchedules] = useState<INBAGame[]>([]);
