@@ -13,9 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Get the current date in the format YYYY-MM-DD
     const currentDate = new Date().toISOString().slice(0, 10).replace(/-/g, '/');
     console.log(currentDate);
-    // API key for accessing the Sportsradar API
-     // Replace 'your_api_key_here' with your actual API key
-
+    
     // Make a GET request to the Sportsradar API to fetch the game schedules
     const response = await axios.get(`${BASE_URL}/nba/trial/v8/en/games/${currentDate}/schedule.json`, {
       params: {

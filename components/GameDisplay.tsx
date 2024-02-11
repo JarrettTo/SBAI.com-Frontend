@@ -10,7 +10,6 @@ interface GameDisplayProps extends INBAGame {
 
 const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
     const {id, homeTeam, homeTeamLogo, awayTeam, awayTeamLogo, schedule,  isInDropdown = false,} = props;
-
     const teamIconMap = {
         //TODO: Complete for All NBA Teams
         "TOR": NBAIcons.TOR,
@@ -55,7 +54,7 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
         //TODO: Either redirect/dropdown and show predictions of AI Model from API
     }
     return(
-    <div style={{display: 'flex', flexDirection:'row', justifyContent: 'space-between', marginTop: '20px'}}>
+    <div style={{display: 'flex', flexDirection:'row', justifyContent: 'space-between', marginTop: '20px', marginBottom: '20px', marginLeft: '30px', marginRight: '30px', width: '100%'}}>
     
         <div style={{marginLeft: '30px', display: 'flex', flexDirection: 'row', alignItems: 'center', width:'60%',justifyContent: 'space-between'}}>
             <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center',}}>
