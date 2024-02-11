@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState} from 'react';
 import { INBAGame} from '../types/Game';
 import * as NBAIcons from 'react-nba-logos';
 import { Button } from '@mui/material';
@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 
 interface GameDisplayProps extends INBAGame {
     isInDropdown?: boolean;
-  }
+    }
 
 const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
    const {id, homeTeam, homeTeamLogo, awayTeam, awayTeamLogo, schedule,  isInDropdown = false,} = props;
@@ -98,7 +98,7 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
             hour: 'numeric',
             minute: '2-digit',
             hour12: true,
-          }).format(gameDate);
+        }).format(gameDate);
         return scheduleFormatted
     }
     const handleBoxScoreClick= ()=>{
