@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState} from 'react';
 import { INBAGame} from '../types/Game';
 import * as NBAIcons from 'react-nba-logos';
 import { Button } from '@mui/material';
@@ -6,27 +6,73 @@ import Link from 'next/link';
 
 interface GameDisplayProps extends INBAGame {
     isInDropdown?: boolean;
-  }
+    }
 
 const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
    const {id, homeTeam, homeTeamLogo, awayTeam, awayTeamLogo, schedule,  isInDropdown = false,} = props;
    const teamIconMap = {
-        //TODO: Complete for All NBA Teams
-        "TOR": NBAIcons.TOR,
-        "BOS": NBAIcons.BOS,
-        // Add more teams here following the same pattern
-        "LAL": NBAIcons.LAL,
-        "GSW": NBAIcons.GSW,
-        
-        // Continue for all NBA teams
+            "TOR": NBAIcons.TOR,
+            "BOS": NBAIcons.BOS,
+            "LAL": NBAIcons.LAL,
+            "GSW": NBAIcons.GSW,
+            "ATL": NBAIcons.ATL,
+            "BKN": NBAIcons.BKN,
+            "CHA": NBAIcons.CHA,
+            "CHI": NBAIcons.CHI,
+            "CLE": NBAIcons.CLE,
+            "DAL": NBAIcons.DAL,
+            "DEN": NBAIcons.DEN,
+            "DET": NBAIcons.DET,
+            "HOU": NBAIcons.HOU,
+            "IND": NBAIcons.IND,
+            "LAC": NBAIcons.LAC,
+            "MEM": NBAIcons.MEM,
+            "MIA": NBAIcons.MIA,
+            "MIL": NBAIcons.MIL,
+            "MIN": NBAIcons.MIN,
+            "NOP": NBAIcons.NOP,
+            "NYK": NBAIcons.NYK,
+            "OKC": NBAIcons.OKC,
+            "ORL": NBAIcons.ORL,
+            "PHI": NBAIcons.PHI,
+            "PHX": NBAIcons.PHX,
+            "POR": NBAIcons.POR,
+            "SAC": NBAIcons.SAC,
+            "SAS": NBAIcons.SAS,
+            "UTA": NBAIcons.UTA,
+            "WAS": NBAIcons.WAS,
     };
     const teamAbbMap = {
-        //TODO: Complete for All NBA Teams
-        "Toronto Raptors": "TOR",
+        "Atlanta Hawks": "ATL",
         "Boston Celtics": "BOS",
-        "Los Angeles Lakers": "LAL",
+        "Brooklyn Nets": "BKN",
+        "Charlotte Hornets": "CHA",
+        "Chicago Bulls": "CHI",
+        "Cleveland Cavaliers": "CLE",
+        "Dallas Mavericks": "DAL",
+        "Denver Nuggets": "DEN",
+        "Detroit Pistons": "DET",
         "Golden State Warriors": "GSW",
-        // Continue for all NBA teams
+        "Houston Rockets": "HOU",
+        "Indiana Pacers": "IND",
+        "LA Clippers": "LAC",
+        "Los Angeles Lakers": "LAL",
+        "Memphis Grizzlies": "MEM",
+        "Miami Heat": "MIA",
+        "Milwaukee Bucks": "MIL",
+        "Minnesota Timberwolves": "MIN",
+        "New Orleans Pelicans": "NOP",
+        "New York Knicks": "NYK",
+        "Oklahoma City Thunder": "OKC",
+        "Orlando Magic": "ORL",
+        "Philadelphia 76ers": "PHI",
+        "Phoenix Suns": "PHX",
+        "Portland Trail Blazers": "POR",
+        "Sacramento Kings": "SAC",
+        "San Antonio Spurs": "SAS",
+        "Toronto Raptors": "TOR",
+        "Utah Jazz": "UTA",
+        "Washington Wizards": "WAS",
     };
     const getTeamIcon = (teamName: string) => {
         // Look up the component in the teamIconMap by teamName
@@ -43,7 +89,7 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
             hour: 'numeric',
             minute: '2-digit',
             hour12: true,
-          }).format(gameDate);
+        }).format(gameDate);
         return scheduleFormatted
     }
     const handleBoxScoreClick= ()=>{
