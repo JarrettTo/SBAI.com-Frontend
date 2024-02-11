@@ -5,44 +5,12 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import GameDisplay from '../components/GameDisplay'
 import { INBAGame } from '../types/Game';
-import { getDailyGameSchedules } from '../pages/api/nba_games'
 import axios from 'axios';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 
-
-
-const sample1 : INBAGame = {
-    id: 1,
-    homeTeam: "Los Angeles Lakers",
-    homeTeamLogo: "lakers.jpeg",
-    awayTeam: "Golden State Warriors",
-    awayTeamLogo: "warriors.jpeg",
-    schedule: new Date("February 8 2024")
-}
-const sample2 : INBAGame = {
-    id: 2,
-    homeTeam: "Toronto Raptors",
-    homeTeamLogo: "lakers.jpeg",
-    awayTeam: "Boston Celtics",
-    awayTeamLogo: "warriors.jpeg",
-    schedule: new Date("February 8 2024")
-}
-const sample3 : INBAGame = {
-    id: 3,
-    homeTeam: "Toronto Raptors",
-    homeTeamLogo: "lakers.jpeg",
-    awayTeam: "Boston Celtics",
-    awayTeamLogo: "warriors.jpeg",
-    schedule: new Date("February 8 2024")
-}
-const sample4 : INBAGame = {
-    id: 4,
-    homeTeam: "Toronto Raptors",
-    homeTeamLogo: "lakers.jpeg",
-    awayTeam: "Boston Celtics",
-    awayTeamLogo: "warriors.jpeg",
-    schedule: new Date("February 8 2024")
-}
 const HomePage = () => {
     const [NBAGames, setNBAGames] = useState<INBAGame[]>([])
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -52,7 +20,7 @@ const HomePage = () => {
         try {
             const response = await axios.get('/api/nba_games',{
             params: {
-                api_key: 'z6n8shdh69pfkjz5r2ycfxdp',
+                api_key: process.env.API_KEY, /// Access API key from environment variables
                 },
             });
             setGameSchedules(response.data);
@@ -191,7 +159,7 @@ const HomePage = () => {
                     
                 }}
              >
-                {NBAGames.map((game) => (
+                {gameSchedules.map((game) => (
                     <GameDisplay 
                         key={game.id} 
                         id={game.id} 
