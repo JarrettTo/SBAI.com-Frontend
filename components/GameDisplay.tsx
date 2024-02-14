@@ -2,7 +2,6 @@ import React, { useEffect, useState} from 'react';
 import { INBAGame} from '../types/Game';
 import * as NBAIcons from 'react-nba-logos';
 import { Button } from '@mui/material';
-// import { Odds } from '../types/Odds';
 
 
 interface GameDisplayProps extends INBAGame {
@@ -123,7 +122,6 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
     const handleOddsClick= ()=>{
         //TODO: Redirect to page that shows Odds of game
         setShowOdds(!showOdds);
-        // console.log(odds)
     }
     const handlePredictClick= ()=>{
         //TODO: Either redirect/dropdown and show predictions of AI Model from API
