@@ -1,3 +1,5 @@
+import { Root } from "postcss";
+import { Odds } from "./Odds"
 
 export type INBAGame = {
     id: number;
@@ -6,7 +8,7 @@ export type INBAGame = {
     awayTeam : string;
     awayTeamLogo : string;
     schedule: Date;
-    
+    odds?: Odds;
 }
 
 export type INBATeam = {

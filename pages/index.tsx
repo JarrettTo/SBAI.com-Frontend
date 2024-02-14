@@ -5,6 +5,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import GameDisplay from '../components/GameDisplay'
 import { INBAGame } from '../types/Game';
+import { Odds } from '../types/Odds';
 import axios from 'axios';
 import dotenv from 'dotenv';
 
@@ -15,6 +16,7 @@ const HomePage = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [selectedGame, setSelectedGame] = useState<INBAGame | null>(null);
     const [gameSchedules, setGameSchedules] = useState<INBAGame[]>([]);
+    const [gameOdds, setGameOdds] = useState<Odds[]>([]);
     const fetchGameSchedules = async () => {
         try {
             const response = await axios.get('/api/nba_games',{
@@ -28,10 +30,24 @@ const HomePage = () => {
             console.error('Error fetching game schedules:', error);
             }
         };
-    
+        
+        const fetchGameOdds = async () => {
+            try {
+                const response = await axios.get('/api/odds',{
+                    params: {
+                        apiKey: process.env.ODDS_API_KEY, // Include the API key as a query parameter
+                      },
+                    });
+                setGameOdds(response.data);
+                console.log(response.data);
+            } catch (error) {
+                console.error('Error fetching game odds:', error);
+                }
+            };
         useEffect(() => {
             // Fetch NBA game schedules when the component mounts
             fetchGameSchedules();
+            fetchGameOdds();
         }, []);
     const open = Boolean(anchorEl);
 
@@ -122,7 +138,7 @@ const HomePage = () => {
                                     awayTeamLogo={game.awayTeamLogo}
                                     schedule={game.schedule}
                                     isInDropdown={true}
-                                    
+                                    odds={gameOdds.find((odds) => odds.home_team === game.homeTeam)}
                                 />
                             </MenuItem>
                         ))}
@@ -167,6 +183,7 @@ const HomePage = () => {
                         awayTeam={game.awayTeam}
                         awayTeamLogo={game.awayTeamLogo}
                         schedule={game.schedule}
+                        odds={gameOdds.find((odds) => odds.home_team === game.homeTeam || odds.away_team === game.awayTeam)}
                     />
                 ))}
             </div>
