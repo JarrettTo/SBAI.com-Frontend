@@ -4,7 +4,7 @@ import { INBABoxScore } from '../../types/Game';
 
 
 const BoxScore = () => {
-  const [HomeboxScore, setHomeBoxScore] = useState<INBABoxScore[]>([sampleHomeBoxScore1, sampleHomeBoxScore2])
+  const [HomeboxScore, setHomeBoxScore] = useState<INBABoxScore[]>([sampleHomeBoxScore1, sampleHomeBoxScore2, sampleHomeBoxScore3])
   const [AwayboxScore, setAwayBoxScore] = useState<INBABoxScore[]>([sampleAwayBoxScore1, sampleAwayBoxScore2])
 
   return (
@@ -13,12 +13,12 @@ const BoxScore = () => {
         <h1 className='text-center text-4xl font-bold'>Box Score</h1>
       </div>
         
-
-      <div className='p-5'>
-        <table className='border-spacing-5 border-collape'>
+    <div style={{display : "flex", flexDirection : "column", alignItems:"center", height: "100vh", overflow: 'hidden'}} >
+      <div className='p-5' style={{ overflowX: 'auto', maxWidth: '1200px' }}>
+        <table className='border-spacing-5 border-collapse' style={{ minWidth: '1500px', fontSize: '16px' }}>
           <thead>
             <tr className='bg-sky-950 text-white'>
-              <th className='text-left'>Player</th>
+              <th className='text-left' style={{ textAlign: 'center', lineHeight: '3'}}>Player</th>
               <th>Min</th>
               <th>FGM</th>
               <th>FGA</th>
@@ -43,39 +43,40 @@ const BoxScore = () => {
           </thead>
           <tbody>
             {HomeboxScore.map((HomeboxScore) => (
-              <tr key={HomeboxScore.id} className=''>
-                <td>{HomeboxScore.player}</td>
-                <td>{HomeboxScore.minuite}</td>
-                <td>{HomeboxScore.fieldGoalsMade}</td>
-                <td>{HomeboxScore.fieldGoalsAttempted}</td>
-                <td>{HomeboxScore.fieldGoalsPercentage}</td>
-                <td>{HomeboxScore.threePointstMade}</td>
-                <td>{HomeboxScore.threePointsAttempted}</td>
-                <td>{HomeboxScore.threePointsPercentage}</td>
-                <td>{HomeboxScore.freeThrowsMade}</td>
-                <td>{HomeboxScore.freeThrowsAttempted}</td>
-                <td>{HomeboxScore.freeThrowsPercentage}</td>
-                <td>{HomeboxScore.offensiveRebounds}</td>
-                <td>{HomeboxScore.defensiveRebounds}</td>
-                <td>{HomeboxScore.totalRebounds}</td>
-                <td>{HomeboxScore.assists}</td>
-                <td>{HomeboxScore.steals}</td>
-                <td>{HomeboxScore.blocks}</td>
-                <td>{HomeboxScore.turnovers}</td>
-                <td>{HomeboxScore.personalFouls}</td>
-                <td>{HomeboxScore.points}</td>
-                <td>{HomeboxScore.plusMinus}</td>
+              <tr key={HomeboxScore.id}>
+                <td style={{ color: 'blue', borderRight: '1px solid gray'}}>{HomeboxScore.player}</td>
+                <td style={{ textAlign: 'center', lineHeight: '5' }}>{HomeboxScore.minuite}</td>
+                <td style={{ textAlign: 'center' }}>{HomeboxScore.fieldGoalsMade}</td>
+                <td style={{ textAlign: 'center' }}>{HomeboxScore.fieldGoalsAttempted}</td>
+                <td style={{ textAlign: 'center' }}>{HomeboxScore.fieldGoalsPercentage}</td>
+                <td style={{ textAlign: 'center' }}>{HomeboxScore.threePointstMade}</td>
+                <td style={{ textAlign: 'center' }}>{HomeboxScore.threePointsAttempted}</td>
+                <td style={{ textAlign: 'center' }}>{HomeboxScore.threePointsPercentage}</td>
+                <td style={{ textAlign: 'center' }}>{HomeboxScore.freeThrowsMade}</td>
+                <td style={{ textAlign: 'center' }}>{HomeboxScore.freeThrowsAttempted}</td>
+                <td style={{ textAlign: 'center' }}>{HomeboxScore.freeThrowsPercentage}</td>
+                <td style={{ textAlign: 'center' }}>{HomeboxScore.offensiveRebounds}</td>
+                <td style={{ textAlign: 'center' }}>{HomeboxScore.defensiveRebounds}</td>
+                <td style={{ textAlign: 'center' }}>{HomeboxScore.totalRebounds}</td>
+                <td style={{ textAlign: 'center' }}>{HomeboxScore.assists}</td>
+                <td style={{ textAlign: 'center' }}>{HomeboxScore.steals}</td>
+                <td style={{ textAlign: 'center' }}>{HomeboxScore.blocks}</td>
+                <td style={{ textAlign: 'center' }}>{HomeboxScore.turnovers}</td>
+                <td style={{ textAlign: 'center' }}>{HomeboxScore.personalFouls}</td>
+                <td style={{ textAlign: 'center' }}>{HomeboxScore.points}</td>
+                <td style={{ textAlign: 'center' }}>{HomeboxScore.plusMinus}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+    
 
-      <div className='p-5'>
-        <table className='border-spacing-5 border-collapse'>
+      <div className='p-5' style={{ overflowX: 'auto', maxWidth: '1200px' }}>
+        <table className='border-spacing-5 border-collapse' style={{ minWidth: '1500px', fontSize: '16px' }}>
           <thead>
             <tr className='bg-sky-950 text-white'>
-              <th className='text-left'>Player</th>
+              <th className='text-left' style={{ textAlign: 'center', lineHeight: '3' }}>Player</th>
               <th>Min</th>
               <th>FGM</th>
               <th>FGA</th>
@@ -101,33 +102,33 @@ const BoxScore = () => {
           <tbody>
             {AwayboxScore.map((AwayboxScore) => (
               <tr key={AwayboxScore.id} className=''>
-                <td>{AwayboxScore.player}</td>
-                <td>{AwayboxScore.minuite}</td>
-                <td>{AwayboxScore.fieldGoalsMade}</td>
-                <td>{AwayboxScore.fieldGoalsAttempted}</td>
-                <td>{AwayboxScore.fieldGoalsPercentage}</td>
-                <td>{AwayboxScore.threePointstMade}</td>
-                <td>{AwayboxScore.threePointsAttempted}</td>
-                <td>{AwayboxScore.threePointsPercentage}</td>
-                <td>{AwayboxScore.freeThrowsMade}</td>
-                <td>{AwayboxScore.freeThrowsAttempted}</td>
-                <td>{AwayboxScore.freeThrowsPercentage}</td>
-                <td>{AwayboxScore.offensiveRebounds}</td>
-                <td>{AwayboxScore.defensiveRebounds}</td>
-                <td>{AwayboxScore.totalRebounds}</td>
-                <td>{AwayboxScore.assists}</td>
-                <td>{AwayboxScore.steals}</td>
-                <td>{AwayboxScore.blocks}</td>
-                <td>{AwayboxScore.turnovers}</td>
-                <td>{AwayboxScore.personalFouls}</td>
-                <td>{AwayboxScore.points}</td>
-                <td>{AwayboxScore.plusMinus}</td>
+                <td style={{ color: 'blue', borderRight: '1px solid gray'}}>{AwayboxScore.player}</td>
+                <td style={{ textAlign: 'center', lineHeight: '5' }}>{AwayboxScore.minuite}</td>
+                <td style={{ textAlign: 'center' }}>{AwayboxScore.fieldGoalsMade}</td>
+                <td style={{ textAlign: 'center' }}>{AwayboxScore.fieldGoalsAttempted}</td>
+                <td style={{ textAlign: 'center' }}>{AwayboxScore.fieldGoalsPercentage}</td>
+                <td style={{ textAlign: 'center' }}>{AwayboxScore.threePointstMade}</td>
+                <td style={{ textAlign: 'center' }}>{AwayboxScore.threePointsAttempted}</td>
+                <td style={{ textAlign: 'center' }}>{AwayboxScore.threePointsPercentage}</td>
+                <td style={{ textAlign: 'center' }}>{AwayboxScore.freeThrowsMade}</td>
+                <td style={{ textAlign: 'center' }}>{AwayboxScore.freeThrowsAttempted}</td>
+                <td style={{ textAlign: 'center' }}>{AwayboxScore.freeThrowsPercentage}</td>
+                <td style={{ textAlign: 'center' }}>{AwayboxScore.offensiveRebounds}</td>
+                <td style={{ textAlign: 'center' }}>{AwayboxScore.defensiveRebounds}</td>
+                <td style={{ textAlign: 'center' }}>{AwayboxScore.totalRebounds}</td>
+                <td style={{ textAlign: 'center' }}>{AwayboxScore.assists}</td>
+                <td style={{ textAlign: 'center' }}>{AwayboxScore.steals}</td>
+                <td style={{ textAlign: 'center' }}>{AwayboxScore.blocks}</td>
+                <td style={{ textAlign: 'center' }}>{AwayboxScore.turnovers}</td>
+                <td style={{ textAlign: 'center' }}>{AwayboxScore.personalFouls}</td>
+                <td style={{ textAlign: 'center' }}>{AwayboxScore.points}</td>
+                <td style={{ textAlign: 'center' }}>{AwayboxScore.plusMinus}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      
+      </div>  
     </div>
   );
 }
@@ -184,6 +185,32 @@ const sampleHomeBoxScore2 : INBABoxScore = {
   personalFouls: 3,
   points: 20,
   plusMinus: 8
+}
+
+const sampleHomeBoxScore3 : INBABoxScore = {
+  id: 3,
+  position: "F",
+  player: "Mikal Bridges",
+  minuite: 32,
+  fieldGoalsMade: 7,
+  fieldGoalsAttempted: 16,
+  fieldGoalsPercentage: 43,
+  threePointstMade: 5,
+  threePointsAttempted: 12,
+  threePointsPercentage: 41,
+  freeThrowsMade: 4,
+  freeThrowsAttempted: 5,
+  freeThrowsPercentage: 80,
+  offensiveRebounds: 1,
+  defensiveRebounds: 2,
+  totalRebounds: 3,
+  assists: 4,
+  steals: 0,
+  blocks: 0,
+  turnovers: 1,
+  personalFouls: 2,
+  points: 23,
+  plusMinus: 6
 }
 
 const sampleAwayBoxScore1 : INBABoxScore = {
