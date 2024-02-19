@@ -76,20 +76,20 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
         "Washington Wizards": "WAS",
     };
     const oddsMap = {
-        away_team: odds.away_team,
-        home_team: odds.home_team,
-        away_spread_point: odds.bookmakers[0].markets[1].outcomes[0].point >= 0 ? `+${odds.bookmakers[0].markets[1].outcomes[0].point}` : odds.bookmakers[0].markets[1].outcomes[0].point,
-        away_spread_price: odds.bookmakers[0].markets[1].outcomes[0].price >= 0 ? `+${odds.bookmakers[0].markets[1].outcomes[0].price}` : odds.bookmakers[0].markets[1].outcomes[0].price,
-        away_totals_name: odds.bookmakers[0].markets[2].outcomes[0].name.charAt(0),
-        away_totals_point: odds.bookmakers[0].markets[2].outcomes[0].point,
-        away_totals_price: odds.bookmakers[0].markets[2].outcomes[0].price >= 0 ? `+${odds.bookmakers[0].markets[2].outcomes[0].price}` : odds.bookmakers[0].markets[2].outcomes[0].price,
-        away_h2h_price: odds.bookmakers[0].markets[0].outcomes[0].price >= 0 ? `+${odds.bookmakers[0].markets[0].outcomes[0].price}` : odds.bookmakers[0].markets[0].outcomes[0].price,
-        home_spread_point: odds.bookmakers[0].markets[1].outcomes[1].point >= 0 ? `+${odds.bookmakers[0].markets[1].outcomes[1].point}` : odds.bookmakers[0].markets[1].outcomes[1].point,
-        home_spread_price: odds.bookmakers[0].markets[1].outcomes[1].price >= 0 ? `+${odds.bookmakers[0].markets[1].outcomes[1].price}` : odds.bookmakers[0].markets[1].outcomes[1].price,
-        home_totals_name: odds.bookmakers[0].markets[2].outcomes[1].name.charAt(0),
-        home_totals_point: odds.bookmakers[0].markets[2].outcomes[1].point,
-        home_totals_price: odds.bookmakers[0].markets[2].outcomes[1].price >= 0 ? `+${odds.bookmakers[0].markets[2].outcomes[1].price}` : odds.bookmakers[0].markets[2].outcomes[1].price,
-        home_h2h_price: odds.bookmakers[0].markets[0].outcomes[1].price >= 0 ? `+${odds.bookmakers[0].markets[0].outcomes[1].price}` : odds.bookmakers[0].markets[0].outcomes[1].price
+        away_team: odds?.away_team,
+        home_team: odds?.home_team,
+        away_spread_point: odds?.bookmakers[0].markets[1].outcomes[0].point >= 0 ? `+${odds?.bookmakers[0].markets[1].outcomes[0].point}` : odds?.bookmakers[0].markets[1].outcomes[0].point,
+        away_spread_price: odds?.bookmakers[0].markets[1].outcomes[0].price >= 0 ? `+${odds?.bookmakers[0].markets[1].outcomes[0].price}` : odds?.bookmakers[0].markets[1].outcomes[0].price,
+        away_totals_name: odds?.bookmakers[0].markets[2].outcomes[0].name.charAt(0),
+        away_totals_point: odds?.bookmakers[0].markets[2].outcomes[0].point,
+        away_totals_price: odds?.bookmakers[0].markets[2].outcomes[0].price >= 0 ? `+${odds?.bookmakers[0].markets[2].outcomes[0].price}` : odds?.bookmakers[0].markets[2].outcomes[0].price,
+        away_h2h_price: odds?.bookmakers[0].markets[0].outcomes[0].price >= 0 ? `+${odds?.bookmakers[0].markets[0].outcomes[0].price}` : odds?.bookmakers[0].markets[0].outcomes[0].price,
+        home_spread_point: odds?.bookmakers[0].markets[1].outcomes[1].point >= 0 ? `+${odds?.bookmakers[0].markets[1].outcomes[1].point}` : odds?.bookmakers[0].markets[1].outcomes[1].point,
+        home_spread_price: odds?.bookmakers[0].markets[1].outcomes[1].price >= 0 ? `+${odds?.bookmakers[0].markets[1].outcomes[1].price}` : odds?.bookmakers[0].markets[1].outcomes[1].price,
+        home_totals_name: odds?.bookmakers[0].markets[2].outcomes[1].name.charAt(0),
+        home_totals_point: odds?.bookmakers[0].markets[2].outcomes[1].point,
+        home_totals_price: odds?.bookmakers[0].markets[2].outcomes[1].price >= 0 ? `+${odds?.bookmakers[0].markets[2].outcomes[1].price}` : odds?.bookmakers[0].markets[2].outcomes[1].price,
+        home_h2h_price: odds?.bookmakers[0].markets[0].outcomes[1].price >= 0 ? `+${odds?.bookmakers[0].markets[0].outcomes[1].price}` : odds?.bookmakers[0].markets[0].outcomes[1].price
     }
     const getTeamIcon = (teamName: string) => {
         // Look up the component in the teamIconMap by teamName
