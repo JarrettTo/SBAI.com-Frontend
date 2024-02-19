@@ -11,7 +11,8 @@ const BASE_URL = 'https://api.sportradar.com';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     // Get the current date in the format YYYY-MM-DD
-    const currentDate = new Date().toISOString().slice(0, 10).replace(/-/g, '/');
+    //const currentDate = new Date().toISOString().slice(0, 10).replace(/-/g, '/');
+    const currentDate = '2024/02/22';
     console.log(currentDate);
     
     // Make a GET request to the Sportsradar API to fetch the game schedules
