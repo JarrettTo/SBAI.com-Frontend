@@ -3,7 +3,9 @@ import axios from 'axios';
 import { Odds } from '../../types/Odds';
 
 
-const BASE_URL = 'https://api.the-odds-api.com/v4/sports/basketball_nba/odds/?regions=us&markets=h2h,spreads,totals&oddsFormat=american&bookmakers=draftkings';
+//const BASE_URL = 'https://api.the-odds-api.com/v4/sports/basketball_nba/odds/?regions=us&markets=h2h,spreads,totals&oddsFormat=american&bookmakers=draftkings';
+const BASE_URL = 'https://api.the-odds-api.com/v4/sports/basketball_nba/odds/?regions=us&markets=h2h,spreads,totals&oddsFormat=american&bookmakers=draftkings&commenceTimeFrom=2024-02-22T00:00:00Z';
+
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
