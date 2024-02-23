@@ -23,7 +23,7 @@ const HomePage = () => {
         try {
             const response = await axios.get('/api/nba_games',{
             params: {
-                api_key: process.env.API_KEY, /// Access API key from environment variables
+                api_key: process.env.ODDS_API_KEY, /// Access API key from environment variables
                 },
             });
             setGameSchedules(response.data);
@@ -290,7 +290,7 @@ const HomePage = () => {
                         awayTeam={game.awayTeam}
                         awayTeamLogo={game.awayTeamLogo}
                         schedule={game.schedule}
-                        odds={gameOdds.find((odds) => odds.home_team === game.homeTeam || odds.away_team === game.awayTeam)}
+                        odds={gameOdds.find((odds) => odds.home_team === game.homeTeam && odds.away_team === game.awayTeam)}
                         predictions={gamePreds.find((odds) => odds.home_team === game.homeTeam)}
                     />
                 ))}
