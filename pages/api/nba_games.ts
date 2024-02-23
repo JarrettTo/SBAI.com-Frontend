@@ -21,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       id: game.id, // Unique identifier for the game
       homeTeam: game.home_team, // Name of the home team
       awayTeam: game.away_team, // Name of the away team
-      scheduledTime: game.commence_time, // Scheduled time of the game
+      schedule: game.commence_time, // Scheduled time of the game
     }));
 
     res.status(200).json(games); // Send the array of game schedules in the response

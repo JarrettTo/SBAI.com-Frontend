@@ -3,7 +3,6 @@ import { INBAGame} from '../types/Game';
 import * as NBAIcons from 'react-nba-logos';
 import { Button } from '@mui/material';
 
-
 interface GameDisplayProps extends INBAGame {
     isInDropdown?: boolean;
     }
@@ -57,7 +56,7 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
         "Golden State Warriors": "GSW",
         "Houston Rockets": "HOU",
         "Indiana Pacers": "IND",
-        "LA Clippers": "LAC",
+        "Los Angeles Clippers": "LAC",
         "Los Angeles Lakers": "LAL",
         "Memphis Grizzlies": "MEM",
         "Miami Heat": "MIA",
@@ -77,6 +76,7 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
         "Washington Wizards": "WAS",
     };
     const oddsMap = {
+        commence_time: odds?.commence_time,
         away_team: odds?.away_team,
         home_team: odds?.home_team,
         away_spread_point: odds?.bookmakers[0].markets[1].outcomes[0].point >= 0 ? `+${odds?.bookmakers[0].markets[1].outcomes[0].point}` : odds?.bookmakers[0].markets[1].outcomes[0].point,
@@ -107,17 +107,7 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
         // If a matching component was found, render it; otherwise, return null or a default icon
         return <IconComponent size={40}/>;// ? <IconComponent /> : null;
     };
-    const formatTime = (gameDate : Date) =>{
-        const scheduleFormatted = new Intl.DateTimeFormat('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: '2-digit',
-            hour: 'numeric',
-            minute: '2-digit',
-            hour12: true,
-        }).format(gameDate);
-        return scheduleFormatted
-    }
+    
     const handleBoxScoreClick= ()=>{
         //TODO: Redirect to page that shows box score of game
     }
@@ -127,6 +117,19 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
     }
     const handlePredictClick= ()=>{
         setShowPreds(!showPreds)
+    }
+    function formatDate(dateString: string): string {
+        const options: Intl.DateTimeFormatOptions = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true,
+        };
+    
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', options);
     }
    return(
     <div>
@@ -146,7 +149,7 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
                 </div>
                 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginLeft:'10px', marginRight:'10px', width: '33%'}}>
                     <p style={{fontSize:'20px', fontWeight:'800', color: "black"}}>VS</p>
-                    <p style={{fontSize:'14px', fontWeight:'400'}}>{formatTime(schedule)}</p>
+                    <p style={{fontSize:'14px', fontWeight:'400'}}>{formatDate(schedule.toString())}</p>
                 </div>
                 <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', width: '33%', justifyContent: 'end'}}>
                     
