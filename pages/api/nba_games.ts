@@ -6,29 +6,22 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // Base URL for the Sportsradar API
-const BASE_URL = 'https://api.sportradar.com';
+const BASE_URL = 'https://api.the-odds-api.com/v4/sports/basketball_nba/odds/?regions=us&markets=h2h,spreads,totals&oddsFormat=american&bookmakers=draftkings';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    // Get the current date in the format YYYY-MM-DD
-    //const currentDate = new Date().toISOString().slice(0, 10).replace(/-/g, '/');
-    const currentDate = '2024/02/22';
-    console.log(currentDate);
-    
-    // Make a GET request to the Sportsradar API to fetch the game schedules
-    const response = await axios.get(`${BASE_URL}/nba/trial/v8/en/games/${currentDate}/schedule.json`, {
+    const response = await axios.get(`${BASE_URL}`, {
       params: {
-        api_key: process.env.API_KEY, // Include the API key as a query parameter
+        apiKey: process.env.ODDS_API_KEY, // Include the API key as a query parameter
       },
     });
 
     // Map the response data to the INBAGame interface
-    const games: INBAGame[] = response.data.games.map((game: any) => ({
+    const games: INBAGame[] = response.data.map((game: any) => ({
       id: game.id, // Unique identifier for the game
-      homeTeam: game.home.name, // Name of the home team
-      awayTeam: game.away.name, // Name of the away team
-      arena: game.venue.name, // Name of the arena where the game is scheduled
-      scheduledTime: game.scheduled, // Scheduled time of the game
+      homeTeam: game.home_team, // Name of the home team
+      awayTeam: game.away_team, // Name of the away team
+      scheduledTime: game.commence_time, // Scheduled time of the game
     }));
 
     res.status(200).json(games); // Send the array of game schedules in the response

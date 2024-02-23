@@ -23,7 +23,7 @@ const HomePage = () => {
         try {
             const response = await axios.get('/api/nba_games',{
             params: {
-                api_key: process.env.API_KEY, /// Access API key from environment variables
+                api_key: process.env.ODDS_API_KEY, /// Access API key from environment variables
                 },
             });
             setGameSchedules(response.data);
