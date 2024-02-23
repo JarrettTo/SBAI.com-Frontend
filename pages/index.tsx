@@ -59,7 +59,7 @@ const HomePage = () => {
 
         const prediction2 : Predictions = {
             id: "1",
-            home_team: 'Philadeplhia 76ers',
+            home_team: 'Philadelphia 76ers',
             away_team: 'Cleveland Cavaliers',
             ml_pred: 'Cleveland Cavaliers',
             ml_conf: '50.7%',
@@ -87,8 +87,8 @@ const HomePage = () => {
         const prediction5 : Predictions = {
             id: "1",
             home_team: 'Memphis Grizzlies',
-            away_team: 'LA Clippers',
-            ml_pred: 'LA Clippers',
+            away_team: 'Los Angeles Clippers',
+            ml_pred: 'Los Angeles Clippers',
             ml_conf: '73.0%',
             ou_pred: 'UNDER 223',
             ou_conf: '52.3%'
@@ -291,7 +291,7 @@ const HomePage = () => {
                         awayTeamLogo={game.awayTeamLogo}
                         schedule={game.schedule}
                         odds={gameOdds.find((odds) => odds.home_team === game.homeTeam && odds.away_team === game.awayTeam)}
-                        predictions={gamePreds.find((odds) => odds.home_team === game.homeTeam)}
+                        predictions={gamePreds.find((preds) => preds.home_team === game.homeTeam)}
                     />
                 ))}
             </div>
