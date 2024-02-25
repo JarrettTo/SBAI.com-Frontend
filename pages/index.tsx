@@ -48,106 +48,106 @@ const HomePage = () => {
     };
     const fetchGamePredictions = async () => {
         const prediction1 : Predictions = {
-            id: "1",
-            home_team: 'Atlanta Hawks',
-            away_team: 'Toronto Raptors',
-            ml_pred: 'Atlanta Hawks',
-            ml_conf: '63.8%',
-            ou_pred: 'OVER 243.5',
-            ou_conf: '50.8%'
+            "away_team": "Milwaukee Bucks",
+            "home_team": "Philadelphia 76ers",
+            "id": "0",
+            "ml_conf": "57.2%",
+            "ml_pred": "Philadelphia 76ers",
+            "ou_conf": "60.5%",
+            "ou_pred": "UNDER 232"
         }
 
         const prediction2 : Predictions = {
-            id: "1",
-            home_team: 'Philadelphia 76ers',
-            away_team: 'Cleveland Cavaliers',
-            ml_pred: 'Cleveland Cavaliers',
-            ml_conf: '50.7%',
-            ou_pred: 'UNDER 228',
-            ou_conf: '50.5%'
+            "away_team": "Los Angeles Lakers",
+            "home_team": "Phoenix Suns",
+            "id": "1",
+            "ml_conf": "64.0%",
+            "ml_pred": "Phoenix Suns",
+            "ou_conf": "64.2%",
+            "ou_pred": "UNDER 237.5"
         }
         const prediction3 : Predictions = {
-            id: "1",
-            home_team: 'Houston Rockets',
-            away_team: 'Phoenix Suns',
-            ml_pred: 'Phoenix Suns',
-            ml_conf: '55.9%',
-            ou_pred: 'UNDER 229.5',
-            ou_conf: '50.8%'
+            "away_team": "Dallas Mavericks",
+            "home_team": "Indiana Pacers",
+            "id": "2",
+            "ml_conf": "52.4%",
+            "ml_pred": "Indiana Pacers",
+            "ou_conf": "82.3%",
+            "ou_pred": "UNDER 252"
         }
         const prediction4 : Predictions = {
-            id: "1",
-            home_team: 'New Orleans Pelicans',
-            away_team: 'Miami Heat',
-            ml_pred: 'New Orleans Pelicans',
-            ml_conf: '67.2%',
-            ou_pred: 'UNDER 223',
-            ou_conf: '52.6%'
+            "away_team": "Cleveland Cavaliers",
+            "home_team": "Washington Wizards",
+            "id": "3",
+            "ml_conf": "69.2%",
+            "ml_pred": "Cleveland Cavaliers",
+            "ou_conf": "51.9%",
+            "ou_pred": "UNDER 232.5"
         }
         const prediction5 : Predictions = {
-            id: "1",
-            home_team: 'Memphis Grizzlies',
-            away_team: 'Los Angeles Clippers',
-            ml_pred: 'Los Angeles Clippers',
-            ml_conf: '73.0%',
-            ou_pred: 'UNDER 223',
-            ou_conf: '52.3%'
+            "away_team": "Denver Nuggets",
+            "home_team": "Golden State Warriors",
+            "id": "4",
+            "ml_conf": "57.0%",
+            "ml_pred": "Golden State Warriors",
+            "ou_conf": "55.2%",
+            "ou_pred": "UNDER 232"
         }
         const prediction6 : Predictions = {
-            id: "1",
-            home_team: 'Oklahoma City Thunder',
-            away_team: 'Washington Wizards',
-            ml_pred: 'Boston Celtics',
-            ml_conf: '89.8%',
-            ou_pred: 'UNDER 241.5',
-            ou_conf: '51.4%'
+            "away_team": "Chicago Bulls",
+            "home_team": "New Orleans Pelicans",
+            "id": "5",
+            "ml_conf": "67.7%",
+            "ml_pred": "New Orleans Pelicans",
+            "ou_conf": "56.3%",
+            "ou_pred": "UNDER 222.5"
         }
         const prediction7 : Predictions = {
-            id: "1",
-            home_team: 'Portland Trail Blazers',
-            away_team: 'Denver Nuggets',
-            ml_pred: 'Denver Nuggets',
-            ml_conf: '70.2%',
-            ou_pred: 'OVER 217',
-            ou_conf: '51.3%'
+            "away_team": "Orlando Magic",
+            "home_team": "Atlanta Hawks",
+            "id": "6",
+            "ml_conf": "52.2%",
+            "ml_pred": "Orlando Magic",
+            "ou_conf": "59.0%",
+            "ou_pred": "UNDER 226.5"
         }
         const prediction8 : Predictions = {
-            id: "1",
-            home_team: 'Golden State Warriors',
-            away_team: 'Charlotte Hornets',
-            ml_pred: 'Golden State Warriors',
-            ml_conf: '78.2%',
-            ou_pred: 'OVER 229.5',
-            ou_conf: '50.3%'
+            "away_team": "Oklahoma City Thunder",
+            "home_team": "Houston Rockets",
+            "id": "7",
+            "ml_conf": "62.6%",
+            "ml_pred": "Oklahoma City Thunder",
+            "ou_conf": "63.9%",
+            "ou_pred": "UNDER 235.5"
         }
         const prediction9 : Predictions = {
-            id: "1",
-            home_team: 'Minnesota Timberwolves',
-            away_team: 'Milkwaukee Bucks',
-            ml_pred: 'Minnesota Timberwolves',
-            ml_conf: '64.4%',
-            ou_pred: 'UNDER 225.5',
-            ou_conf: '51.1%'
+            "away_team": "San Antonio Spurs",
+            "home_team": "Utah Jazz",
+            "id": "8",
+            "ml_conf": "70.0%",
+            "ml_pred": "Utah Jazz",
+            "ou_conf": "51.6%",
+            "ou_pred": "OVER 242"
         }
         const prediction10 : Predictions = {
-            id: "1",
-            home_team: 'Los Angeles Lakers',
-            away_team: 'San Antonio Spurs',
-            ml_pred: 'Los Angeles Lakers',
-            ml_conf: '74.8%',
-            ou_pred: 'OVER 237.5',
-            ou_conf: '49.7%'
+            "away_team": "Charlotte Hornets",
+            "home_team": "Portland Trail Blazers",
+            "id": "9",
+            "ml_conf": "54.0%",
+            "ml_pred": "Charlotte Hornets",
+            "ou_conf": "62.3%",
+            "ou_pred": "UNDER 219.5"
         }
         const prediction11 : Predictions = {
-            id: "1",
-            home_team: 'Sacramento Kings',
-            away_team: 'San Antonio Spurs',
-            ml_pred: 'Sacramento Kings',
-            ml_conf: '51.3%',
-            ou_pred: 'OVER 220',
-            ou_conf: '55%'
+            "away_team": "Sacramento Kings",
+            "home_team": "Los Angeles Clippers",
+            "id": "10",
+            "ml_conf": "68.7%",
+            "ml_pred": "Los Angeles Clippers",
+            "ou_conf": "51.7%",
+            "ou_pred": "UNDER 239"
         }
-        setGamePreds([prediction1,prediction2,prediction3,prediction4,prediction5,prediction6,prediction7,prediction8, prediction9,prediction10])
+        setGamePreds([prediction1,prediction2,prediction3,prediction4,prediction5,prediction6,prediction7,prediction8, prediction9,prediction10, prediction11])
     };
     useEffect(() => {
         // Fetch NBA game schedules when the component mounts
