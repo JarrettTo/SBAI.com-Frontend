@@ -48,41 +48,41 @@ const HomePage = () => {
     };
     const fetchGamePredictions = async () => {
         const prediction1 : Predictions = {
-            "away_team": "Milwaukee Bucks",
-            "home_team": "Philadelphia 76ers",
+            "away_team": "Toronto Raptors",
+            "home_team": "Indiana Pacers",
             "id": "0",
-            "ml_conf": "57.2%",
-            "ml_pred": "Philadelphia 76ers",
-            "ou_conf": "60.5%",
-            "ou_pred": "UNDER 232"
+            "ml_conf": "70.6%",
+            "ml_pred": "Indiana Pacers",
+            "ou_conf": "57.2%",
+            "ou_pred": "UNDER 245.5"
         }
 
         const prediction2 : Predictions = {
-            "away_team": "Los Angeles Lakers",
-            "home_team": "Phoenix Suns",
+            "away_team": "Detroit Pistons",
+            "home_team": "New York Knicks",
             "id": "1",
-            "ml_conf": "64.0%",
-            "ml_pred": "Phoenix Suns",
-            "ou_conf": "64.2%",
-            "ou_pred": "UNDER 237.5"
+            "ml_conf": "82.1%",
+            "ml_pred": "New York Knicks",
+            "ou_conf": "58.3%",
+            "ou_pred": "OVER 223.5"
         }
         const prediction3 : Predictions = {
-            "away_team": "Dallas Mavericks",
-            "home_team": "Indiana Pacers",
+            "away_team": "Brooklyn Nets",
+            "home_team": "Memphis Grizzlies",
             "id": "2",
-            "ml_conf": "52.4%",
-            "ml_pred": "Indiana Pacers",
-            "ou_conf": "82.3%",
-            "ou_pred": "UNDER 252"
+            "ml_conf": "57.2%",
+            "ml_pred": "Brooklyn Nets",
+            "ou_conf": "67.8%",
+            "ou_pred": "UNDER 214.5"
         }
         const prediction4 : Predictions = {
-            "away_team": "Cleveland Cavaliers",
-            "home_team": "Washington Wizards",
+            "away_team": "Miami Heat",
+            "home_team": "Sacramento Kings",
             "id": "3",
-            "ml_conf": "69.2%",
-            "ml_pred": "Cleveland Cavaliers",
-            "ou_conf": "51.9%",
-            "ou_pred": "UNDER 232.5"
+            "ml_conf": "52.5%",
+            "ml_pred": "Sacramento Kings",
+            "ou_conf": "52.8%",
+            "ou_pred": "OVER 226.5"
         }
         const prediction5 : Predictions = {
             "away_team": "Denver Nuggets",
@@ -147,7 +147,7 @@ const HomePage = () => {
             "ou_conf": "51.7%",
             "ou_pred": "UNDER 239"
         }
-        setGamePreds([prediction1,prediction2,prediction3,prediction4,prediction5,prediction6,prediction7,prediction8, prediction9,prediction10, prediction11])
+        setGamePreds([prediction1,prediction2,prediction3,prediction4])
     };
     useEffect(() => {
         // Fetch NBA game schedules when the component mounts
