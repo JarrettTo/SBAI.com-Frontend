@@ -2,6 +2,7 @@ import React, { useEffect, useState} from 'react';
 import { INBAGame} from '../types/Game';
 import * as NBAIcons from 'react-nba-logos';
 import { Button } from '@mui/material';
+import styles from './GameDisplay.module.css'
 
 interface GameDisplayProps extends INBAGame {
     isInDropdown?: boolean;
@@ -129,40 +130,40 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
         return date.toLocaleDateString('en-US', options);
     }
    return(
-    <div>
-        <div style={{display: 'flex', flexDirection:'row', justifyContent: 'space-between', marginTop: '20px', marginBottom: '20px', marginLeft: '30px', marginRight: '30px', width: '100%'}}>
+    <div className={styles.main} style={{marginBottom: '7px', borderRadius: '10px'}}>
+        <div className={styles.row_container} style={{display: 'flex', flexDirection:'row', justifyContent: 'space-between', paddingTop: '10px', paddingBottom: '20px', paddingLeft: '30px', width: '100%'}}>
         
-            <div style={{marginLeft: '0px', display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', justifyContent: 'space-between'}}>
+            <div className={styles.game_display}style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', justifyContent: 'space-between'}}>
                 <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', width: '33%'}}>
                     <div>{getTeamIcon(teamAbbMap[homeTeam])}</div>
                     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'start', marginLeft: '10px'}}>
-                        <p style={{fontSize:'20px', fontWeight:'800', color: "black"}}>{teamAbbMap[homeTeam]}</p>
+                        <p className={styles.team} style={{fontSize:'20px', fontWeight:'800', color: "black"}}>{teamAbbMap[homeTeam]}</p>
 
-                        <p style={{fontSize:'14px', fontWeight:'400'}}>{homeTeam}</p>
+                        <p className={styles.info} style={{fontSize:'14px', fontWeight:'400'}}>{homeTeam}</p>
 
-                        <p style={{fontSize:'14px', fontWeight:'400'}}>(Home)</p>
+                        <p className={styles.info} style={{fontSize:'14px', fontWeight:'400'}}>(Home)</p>
                     </div>
                     
                 </div>
                 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginLeft:'10px', marginRight:'10px', width: '33%'}}>
-                    <p style={{fontSize:'20px', fontWeight:'800', color: "black"}}>VS</p>
-                    <p style={{fontSize:'14px', fontWeight:'400'}}>{formatDate(schedule.toString())}</p>
+                    <p className={styles.vs}>VS</p>
+                    <p className={styles.time} style={{fontSize:'14px', fontWeight:'400', textAlign: 'center'}}>{formatDate(schedule.toString())}</p>
                 </div>
                 <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', width: '33%', justifyContent: 'end'}}>
                     
                     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'end',  marginRight: '10px'}}>
-                        <p style={{fontSize:'20px', fontWeight:'800', color: "black"}}>{teamAbbMap[awayTeam]}</p>
+                        <p className={styles.team} style={{fontSize:'20px', fontWeight:'800', color: "black"}}>{teamAbbMap[awayTeam]}</p>
 
-                        <p style={{fontSize:'14px', fontWeight:'400'}}>{awayTeam}</p>
+                        <p className={styles.info} style={{fontSize:'14px', fontWeight:'400', textAlign: 'right'}}>{awayTeam}</p>
 
-                        <p style={{fontSize:'14px', fontWeight:'400'}}>(Away)</p>
+                        <p className={styles.info} style={{fontSize:'14px', fontWeight:'400'}}>(Away)</p>
                     </div>
                     <div>{getTeamIcon(teamAbbMap[awayTeam])}</div>
                     
                 </div>
             </div>
             {isInDropdown ? null : (
-            <div style={{display:'flex', flexDirection:'row', justifyContent: 'end', alignItems: 'center', marginRight: '40px', width: '40%'}}>
+            <div className={styles.button_container}style={{display:'flex', flexDirection:'row', alignItems: 'center', paddingRight: '50px'}}>
                 <Button
                     variant="contained"
                     onClick={handleBoxScoreClick}
@@ -213,7 +214,7 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
         </div>
 
         {showOdds && odds && (
-            <div style={{ display: 'flex', flexDirection: 'column', padding: '10px 20px'}}>
+            <div className={styles.odds} style={{ display: 'flex', flexDirection: 'column', padding: '10px 20px'}}>
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                     <div style={{ width: '30%', padding:'10px 0px', fontSize: '12px', color: '#555'}}>TOMORROW</div>
                     <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', color: '#555'}}>SPREAD</div>
@@ -221,15 +222,15 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
                     <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', color: '#555'}}>MONEYLINE</div>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                    <div style={{ width: '4%'}}>{getMiniTeamIcon(teamAbbMap[homeTeam])}</div>
-                    <div style={{ width: '26%', padding:'10px 0px', color: '#555'}}>{oddsMap['home_team']} (Home)</div>
+                    <div  style={{ width: '4%'}}>{getMiniTeamIcon(teamAbbMap[homeTeam])}</div>
+                    <div className={styles.team_status} style={{ width: '26%', padding:'10px 0px', color: '#555'}}>{oddsMap['home_team']} (Home)</div>
                     <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', backgroundColor: '#f5f5f5', color: '#555'}}>{oddsMap['home_spread_point']}&emsp;{oddsMap['home_spread_price']}</div>
                     <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', backgroundColor: '#f5f5f5', color: '#555'}}>{oddsMap['home_totals_name']} {oddsMap['home_totals_point']}&emsp;{oddsMap['home_totals_price']}</div>
                     <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', backgroundColor: '#f5f5f5', color: '#555'}}>{oddsMap['home_h2h_price'] ? oddsMap['home_h2h_price'] : '&emsp;'}</div>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                 <div style={{ width: '4%'}}>{getMiniTeamIcon(teamAbbMap[awayTeam])}</div>
-                    <div style={{ width: '26%', padding:'10px 0px', color: '#555'}}>{oddsMap['away_team']} (Away)</div>
+                    <div className={styles.team_status} style={{ width: '26%', padding:'10px 0px', color: '#555'}}>{oddsMap['away_team']} (Away)</div>
                     <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', backgroundColor: '#f5f5f5', color: '#555'}}>{oddsMap['away_spread_point']}&emsp;{oddsMap['away_spread_price']}</div>
                     <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', backgroundColor: '#f5f5f5', color: '#555'}}>{oddsMap['away_totals_name']} {oddsMap['away_totals_point']}&emsp;{oddsMap['away_totals_price']}</div>
                     <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', backgroundColor: '#f5f5f5', color: '#555'}}>{oddsMap['away_h2h_price'] ? oddsMap['away_h2h_price'] : '&emsp;'}</div>
@@ -237,20 +238,20 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
             </div>
         )}
         {showPreds && predictions && (
-            <div style={{display: 'flex', flexDirection:'row', marginLeft:'60px', marginTop:'30px'}}>
-                <div style={{display: 'flex', flexDirection:'column', marginRight:'40px'}} >
-                    <p style={{color: '#555',fontSize: '15px'}}>Moneyline Prediction:</p>
+            <div className={styles.prediction} style={{display: 'flex', flexDirection:'row', marginTop:'30px',alignItems:'center'}}>
+                <div style={{display: 'flex', flexDirection:'column', marginRight:'5%',justifyContent:'center' ,  marginBottom:'15px'}} >
+                    <p className={styles.prediction_type} style={{color: '#555'}}>Moneyline Prediction:</p>
                     <div style={{display:'flex', flexDirection:'row',  alignItems:'center'}}>
                         <div style={{ width: '4%',marginRight:'40px'}}>{getMiniTeamIcon(teamAbbMap[predictions.ml_pred])}</div>
-                        <p style={{color: 'green',fontSize: '20px', fontWeight:'700',}}>{predictions.ml_pred}</p>
-                        <p style={{fontSize: '14px', fontWeight:'400', marginLeft:'15px'}}>{predictions.ml_conf}</p>
+                        <p className={styles.prediction_value} style={{color: 'green',fontWeight:'700',}}>{predictions.ml_pred}</p>
+                        <p className={styles.prediction_conf} style={{ fontWeight:'400', marginLeft:'8px'}}>{predictions.ml_conf}</p>
                     </div>
                 </div>
-                <div style={{display: 'flex', flexDirection:'column', marginLeft:'40px'}}>
-                    <p style={{color: '#555',fontSize: '15px', marginBottom:'5px'}}>OU Prediction:</p>
+                <div className={styles.ou_prediction} style={{display: 'flex', flexDirection:'column', marginLeft:'5%', justifyContent:'center' , marginBottom:'15px'}}>
+                    <p className={styles.prediction_type_ou} style={{color: '#555'}}>OU Prediction:</p>
                     <div style={{display:'flex', flexDirection:'row',  alignItems:'center'}}>
-                        <p style={{color: ouPredColor, fontSize: '20px', fontWeight:'700'}}>{predictions.ou_pred}</p>
-                        <p style={{fontSize: '14px', fontWeight:'400', marginLeft:'15px'}}>{predictions.ou_conf}</p>
+                        <p className={styles.prediction_value} style={{color: ouPredColor, fontWeight:'700'}}>{predictions.ou_pred}</p>
+                        <p className={styles.prediction_conf} style={{fontWeight:'400', marginLeft:'8px'}}>{predictions.ou_conf}</p>
                     </div>
                 </div>
             </div>

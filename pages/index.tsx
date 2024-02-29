@@ -9,6 +9,7 @@ import { Odds } from '../types/Odds';
 import axios from 'axios';
 import dotenv from 'dotenv';
 import { Predictions } from "../types/Predictions";
+import styles from './index.module.css'
 
 dotenv.config();
 
@@ -131,7 +132,7 @@ const HomePage = () => {
             "ou_conf": "51.7%",
             "ou_pred": "UNDER 239"
         }
-        setGamePreds([{"away_team":"New Orleans Pelicans","home_team":"Indiana Pacers","id":"0","ml_conf":"58.7%","ml_pred":"Indiana Pacers","ou_conf":"95.3%","ou_pred":"OVER None"},{"away_team":"Dallas Mavericks","home_team":"Toronto Raptors","id":"1","ml_conf":"55.3%","ml_pred":"Dallas Mavericks","ou_conf":"72.0%","ou_pred":"UNDER 242.5"},{"away_team":"Cleveland Cavaliers","home_team":"Chicago Bulls","id":"2","ml_conf":"52.0%","ml_pred":"Cleveland Cavaliers","ou_conf":"59.9%","ou_pred":"UNDER 219.5"},{"away_team":"Memphis Grizzlies","home_team":"Minnesota Timberwolves","id":"3","ml_conf":"79.9%","ml_pred":"Minnesota Timberwolves","ou_conf":"65.1%","ou_pred":"OVER 215"},{"away_team":"Sacramento Kings","home_team":"Denver Nuggets","id":"4","ml_conf":"62.0%","ml_pred":"Denver Nuggets","ou_conf":"51.8%","ou_pred":"OVER 229.5"},{"away_team":"Los Angeles Lakers","home_team":"LA Clippers","id":"5","ml_conf":"72.2%","ml_pred":"LA Clippers","ou_conf":"65.9%","ou_pred":"UNDER 236.5"}])
+        setGamePreds([{"away_team":"Cleveland Cavaliers","home_team":"Detroit Pistons","id":"0","ml_conf":"77.2%","ml_pred":"Cleveland Cavaliers","ou_conf":"83.6%","ou_pred":"OVER None"},{"away_team":"Charlotte Hornets","home_team":"Philadelphia 76ers","id":"1","ml_conf":"82.1%","ml_pred":"Philadelphia 76ers","ou_conf":"84.9%","ou_pred":"OVER None"},{"away_team":"Golden State Warriors","home_team":"Toronto Raptors","id":"2","ml_conf":"53.3%","ml_pred":"Golden State Warriors","ou_conf":"89.0%","ou_pred":"OVER None"},{"away_team":"Dallas Mavericks","home_team":"Boston Celtics","id":"3","ml_conf":"78.2%","ml_pred":"Boston Celtics","ou_conf":"91.1%","ou_pred":"OVER None"},{"away_team":"Portland Trail Blazers","home_team":"Memphis Grizzlies","id":"4","ml_conf":"55.2%","ml_pred":"Memphis Grizzlies","ou_conf":"95.5%","ou_pred":"OVER None"},{"away_team":"Indiana Pacers","home_team":"New Orleans Pelicans","id":"5","ml_conf":"72.7%","ml_pred":"New Orleans Pelicans","ou_conf":"92.1%","ou_pred":"OVER None"},{"away_team":"Sacramento Kings","home_team":"Minnesota Timberwolves","id":"6","ml_conf":"76.9%","ml_pred":"Minnesota Timberwolves","ou_conf":"94.5%","ou_pred":"OVER None"},{"away_team":"Milwaukee Bucks","home_team":"Chicago Bulls","id":"7","ml_conf":"51.2%","ml_pred":"Chicago Bulls","ou_conf":"90.1%","ou_pred":"OVER None"},{"away_team":"Washington Wizards","home_team":"LA Clippers","id":"8","ml_conf":"88.7%","ml_pred":"LA Clippers","ou_conf":"95.3%","ou_pred":"OVER None"}])
     };
     useEffect(() => {
         // Fetch NBA game schedules when the component mounts
@@ -177,9 +178,9 @@ const HomePage = () => {
     return (
         
         <div style={{display : "flex", flexDirection : "column", alignItems:"center", height: "100vh", overflow: 'hidden'}} >
-            <div style={{display : "flex", flexDirection : "column",alignItems:"center",justifyContent:"center", marginTop: '105px'}}>
-                <h1 style={{fontWeight: 700, fontSize:'80px'}}>Sports Betting AI</h1>
-                <p style={{fontWeight: 500, fontSize:'15px', width: '30vw', textAlign:'center', marginBottom: '30px'}}>Select an upcoming NBA game and click the predict button to generate a prediciton using our latest AI Model!</p>
+            <div className={styles.header_container} style={{display : "flex", flexDirection : "column",alignItems:"center",justifyContent:"center"}}>
+                <p className={styles.header}>Sports Betting AI</p>
+                <p className={styles.description}>Select an upcoming NBA game and click the predict button to generate a prediction using our latest AI Model!</p>
                 {/*<div>
                     <Button
                         variant="contained"
@@ -251,20 +252,7 @@ const HomePage = () => {
                     </Button>
                     </div>*/}
             </div>
-            <div
-                style={{
-                    marginTop: '60px',
-                    width: '80%',
-          
-                    minHeight: '30vw',
-                    backgroundColor: '#fff', // Set the background color
-                    color: '#aaa', // Set the text color to gray
-                    borderRadius: '10px', // Rounded corners
-                    textTransform: 'none', // Avoid uppercase transformation
-                    overflow: 'auto',
-                    
-                }}
-             >
+            <div className={styles.game_display}>
                 {gameSchedules.map((game) => (
                     <GameDisplay 
                         key={game.id} 
