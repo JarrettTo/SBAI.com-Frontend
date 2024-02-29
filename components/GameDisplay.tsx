@@ -128,136 +128,261 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
         const date = new Date(dateString);
         return date.toLocaleDateString('en-US', options);
     }
+
+    const [isMobile, setIsMobile] = useState<boolean>(false);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 1000);
+        }
+    
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+        window.removeEventListener('resize', handleResize);
+    };
+    }, []
+    );
+
    return(
     <div>
-        <div style={{display: 'flex', flexDirection:'row', justifyContent: 'space-between', marginTop: '20px', marginBottom: '20px', marginLeft: '30px', marginRight: '30px', width: '100%'}}>
+        {isMobile ? (
+            <div>
+                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: '2%', marginBottom: '2%', marginLeft: '2%', marginRight: '2%', width: '96%' }}>
         
-            <div style={{marginLeft: '0px', display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', justifyContent: 'space-between'}}>
-                <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', width: '33%'}}>
-                    <div>{getTeamIcon(teamAbbMap[homeTeam])}</div>
-                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'start', marginLeft: '10px'}}>
-                        <p style={{fontSize:'20px', fontWeight:'800', color: "black"}}>{teamAbbMap[homeTeam]}</p>
-
-                        <p style={{fontSize:'14px', fontWeight:'400'}}>{homeTeam}</p>
-
-                        <p style={{fontSize:'14px', fontWeight:'400'}}>(Home)</p>
+                    <div style={{marginLeft: '0px', display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', justifyContent: 'space-between'}}>
+                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '33%'}}>
+                            <div style={{ width: '50%', height: '50%', marginTop: '2%', marginBottom: '2%', marginLeft: '20%', marginRight: '20%' }}>
+                                {getTeamIcon(teamAbbMap[homeTeam])}
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start', marginLeft: '10px' }}>
+                                <p style={{ fontSize: '2vw', fontWeight: '800', color: "black" }}>{teamAbbMap[homeTeam]}</p>
+                                <p style={{ fontSize: '1vw', fontWeight: '400' }}>{homeTeam}</p>
+                                <p style={{ fontSize: '1vw', fontWeight: '400' }}>(Home)</p>
+                            </div>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginLeft: '30px', marginRight: '30px', width: '33%' }}>
+                            <p style={{ fontSize: '2vw', fontWeight: '800', color: "black" }}>VS</p>
+                            <p style={{ fontSize: '1vw', fontWeight: '400'}}>{formatDate(schedule.toString())}</p>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '33%', justifyContent: 'flex-end' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'end', marginRight: '10px' }}>
+                                <p style={{ fontSize: '2vw', fontWeight: '800', color: "black" }}>{teamAbbMap[awayTeam]}</p>
+                                <p style={{ fontSize: '1vw', fontWeight: '400' }}>{awayTeam}</p>
+                                <p style={{ fontSize: '1vw', fontWeight: '400' }}>(Away)</p>
+                            </div>
+                            <div>{getTeamIcon(teamAbbMap[awayTeam])}</div>
+                        </div>
                     </div>
-                    
-                </div>
-                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginLeft:'10px', marginRight:'10px', width: '33%'}}>
-                    <p style={{fontSize:'20px', fontWeight:'800', color: "black"}}>VS</p>
-                    <p style={{fontSize:'14px', fontWeight:'400'}}>{formatDate(schedule.toString())}</p>
-                </div>
-                <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', width: '33%', justifyContent: 'end'}}>
-                    
-                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'end',  marginRight: '10px'}}>
-                        <p style={{fontSize:'20px', fontWeight:'800', color: "black"}}>{teamAbbMap[awayTeam]}</p>
-
-                        <p style={{fontSize:'14px', fontWeight:'400'}}>{awayTeam}</p>
-
-                        <p style={{fontSize:'14px', fontWeight:'400'}}>(Away)</p>
+                    {isInDropdown ? null : (
+                    <div style={{display:'flex', flexDirection:'row', justifyContent: 'end', alignItems: 'center', marginRight: '40px', width: '40%'}}>
+                        <Button
+                            variant="contained"
+                            onClick={handleOddsClick}
+                            style={{
+                                fontSize:'14px',
+                                width: '80px',
+                                backgroundColor: '#EEEEEE', // Set the background color
+                                color: 'black', // Set the text color to gray
+                                borderRadius: '10px', // Rounded corners
+                                textTransform: 'none', // Avoid uppercase transformation
+                                marginRight:'10px'
+                            }}
+                        >
+                            Odds
+                        </Button>
+                        <Button
+                            variant="contained"
+                            onClick={handlePredictClick}
+                            style={{
+                                fontSize:'14px',
+                                width: '80px',
+                                backgroundColor: '#068FFF', // Set the background color
+                                color: '#EEEEEE', // Set the text color to gray
+                                borderRadius: '10px', // Rounded corners
+                                textTransform: 'none', // Avoid uppercase transformation
+                                marginRight:'10px'
+                            }}
+                        >
+                            Predict
+                        </Button>
                     </div>
-                    <div>{getTeamIcon(teamAbbMap[awayTeam])}</div>
-                    
+                    )}
                 </div>
-            </div>
-            {isInDropdown ? null : (
-            <div style={{display:'flex', flexDirection:'row', justifyContent: 'end', alignItems: 'center', marginRight: '40px', width: '40%'}}>
-                <Button
-                    variant="contained"
-                    onClick={handleBoxScoreClick}
-                    style={{
-                        fontSize:'14px',
-                        width: '120px',
-                        backgroundColor: '#EEEEEE', // Set the background color
-                        color: 'black', // Set the text color to gray
-                        borderRadius: '10px', // Rounded corners
-                        textTransform: 'none', // Avoid uppercase transformation
-                        marginRight:'10px'
-                    }}
-                >
-                    Box Score
-                </Button>
-                <Button
-                    variant="contained"
-                    onClick={handleOddsClick}
-                    style={{
-                        fontSize:'14px',
-                        width: '80px',
-                        backgroundColor: '#EEEEEE', // Set the background color
-                        color: 'black', // Set the text color to gray
-                        borderRadius: '10px', // Rounded corners
-                        textTransform: 'none', // Avoid uppercase transformation
-                        marginRight:'10px'
-                    }}
-                >
-                    Odds
-                </Button>
-                <Button
-                    variant="contained"
-                    onClick={handlePredictClick}
-                    style={{
-                        fontSize:'14px',
-                        width: '80px',
-                        backgroundColor: '#068FFF', // Set the background color
-                        color: '#EEEEEE', // Set the text color to gray
-                        borderRadius: '10px', // Rounded corners
-                        textTransform: 'none', // Avoid uppercase transformation
-                        marginRight:'10px'
-                    }}
-                >
-                    Predict
-                </Button>
-            </div>
-            )}
-        </div>
 
-        {showOdds && odds && (
-            <div style={{ display: 'flex', flexDirection: 'column', padding: '10px 20px'}}>
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                    <div style={{ width: '30%', padding:'10px 0px', fontSize: '12px', color: '#555'}}>TOMORROW</div>
-                    <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', color: '#555'}}>SPREAD</div>
-                    <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', color: '#555'}}>TOTAL</div>
-                    <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', color: '#555'}}>MONEYLINE</div>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                    <div style={{ width: '4%'}}>{getMiniTeamIcon(teamAbbMap[homeTeam])}</div>
-                    <div style={{ width: '26%', padding:'10px 0px', color: '#555'}}>{oddsMap['home_team']} (Home)</div>
-                    <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', backgroundColor: '#f5f5f5', color: '#555'}}>{oddsMap['home_spread_point']}&emsp;{oddsMap['home_spread_price']}</div>
-                    <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', backgroundColor: '#f5f5f5', color: '#555'}}>{oddsMap['home_totals_name']} {oddsMap['home_totals_point']}&emsp;{oddsMap['home_totals_price']}</div>
-                    <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', backgroundColor: '#f5f5f5', color: '#555'}}>{oddsMap['home_h2h_price'] ? oddsMap['home_h2h_price'] : '&emsp;'}</div>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                <div style={{ width: '4%'}}>{getMiniTeamIcon(teamAbbMap[awayTeam])}</div>
-                    <div style={{ width: '26%', padding:'10px 0px', color: '#555'}}>{oddsMap['away_team']} (Away)</div>
-                    <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', backgroundColor: '#f5f5f5', color: '#555'}}>{oddsMap['away_spread_point']}&emsp;{oddsMap['away_spread_price']}</div>
-                    <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', backgroundColor: '#f5f5f5', color: '#555'}}>{oddsMap['away_totals_name']} {oddsMap['away_totals_point']}&emsp;{oddsMap['away_totals_price']}</div>
-                    <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', backgroundColor: '#f5f5f5', color: '#555'}}>{oddsMap['away_h2h_price'] ? oddsMap['away_h2h_price'] : '&emsp;'}</div>
-                </div>
-            </div>
-        )}
-        {showPreds && predictions && (
-            <div style={{display: 'flex', flexDirection:'row', marginLeft:'60px', marginTop:'30px'}}>
-                <div style={{display: 'flex', flexDirection:'column', marginRight:'40px'}} >
-                    <p style={{color: '#555',fontSize: '15px'}}>Moneyline Prediction:</p>
-                    <div style={{display:'flex', flexDirection:'row',  alignItems:'center'}}>
-                        <div style={{ width: '4%',marginRight:'40px'}}>{getMiniTeamIcon(teamAbbMap[predictions.ml_pred])}</div>
-                        <p style={{color: 'green',fontSize: '20px', fontWeight:'700',}}>{predictions.ml_pred}</p>
-                        <p style={{fontSize: '14px', fontWeight:'400', marginLeft:'15px'}}>{predictions.ml_conf}</p>
+                {showOdds && odds && (
+                    <div style={{ display: 'flex', flexDirection: 'column', padding: '10px 20px'}}>
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                            <div style={{ width: '30%', padding:'10px 0px', fontSize: '12px', color: '#555'}}>TOMORROW</div>
+                            <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', color: '#555'}}>SPREAD</div>
+                            <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', color: '#555'}}>TOTAL</div>
+                            <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', color: '#555'}}>MONEYLINE</div>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                            <div style={{ width: '4%'}}>{getMiniTeamIcon(teamAbbMap[homeTeam])}</div>
+                            <div style={{ width: '26%', padding:'10px 0px', color: '#555'}}>{oddsMap['home_team']} (Home)</div>
+                            <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', backgroundColor: '#f5f5f5', color: '#555'}}>{oddsMap['home_spread_point']}&emsp;{oddsMap['home_spread_price']}</div>
+                            <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', backgroundColor: '#f5f5f5', color: '#555'}}>{oddsMap['home_totals_name']} {oddsMap['home_totals_point']}&emsp;{oddsMap['home_totals_price']}</div>
+                            <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', backgroundColor: '#f5f5f5', color: '#555'}}>{oddsMap['home_h2h_price'] ? oddsMap['home_h2h_price'] : '&emsp;'}</div>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                        <div style={{ width: '4%'}}>{getMiniTeamIcon(teamAbbMap[awayTeam])}</div>
+                            <div style={{ width: '26%', padding:'10px 0px', color: '#555'}}>{oddsMap['away_team']} (Away)</div>
+                            <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', backgroundColor: '#f5f5f5', color: '#555'}}>{oddsMap['away_spread_point']}&emsp;{oddsMap['away_spread_price']}</div>
+                            <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', backgroundColor: '#f5f5f5', color: '#555'}}>{oddsMap['away_totals_name']} {oddsMap['away_totals_point']}&emsp;{oddsMap['away_totals_price']}</div>
+                            <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', backgroundColor: '#f5f5f5', color: '#555'}}>{oddsMap['away_h2h_price'] ? oddsMap['away_h2h_price'] : '&emsp;'}</div>
+                        </div>
                     </div>
-                </div>
-                <div style={{display: 'flex', flexDirection:'column', marginLeft:'40px'}}>
-                    <p style={{color: '#555',fontSize: '15px', marginBottom:'5px'}}>OU Prediction:</p>
-                    <div style={{display:'flex', flexDirection:'row',  alignItems:'center'}}>
-                        <p style={{color: ouPredColor, fontSize: '20px', fontWeight:'700'}}>{predictions.ou_pred}</p>
-                        <p style={{fontSize: '14px', fontWeight:'400', marginLeft:'15px'}}>{predictions.ou_conf}</p>
+                )}
+                {showPreds && predictions && (
+                    <div style={{display: 'flex', flexDirection:'row', marginLeft:'60px', marginTop:'30px'}}>
+                        <div style={{display: 'flex', flexDirection:'column', marginRight:'40px'}} >
+                            <p style={{color: '#555',fontSize: '15px'}}>Moneyline Prediction:</p>
+                            <div style={{display:'flex', flexDirection:'row',  alignItems:'center'}}>
+                                <div style={{ width: '4%',marginRight:'40px'}}>{getMiniTeamIcon(teamAbbMap[predictions.ml_pred])}</div>
+                                <p style={{color: 'green',fontSize: '20px', fontWeight:'700',}}>{predictions.ml_pred}</p>
+                                <p style={{fontSize: '14px', fontWeight:'400', marginLeft:'15px'}}>{predictions.ml_conf}</p>
+                            </div>
+                        </div>
+                        <div style={{display: 'flex', flexDirection:'column', marginLeft:'40px'}}>
+                            <p style={{color: '#555',fontSize: '15px', marginBottom:'5px'}}>OU Prediction:</p>
+                            <div style={{display:'flex', flexDirection:'row',  alignItems:'center'}}>
+                                <p style={{color: ouPredColor, fontSize: '20px', fontWeight:'700'}}>{predictions.ou_pred}</p>
+                                <p style={{fontSize: '14px', fontWeight:'400', marginLeft:'15px'}}>{predictions.ou_conf}</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
-        )}
+        ) : (
+            <div>
+                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: '2%', marginBottom: '2%', marginLeft: '2%', marginRight: '2%', width: '96%' }}>
+        
+                    <div style={{marginLeft: '0px', display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', justifyContent: 'space-between'}}>
+                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '33%' }}>
+                            <div style={{ width: '50%', height: '50%', marginTop: '2%', marginBottom: '2%', marginLeft: '20%', marginRight: '20%' }}>
+                                {getTeamIcon(teamAbbMap[homeTeam])}
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start', marginLeft: '10px' }}>
+                                <p style={{ fontSize: '2vw', fontWeight: '800', color: "black" }}>{teamAbbMap[homeTeam]}</p>
+                                <p style={{ fontSize: '1vw', fontWeight: '400' }}>{homeTeam}</p>
+                                <p style={{ fontSize: '1vw', fontWeight: '400' }}>(Home)</p>
+                            </div>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginLeft: '30px', marginRight: '30px', width: '33%' }}>
+                            <p style={{ fontSize: '2vw', fontWeight: '800', color: "black" }}>VS</p>
+                            <p style={{ fontSize: '1vw', fontWeight: '400'}}>{formatDate(schedule.toString())}</p>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '33%', justifyContent: 'flex-end' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'end', marginRight: '10px' }}>
+                                <p style={{ fontSize: '2vw', fontWeight: '800', color: "black" }}>{teamAbbMap[awayTeam]}</p>
+                                <p style={{ fontSize: '1vw', fontWeight: '400' }}>{awayTeam}</p>
+                                <p style={{ fontSize: '1vw', fontWeight: '400' }}>(Away)</p>
+                            </div>
+                            <div>{getTeamIcon(teamAbbMap[awayTeam])}</div>
+                        </div>
+                    </div>
+                    {isInDropdown ? null : (
+                    <div style={{display:'flex', flexDirection:'row', justifyContent: 'end', alignItems: 'center', marginRight: '40px', width: '40%'}}>
+                        <Button
+                            variant="contained"
+                            onClick={handleBoxScoreClick}
+                            style={{
+                                fontSize:'14px',
+                                width: '120px',
+                                backgroundColor: '#EEEEEE', // Set the background color
+                                color: 'black', // Set the text color to gray
+                                borderRadius: '10px', // Rounded corners
+                                textTransform: 'none', // Avoid uppercase transformation
+                                marginRight:'10px'
+                            }}
+                        >
+                            Box Score
+                        </Button>
+                        <Button
+                            variant="contained"
+                            onClick={handleOddsClick}
+                            style={{
+                                fontSize:'14px',
+                                width: '80px',
+                                backgroundColor: '#EEEEEE', // Set the background color
+                                color: 'black', // Set the text color to gray
+                                borderRadius: '10px', // Rounded corners
+                                textTransform: 'none', // Avoid uppercase transformation
+                                marginRight:'10px'
+                            }}
+                        >
+                            Odds
+                        </Button>
+                        <Button
+                            variant="contained"
+                            onClick={handlePredictClick}
+                            style={{
+                                fontSize:'14px',
+                                width: '80px',
+                                backgroundColor: '#068FFF', // Set the background color
+                                color: '#EEEEEE', // Set the text color to gray
+                                borderRadius: '10px', // Rounded corners
+                                textTransform: 'none', // Avoid uppercase transformation
+                                marginRight:'10px'
+                            }}
+                        >
+                            Predict
+                        </Button>
+                    </div>
+                    )}
+                </div>
+
+                {showOdds && odds && (
+                    <div style={{ display: 'flex', flexDirection: 'column', padding: '10px 20px'}}>
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                            <div style={{ width: '30%', padding:'10px 0px', fontSize: '12px', color: '#555'}}>TOMORROW</div>
+                            <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', color: '#555'}}>SPREAD</div>
+                            <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', color: '#555'}}>TOTAL</div>
+                            <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', color: '#555'}}>MONEYLINE</div>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                            <div style={{ width: '4%'}}>{getMiniTeamIcon(teamAbbMap[homeTeam])}</div>
+                            <div style={{ width: '26%', padding:'10px 0px', color: '#555'}}>{oddsMap['home_team']} (Home)</div>
+                            <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', backgroundColor: '#f5f5f5', color: '#555'}}>{oddsMap['home_spread_point']}&emsp;{oddsMap['home_spread_price']}</div>
+                            <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', backgroundColor: '#f5f5f5', color: '#555'}}>{oddsMap['home_totals_name']} {oddsMap['home_totals_point']}&emsp;{oddsMap['home_totals_price']}</div>
+                            <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', backgroundColor: '#f5f5f5', color: '#555'}}>{oddsMap['home_h2h_price'] ? oddsMap['home_h2h_price'] : '&emsp;'}</div>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                        <div style={{ width: '4%'}}>{getMiniTeamIcon(teamAbbMap[awayTeam])}</div>
+                            <div style={{ width: '26%', padding:'10px 0px', color: '#555'}}>{oddsMap['away_team']} (Away)</div>
+                            <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', backgroundColor: '#f5f5f5', color: '#555'}}>{oddsMap['away_spread_point']}&emsp;{oddsMap['away_spread_price']}</div>
+                            <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', backgroundColor: '#f5f5f5', color: '#555'}}>{oddsMap['away_totals_name']} {oddsMap['away_totals_point']}&emsp;{oddsMap['away_totals_price']}</div>
+                            <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', backgroundColor: '#f5f5f5', color: '#555'}}>{oddsMap['away_h2h_price'] ? oddsMap['away_h2h_price'] : '&emsp;'}</div>
+                        </div>
+                    </div>
+                )}
+                {showPreds && predictions && (
+                    <div style={{display: 'flex', flexDirection:'row', marginLeft:'60px', marginTop:'30px'}}>
+                        <div style={{display: 'flex', flexDirection:'column', marginRight:'40px'}} >
+                            <p style={{color: '#555',fontSize: '15px'}}>Moneyline Prediction:</p>
+                            <div style={{display:'flex', flexDirection:'row',  alignItems:'center'}}>
+                                <div style={{ width: '4%',marginRight:'40px'}}>{getMiniTeamIcon(teamAbbMap[predictions.ml_pred])}</div>
+                                <p style={{color: 'green',fontSize: '20px', fontWeight:'700',}}>{predictions.ml_pred}</p>
+                                <p style={{fontSize: '14px', fontWeight:'400', marginLeft:'15px'}}>{predictions.ml_conf}</p>
+                            </div>
+                        </div>
+                        <div style={{display: 'flex', flexDirection:'column', marginLeft:'40px'}}>
+                            <p style={{color: '#555',fontSize: '15px', marginBottom:'5px'}}>OU Prediction:</p>
+                            <div style={{display:'flex', flexDirection:'row',  alignItems:'center'}}>
+                                <p style={{color: ouPredColor, fontSize: '20px', fontWeight:'700'}}>{predictions.ou_pred}</p>
+                                <p style={{fontSize: '14px', fontWeight:'400', marginLeft:'15px'}}>{predictions.ou_conf}</p>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+        )
+        }
     </div>
     )
     
     } 
 export default GameDisplay;
-
