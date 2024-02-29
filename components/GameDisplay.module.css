@@ -1,0 +1,93 @@
+@media (min-width: 0px) {
+    .main {
+        background-color: #FFFFFF;
+    }
+    .vs {
+        font-size: 14px;
+        font-weight: 800;
+        color: black;
+    }
+    .info {
+        display: none;
+    }
+    .time {
+        display: none;
+    }
+    .row_container {
+        flex-wrap: wrap;
+    }
+    .game_display {
+        padding-right: 50px;
+        padding-left: 0px;
+    }
+    .button_container {
+        padding-top: 20px;
+        justify-content: space-between;
+        width: 100%;
+    }
+    .team {
+        display: none;
+    }
+}
+
+
+@media (min-width: 768px) {
+    .main {
+        background-color: #FFFFFF;
+    }
+    .vs {
+        font-size: 14px;
+        font-weight: 800;
+        color: black;
+    }
+    .info {
+        display: inline;
+    }
+    .time {
+        display: inline;
+    }
+    .row_container {
+        flex-wrap: wrap;
+    }
+    .game_display {
+        padding-right: 50px;
+    }
+    .button_container {
+        justify-content: end;
+        width: 100%;
+    }
+    .team {
+        display: inline;
+    }
+}
+
+@media (min-width: 1298px) {
+    .main {
+        background-color: #FFFFFF;
+    }
+    .vs {
+        font-size: 20px;
+        font-weight: 800;
+        color: black;
+    }
+    .info {
+        display: inline;
+    }
+    .time {
+        display: inline;
+    }
+    .row_container {
+        flex-wrap: nowrap;
+    }
+    .game_display {
+        padding-right: 50px;
+        padding-top: 10px;
+    }
+    .button_container {
+        width: 40%;
+        justify-content: end;
+    }
+    .team {
+        display: inline;
+    }
+}

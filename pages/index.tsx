@@ -9,6 +9,7 @@ import { Odds } from '../types/Odds';
 import axios from 'axios';
 import dotenv from 'dotenv';
 import { Predictions } from "../types/Predictions";
+import styles from './index.module.css'
 
 dotenv.config();
 
@@ -177,9 +178,9 @@ const HomePage = () => {
     return (
         
         <div style={{display : "flex", flexDirection : "column", alignItems:"center", height: "100vh", overflow: 'hidden'}} >
-            <div style={{display : "flex", flexDirection : "column",alignItems:"center",justifyContent:"center", marginTop: '105px'}}>
-                <h1 style={{fontWeight: 700, fontSize:'80px'}}>Sports Betting AI</h1>
-                <p style={{fontWeight: 500, fontSize:'15px', width: '30vw', textAlign:'center', marginBottom: '30px'}}>Select an upcoming NBA game and click the predict button to generate a prediciton using our latest AI Model!</p>
+            <div className={styles.header_container} style={{display : "flex", flexDirection : "column",alignItems:"center",justifyContent:"center"}}>
+                <p className={styles.header}>Sports Betting AI</p>
+                <p className={styles.description}>Select an upcoming NBA game and click the predict button to generate a prediction using our latest AI Model!</p>
                 {/*<div>
                     <Button
                         variant="contained"
@@ -251,20 +252,7 @@ const HomePage = () => {
                     </Button>
                     </div>*/}
             </div>
-            <div
-                style={{
-                    marginTop: '60px',
-                    width: '80%',
-          
-                    minHeight: '30vw',
-                    backgroundColor: '#fff', // Set the background color
-                    color: '#aaa', // Set the text color to gray
-                    borderRadius: '10px', // Rounded corners
-                    textTransform: 'none', // Avoid uppercase transformation
-                    overflow: 'auto',
-                    
-                }}
-             >
+            <div className={styles.game_display}>
                 {gameSchedules.map((game) => (
                     <GameDisplay 
                         key={game.id} 

@@ -2,6 +2,7 @@ import React, { useEffect, useState} from 'react';
 import { INBAGame} from '../types/Game';
 import * as NBAIcons from 'react-nba-logos';
 import { Button } from '@mui/material';
+import styles from './GameDisplay.module.css'
 
 interface GameDisplayProps extends INBAGame {
     isInDropdown?: boolean;
@@ -129,40 +130,40 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
         return date.toLocaleDateString('en-US', options);
     }
    return(
-    <div>
-        <div style={{display: 'flex', flexDirection:'row', justifyContent: 'space-between', marginTop: '20px', marginBottom: '20px', marginLeft: '30px', marginRight: '30px', width: '100%'}}>
+    <div className={styles.main} style={{marginBottom: '7px', borderRadius: '10px'}}>
+        <div className={styles.row_container} style={{display: 'flex', flexDirection:'row', justifyContent: 'space-between', paddingTop: '10px', paddingBottom: '20px', paddingLeft: '30px', width: '100%'}}>
         
-            <div style={{marginLeft: '0px', display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', justifyContent: 'space-between'}}>
+            <div className={styles.game_display}style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', justifyContent: 'space-between'}}>
                 <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', width: '33%'}}>
                     <div>{getTeamIcon(teamAbbMap[homeTeam])}</div>
                     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'start', marginLeft: '10px'}}>
-                        <p style={{fontSize:'20px', fontWeight:'800', color: "black"}}>{teamAbbMap[homeTeam]}</p>
+                        <p className={styles.team} style={{fontSize:'20px', fontWeight:'800', color: "black"}}>{teamAbbMap[homeTeam]}</p>
 
-                        <p style={{fontSize:'14px', fontWeight:'400'}}>{homeTeam}</p>
+                        <p className={styles.info} style={{fontSize:'14px', fontWeight:'400'}}>{homeTeam}</p>
 
-                        <p style={{fontSize:'14px', fontWeight:'400'}}>(Home)</p>
+                        <p className={styles.info} style={{fontSize:'14px', fontWeight:'400'}}>(Home)</p>
                     </div>
                     
                 </div>
                 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginLeft:'10px', marginRight:'10px', width: '33%'}}>
-                    <p style={{fontSize:'20px', fontWeight:'800', color: "black"}}>VS</p>
-                    <p style={{fontSize:'14px', fontWeight:'400'}}>{formatDate(schedule.toString())}</p>
+                    <p className={styles.vs}>VS</p>
+                    <p className={styles.time} style={{fontSize:'14px', fontWeight:'400', textAlign: 'center'}}>{formatDate(schedule.toString())}</p>
                 </div>
                 <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', width: '33%', justifyContent: 'end'}}>
                     
                     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'end',  marginRight: '10px'}}>
-                        <p style={{fontSize:'20px', fontWeight:'800', color: "black"}}>{teamAbbMap[awayTeam]}</p>
+                        <p className={styles.team} style={{fontSize:'20px', fontWeight:'800', color: "black"}}>{teamAbbMap[awayTeam]}</p>
 
-                        <p style={{fontSize:'14px', fontWeight:'400'}}>{awayTeam}</p>
+                        <p className={styles.info} style={{fontSize:'14px', fontWeight:'400', textAlign: 'right'}}>{awayTeam}</p>
 
-                        <p style={{fontSize:'14px', fontWeight:'400'}}>(Away)</p>
+                        <p className={styles.info} style={{fontSize:'14px', fontWeight:'400'}}>(Away)</p>
                     </div>
                     <div>{getTeamIcon(teamAbbMap[awayTeam])}</div>
                     
                 </div>
             </div>
             {isInDropdown ? null : (
-            <div style={{display:'flex', flexDirection:'row', justifyContent: 'end', alignItems: 'center', marginRight: '40px', width: '40%'}}>
+            <div className={styles.button_container}style={{display:'flex', flexDirection:'row', alignItems: 'center', paddingRight: '50px'}}>
                 <Button
                     variant="contained"
                     onClick={handleBoxScoreClick}
