@@ -20,13 +20,40 @@
         padding-right: 50px;
         padding-left: 0px;
     }
+    .ou_prediction{
+        margin-bottom: 24px;
+    }
+    .prediction_type {
+        font-size: 12px;
+    }
+    .prediction_value{
+        font-size: 14px
+    }
+    .prediction_conf{
+        font-size: 13px
+    }
+    .prediction{
+        align-items: center;
+        justify-content: center;
+        margin-left: 0px;
+    }
     .button_container {
         padding-top: 20px;
         justify-content: space-between;
         width: 100%;
     }
+    .odds {
+        font-size: 10px;
+    }
     .team {
         display: none;
+    }
+    .team_status{
+        margin-left:30px;
+    }
+    .prediction_type_ou{
+        font-size: 12px;
+        margin-bottom: 7px;
     }
 }
 
@@ -40,6 +67,17 @@
         font-weight: 800;
         color: black;
     }
+    .prediction{
+        align-items: flex-start;
+        justify-content: flex-start;
+        margin-left: 40px;
+    }
+    .odds{
+        font-size: 16px;
+    }
+    .team_status{
+        margin-left:20px;
+    }
     .info {
         display: inline;
     }
@@ -51,6 +89,22 @@
     }
     .game_display {
         padding-right: 50px;
+    }
+    .prediction_type {
+        font-size: 13px;
+    }
+    .prediction_type_ou{
+        font-size: 13px;
+        margin-bottom: 7px;
+    }
+    .prediction_value{
+        font-size: 16px
+    }
+    .prediction_conf{
+        font-size: 15px
+    }
+    .prediction_ou{
+        margin-top: 20px;
     }
     .button_container {
         justify-content: end;
@@ -73,8 +127,29 @@
     .info {
         display: inline;
     }
+    .team_status{
+        margin-left:0px;
+    }
     .time {
         display: inline;
+    }
+    .prediction{
+        align-items: flex-start;
+        justify-content: flex-start;
+        margin-left: 60px;
+    }
+    .prediction_type {
+        font-size: 15px;
+    }
+    .prediction_type_ou{
+        font-size: 15px;
+        margin-bottom: 3px;
+    }
+    .prediction_value{
+        font-size: 20px
+    }
+    .prediction_conf{
+        font-size: 14px
     }
     .row_container {
         flex-wrap: nowrap;
@@ -86,6 +161,9 @@
     .button_container {
         width: 40%;
         justify-content: end;
+    }
+    .ou_prediction{
+        margin-bottom: 0px;
     }
     .team {
         display: inline;
