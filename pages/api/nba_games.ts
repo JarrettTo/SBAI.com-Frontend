@@ -10,19 +10,10 @@ const BASE_URL = 'https://api.the-odds-api.com/v4/sports/basketball_nba/odds/?re
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const currentDate = new Date();
-
-    // Add one day to the current date
-    currentDate.setDate(currentDate.getDate() + 1);
-
-    // Convert the date to ISO 8601 format
-    
-    const nextDayISO = currentDate.toISOString().replace(/\.\d{3}Z$/, 'Z');
-    console.log(nextDayISO)
+ 
     const response = await axios.get(`${BASE_URL}`, {
       params: {
         apiKey: process.env.ODDS_API_KEY,
-        commenceTimeFrom: nextDayISO // Include the API key as a query parameter
       },
     });
 

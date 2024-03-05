@@ -30,7 +30,11 @@ const HomePage = () => {
                 api_key: process.env.ODDS_API_KEY, /// Access API key from environment variables
                 },
             });
-            setGameSchedules(currentGameSchedules => [...currentGameSchedules, response.data]);
+            setGameSchedules(currentGameSchedules =>
+                currentGameSchedules.map((item, index) => 
+                  index === 3 ? response.data : item
+                )
+            );
 
             console.log(response.data);
         } catch (error) {
@@ -170,6 +174,7 @@ const HomePage = () => {
     };
     useEffect(() => {
         // Fetch NBA game schedules when the component mount
+        fetchGameSchedules();
         fetchFutureGames();
         console.log("STATE CHECK", gameSchedules)
         fetchGameOdds();
@@ -243,9 +248,9 @@ const HomePage = () => {
                         key={game.id} 
                         id={game.id} 
                         homeTeam={game.homeTeam}
-                        homeTeamLogo={game.homeTeamLogo}
+                      
                         awayTeam={game.awayTeam}
-                        awayTeamLogo={game.awayTeamLogo}
+                     
                         schedule={game.schedule}
                         odds={gameOdds.find((odds) => odds.home_team === game.homeTeam && odds.away_team === game.awayTeam)}
                         predictions={gamePreds.find((preds) => preds.home_team === game.homeTeam)}
