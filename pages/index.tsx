@@ -10,7 +10,8 @@ import axios from 'axios';
 import dotenv from 'dotenv';
 import { Predictions } from "../types/Predictions";
 import styles from './index.module.css'
-
+import { Tabs, Tab, Box } from '@mui/material';
+import TabPanel from "@components/TabsPanel";
 dotenv.config();
 
 
@@ -141,131 +142,84 @@ const HomePage = () => {
         fetchGamePredictions();
     }, []);
     const open = Boolean(anchorEl);
-
-
+    const [value, setValue] = useState(0);
+    const [tabOptions, setTabOptions] = useState(['March 2', 'March 3', 'March 4' ,'Today', 'March 5', 'March 6' , 'March 7'])
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         if (event.currentTarget.classList.contains('select-game-button')) {
             // Handle the "Select an NBA Game" button action
             setAnchorEl(event.currentTarget);
-          } else if (event.currentTarget.classList.contains('predict-button')) {
+            } else if (event.currentTarget.classList.contains('predict-button')) {
             // Handle the "Predict" button action
             // Add your logic for the "Predict" button action here
             console.log('Predict button clicked');
-          }
-      };
+        }
+    };
     
-      const handleClose = () => {
+    const handleClose = () => {
         setAnchorEl(null);
-      };
+    };
 
-      const handleGameSelect = (game: INBAGame) => {
+    const handleGameSelect = (game: INBAGame) => {
         setSelectedGame(game);
         handleClose();
-      };
+    };
 
-      const formatTime = (gameDate: Date) => {
+    const formatTime = (gameDate: Date) => {
         return new Intl.DateTimeFormat('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: '2-digit',
-          hour: 'numeric',
-          minute: '2-digit',
-          hour12: true,
+            year: 'numeric',
+            month: 'long',
+            day: '2-digit',
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true,
         }).format(gameDate);
-      };
-      
-    
+    };
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+    function a11yProps(index) {
+        return {
+          id: `simple-tab-${index}`,
+          'aria-controls': `simple-tabpanel-${index}`,
+        };
+    }
+    const options = ['Tab 1', 'Tab 2', 'Tab 3'];
     return (
         
         <div style={{display : "flex", flexDirection : "column", alignItems:"center", height: "100vh", overflow: 'hidden'}} >
             <div className={styles.header_container} style={{display : "flex", flexDirection : "column",alignItems:"center",justifyContent:"center"}}>
                 <p className={styles.header}>Sports Betting AI</p>
                 <p className={styles.description}>Select an upcoming NBA game and click the predict button to generate a prediction using our latest AI Model!</p>
-                {/*<div>
-                    <Button
-                        variant="contained"
-                        className="select-game-button"
-                        endIcon={<ArrowDropDownIcon />}
-                        onClick={handleClick}
-                        style={{
-                            fontSize:'20px',
-                            width: '50vw',
-                            backgroundColor: '#fff', // Set the background color
-                            color: '#aaa', // Set the text color to gray
-                            borderRadius: '10px', // Rounded corners
-                            textTransform: 'none', // Avoid uppercase transformation
-                            marginRight:'30px',
-                            whiteSpace: 'pre-line',
-                        }}
-                    >
-                        {selectedGame
-                            ? `${selectedGame.homeTeam} vs ${selectedGame.awayTeam} \n${formatTime(selectedGame.schedule)}`
-                            : 'Select an NBA Game'}
-                    </Button>
-                
-                    <Menu
-                        id="simple-menu"
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        MenuListProps={{
-                            'aria-labelledby': 'basic-button',
-                        }}
-                        PaperProps={{
-                            style: {
-                                borderRadius: '10px', // Rounded corners
-                                width: '50vw',
-                                
-                            },
-                        }}
-                    >
-                        {gameSchedules.map((game) => (
-                            <MenuItem key={game.id} onClick={() => handleGameSelect(game)} style={{justifyContent:'center'}}>
-                                <GameDisplay
-                                    id={game.id}
-                                    homeTeam={game.homeTeam}
-                                    homeTeamLogo={game.homeTeamLogo}
-                                    awayTeam={game.awayTeam}
-                                    awayTeamLogo={game.awayTeamLogo}
-                                    schedule={game.schedule}
-                                    isInDropdown={true}
-                                    odds={gameOdds.find((odds) => odds.home_team === game.homeTeam)}
-                                    predictions={gamePreds.find((odds) => odds.home_team === game.homeTeam)}
-                                />
-                            </MenuItem>
-                        ))}
-                    </Menu>
-                    <Button
-                        variant="contained"
-                        className="predict-button"
-                        onClick={handleClick}
-                        style={{
-                            fontSize:'20px',
-                            width: '10vw',
-                            backgroundColor: '#068FFF', // Set the background color
-                            color: '#EEEEEE', // Set the text color to gray
-                            borderRadius: '10px', // Rounded corners
-                            textTransform: 'none', // Avoid uppercase transformation
-                        }}
-                    >
-                        Predict
-                    </Button>
-                    </div>*/}
             </div>
+            <div style={{display : "flex", flexDirection : "column", width:'78%', alignItems:"start", marginBottom:'15px'}}>
+                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                        {tabOptions.map((option, index) => (
+                        <Tab label={option} {...a11yProps(index)} key={index} />
+                        ))}
+                    </Tabs>
+                </Box>
+            </div>
+            
             <div className={styles.game_display}>
-                {gameSchedules.map((game) => (
-                    <GameDisplay 
-                        key={game.id} 
-                        id={game.id} 
-                        homeTeam={game.homeTeam}
-                        homeTeamLogo={game.homeTeamLogo}
-                        awayTeam={game.awayTeam}
-                        awayTeamLogo={game.awayTeamLogo}
-                        schedule={game.schedule}
-                        odds={gameOdds.find((odds) => odds.home_team === game.homeTeam && odds.away_team === game.awayTeam)}
-                        predictions={gamePreds.find((preds) => preds.home_team === game.homeTeam)}
-                    />
+                {tabOptions.map((option, index) => (
+                    <TabPanel value={value} index={index} key={index}>
+                        {gameSchedules.map((game) => (
+                            <GameDisplay 
+                                key={game.id} 
+                                id={game.id} 
+                                homeTeam={game.homeTeam}
+                                homeTeamLogo={game.homeTeamLogo}
+                                awayTeam={game.awayTeam}
+                                awayTeamLogo={game.awayTeamLogo}
+                                schedule={game.schedule}
+                                odds={gameOdds.find((odds) => odds.home_team === game.homeTeam && odds.away_team === game.awayTeam)}
+                                predictions={gamePreds.find((preds) => preds.home_team === game.homeTeam)}
+                            />
+                        ))}
+                    </TabPanel>
                 ))}
+                
             </div>
         </div>
     )
