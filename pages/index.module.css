@@ -4,6 +4,7 @@
         margin-bottom: 10px;
     }
     .header {
+        margin-top: 30px;
         font-weight: 700; 
         font-size: 30px; 
     }
@@ -23,6 +24,9 @@
         text-transform: none;
         overflow: auto;
         border-radius: 10px;
+    }
+    .tabs {
+        align-items: "center";
     }
 }
 
@@ -53,6 +57,9 @@
         overflow: auto;
         border-radius: 10px;
     }
+    .tabs {
+        align-items: "center";
+    }
 }
 
 @media (max-height: 767px) and (orientation: landscape) {
@@ -81,6 +88,9 @@
         overflow: auto;
         border-radius: 10px;
     }
+    .tabs {
+        align-items: "start";
+    }
 }
 
 @media (min-width: 1298px) {
@@ -108,5 +118,8 @@
         text-transform: none;
         overflow: auto;
         border-radius: 10px;
+    }
+    .tabs {
+        align-items: "start";
     }
 }

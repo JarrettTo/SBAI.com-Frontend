@@ -20,7 +20,7 @@ const HomePage = () => {
     const [selectedGame, setSelectedGame] = useState<INBAGame | null>(null);
     const [gameSchedules, setGameSchedules] = useState<INBAGame[][]>([[],[],[],[],[],[],[]]);
     const [gameOdds, setGameOdds] = useState<Odds[]>([]);
- 
+    const [tabOptions, setTabOptions] = useState([])
     
     const [gamePreds, setGamePreds] = useState<Predictions[]>([]);
     const fetchGameSchedules = async () => {
@@ -179,10 +179,29 @@ const HomePage = () => {
         console.log("STATE CHECK", gameSchedules)
         fetchGameOdds();
         fetchGamePredictions();
+        const dates = [];
+        const today = new Date();
+
+        // Generate dates from two days ago through the next four days
+        for (let i = -2; i <= 4; i++) {
+        const date = new Date(today);
+        date.setDate(today.getDate() + i);
+
+        // Use "Today" for the current date, otherwise format as "March 3", etc.
+        if (i === 0) {
+            dates.push("Today");
+        } else {
+            const month = date.toLocaleString('default', { month: 'long' });
+            const day = date.getDate();
+            dates.push(`${month} ${day}`);
+        }
+        }
+
+        setTabOptions(dates);
     }, []);
     const open = Boolean(anchorEl);
     const [value, setValue] = useState(0);
-    const [tabOptions, setTabOptions] = useState(['March 3', 'March 4' ,'March 5', 'Today', 'March 7', 'March 8', 'March 9' ])
+    
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         if (event.currentTarget.classList.contains('select-game-button')) {
             // Handle the "Select an NBA Game" button action
@@ -228,11 +247,10 @@ const HomePage = () => {
         <div style={{display : "flex", flexDirection : "column", alignItems:"center", height: "100vh", overflow: 'hidden'}} >
             <div className={styles.header_container} style={{display : "flex", flexDirection : "column",alignItems:"center",justifyContent:"center"}}>
                 <p className={styles.header}>Sports Betting AI</p>
-                <p className={styles.description}>Select an upcoming NBA game and click the predict button to generate a prediction using our latest AI Model!</p>
             </div>
-            <div style={{display : "flex", flexDirection : "column", width:'80%', alignItems:"start", marginBottom:'15px'}}>
+            <div className={styles.tabs} style={{display : "flex", flexDirection : "column", width:'80%', marginBottom:'15px'}}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                    <Tabs value={value} onChange={handleChange} variant="scrollable" aria-label="basic tabs example">
                         {tabOptions.map((option, index) => (
                         <Tab label={option} {...a11yProps(index)} key={index} />
                         ))}
