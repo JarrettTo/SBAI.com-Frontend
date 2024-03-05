@@ -18,8 +18,10 @@ dotenv.config();
 const HomePage = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [selectedGame, setSelectedGame] = useState<INBAGame | null>(null);
-    const [gameSchedules, setGameSchedules] = useState<INBAGame[]>([]);
+    const [gameSchedules, setGameSchedules] = useState<INBAGame[][]>([[],[],[],[],[],[],[]]);
     const [gameOdds, setGameOdds] = useState<Odds[]>([]);
+ 
+    
     const [gamePreds, setGamePreds] = useState<Predictions[]>([]);
     const fetchGameSchedules = async () => {
         try {
@@ -28,13 +30,44 @@ const HomePage = () => {
                 api_key: process.env.ODDS_API_KEY, /// Access API key from environment variables
                 },
             });
-            setGameSchedules(response.data);
+            setGameSchedules(currentGameSchedules => [...currentGameSchedules, response.data]);
+
             console.log(response.data);
         } catch (error) {
             console.error('Error fetching game schedules:', error);
         }
     };
-        
+    const fetchPastGames = async () => {
+        try {
+            const response = await axios.get('/api/past_games');
+
+            console.log("PAST:", response.data);
+        } catch (error) {
+            console.error('Error fetching game schedules:', error);
+            
+        }
+    }; 
+    const fetchFutureGames = async () => {
+        try {
+            const response = await axios.get('/api/future_games');
+
+            console.log("PRESENT:",response.data);
+            setGameSchedules(currentGameSchedules => {
+                let updatedSchedules = [...currentGameSchedules];
+                response.data.forEach((dataArr, index) => {
+                  // Calculate the target index (starting from 4 in this case)
+                  const targetIndex = 4 + index;
+                  updatedSchedules[targetIndex] = dataArr;
+                });
+              
+                // Return the updated schedules array
+                return updatedSchedules;
+              });
+
+        } catch (error) {
+            console.error('Error fetching game schedules:', error);
+        }
+    };    
     const fetchGameOdds = async () => {
         try {
             const response = await axios.get('/api/odds',{
@@ -136,14 +169,15 @@ const HomePage = () => {
         setGamePreds([{"away_team":"Orlando Magic","home_team":"Charlotte Hornets","id":"0","ml_conf":"74.6%","ml_pred":"Orlando Magic","ou_conf":"53.4%","ou_pred":"OVER 207.5"},{"away_team":"Atlanta Hawks","home_team":"New York Knicks","id":"1","ml_conf":"66.5%","ml_pred":"New York Knicks","ou_conf":"65.5%","ou_pred":"OVER 216.5"},{"away_team":"Boston Celtics","home_team":"Cleveland Cavaliers","id":"2","ml_conf":"53.7%","ml_pred":"Cleveland Cavaliers","ou_conf":"55.8%","ou_pred":"UNDER 219"},{"away_team":"Philadelphia 76ers","home_team":"Brooklyn Nets","id":"3","ml_conf":"58.9%","ml_pred":"Philadelphia 76ers","ou_conf":"65.6%","ou_pred":"OVER 217.5"},{"away_team":"Detroit Pistons","home_team":"Miami Heat","id":"4","ml_conf":"79.4%","ml_pred":"Miami Heat","ou_conf":"54.0%","ou_pred":"UNDER 218"},{"away_team":"New Orleans Pelicans","home_team":"Toronto Raptors","id":"5","ml_conf":"69.0%","ml_pred":"New Orleans Pelicans","ou_conf":"50.7%","ou_pred":"UNDER 228.5"},{"away_team":"San Antonio Spurs","home_team":"Houston Rockets","id":"6","ml_conf":"74.2%","ml_pred":"Houston Rockets","ou_conf":"50.0%","ou_pred":"OVER 229"},{"away_team":"Indiana Pacers","home_team":"Dallas Mavericks","id":"7","ml_conf":"55.0%","ml_pred":"Dallas Mavericks","ou_conf":"54.3%","ou_pred":"UNDER 246"},{"away_team":"Phoenix Suns","home_team":"Denver Nuggets","id":"8","ml_conf":"59.4%","ml_pred":"Denver Nuggets","ou_conf":"60.2%","ou_pred":"UNDER 224"}])
     };
     useEffect(() => {
-        // Fetch NBA game schedules when the component mounts
-        fetchGameSchedules();
+        // Fetch NBA game schedules when the component mount
+        fetchFutureGames();
+        console.log("STATE CHECK", gameSchedules)
         fetchGameOdds();
         fetchGamePredictions();
     }, []);
     const open = Boolean(anchorEl);
     const [value, setValue] = useState(0);
-    const [tabOptions, setTabOptions] = useState(['March 2', 'March 3', 'March 4' ,'Today', 'March 5', 'March 6' , 'March 7'])
+    const [tabOptions, setTabOptions] = useState(['March 3', 'March 4' ,'March 5', 'Today', 'March 7', 'March 8', 'March 9' ])
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         if (event.currentTarget.classList.contains('select-game-button')) {
             // Handle the "Select an NBA Game" button action
@@ -191,7 +225,7 @@ const HomePage = () => {
                 <p className={styles.header}>Sports Betting AI</p>
                 <p className={styles.description}>Select an upcoming NBA game and click the predict button to generate a prediction using our latest AI Model!</p>
             </div>
-            <div style={{display : "flex", flexDirection : "column", width:'78%', alignItems:"start", marginBottom:'15px'}}>
+            <div style={{display : "flex", flexDirection : "column", width:'80%', alignItems:"start", marginBottom:'15px'}}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                         {tabOptions.map((option, index) => (
@@ -202,23 +236,23 @@ const HomePage = () => {
             </div>
             
             <div className={styles.game_display}>
-                {tabOptions.map((option, index) => (
-                    <TabPanel value={value} index={index} key={index}>
-                        {gameSchedules.map((game) => (
-                            <GameDisplay 
-                                key={game.id} 
-                                id={game.id} 
-                                homeTeam={game.homeTeam}
-                                homeTeamLogo={game.homeTeamLogo}
-                                awayTeam={game.awayTeam}
-                                awayTeamLogo={game.awayTeamLogo}
-                                schedule={game.schedule}
-                                odds={gameOdds.find((odds) => odds.home_team === game.homeTeam && odds.away_team === game.awayTeam)}
-                                predictions={gamePreds.find((preds) => preds.home_team === game.homeTeam)}
-                            />
-                        ))}
-                    </TabPanel>
+                
+                    
+                {gameSchedules[value]?.map((game) => (
+                    <GameDisplay 
+                        key={game.id} 
+                        id={game.id} 
+                        homeTeam={game.homeTeam}
+                        homeTeamLogo={game.homeTeamLogo}
+                        awayTeam={game.awayTeam}
+                        awayTeamLogo={game.awayTeamLogo}
+                        schedule={game.schedule}
+                        odds={gameOdds.find((odds) => odds.home_team === game.homeTeam && odds.away_team === game.awayTeam)}
+                        predictions={gamePreds.find((preds) => preds.home_team === game.homeTeam)}
+                    />
                 ))}
+                    
+                
                 
             </div>
         </div>

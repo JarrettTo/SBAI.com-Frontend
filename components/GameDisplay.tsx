@@ -9,7 +9,7 @@ interface GameDisplayProps extends INBAGame {
     }
 
 const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
-   const {id, homeTeam, homeTeamLogo, awayTeam, awayTeamLogo, schedule,  isInDropdown = false, odds, predictions} = props;
+   const {id, homeTeam, awayTeam, schedule,  isInDropdown = false, odds, predictions} = props;
    const [showOdds, setShowOdds] = useState<boolean>(false);
    const [showPreds, setShowPreds] = useState<boolean>(false);
    const teamIconMap = {
