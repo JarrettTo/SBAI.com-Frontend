@@ -4,7 +4,7 @@ import { INBAGame } from '../../types/Game';
 import dotenv from 'dotenv';
 
 dotenv.config();
-
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 // Base URL for the Sportsradar API
 const BASE_URL = 'https://api.sportradar.com';
 
@@ -34,6 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         schedule: game.scheduled, // Scheduled time of the game
       }));
       retval.push(games)
+      await delay(1000);
     }
     
     
