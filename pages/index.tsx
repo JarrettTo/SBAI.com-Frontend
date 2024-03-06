@@ -20,7 +20,7 @@ const HomePage = () => {
     const [selectedGame, setSelectedGame] = useState<INBAGame | null>(null);
     const [gameSchedules, setGameSchedules] = useState<INBAGame[][]>([[],[],[],[],[],[],[]]);
     const [gameOdds, setGameOdds] = useState<Odds[]>([]);
- 
+    const [tabOptions, setTabOptions] = useState([])
     
     const [gamePreds, setGamePreds] = useState<Predictions[]>([]);
     const fetchGameSchedules = async () => {
@@ -170,7 +170,7 @@ const HomePage = () => {
             "ou_conf": "51.7%",
             "ou_pred": "UNDER 239"
         }
-        setGamePreds([{"away_team":"Orlando Magic","home_team":"Charlotte Hornets","id":"0","ml_conf":"74.6%","ml_pred":"Orlando Magic","ou_conf":"53.4%","ou_pred":"OVER 207.5"},{"away_team":"Atlanta Hawks","home_team":"New York Knicks","id":"1","ml_conf":"66.5%","ml_pred":"New York Knicks","ou_conf":"65.5%","ou_pred":"OVER 216.5"},{"away_team":"Boston Celtics","home_team":"Cleveland Cavaliers","id":"2","ml_conf":"53.7%","ml_pred":"Cleveland Cavaliers","ou_conf":"55.8%","ou_pred":"UNDER 219"},{"away_team":"Philadelphia 76ers","home_team":"Brooklyn Nets","id":"3","ml_conf":"58.9%","ml_pred":"Philadelphia 76ers","ou_conf":"65.6%","ou_pred":"OVER 217.5"},{"away_team":"Detroit Pistons","home_team":"Miami Heat","id":"4","ml_conf":"79.4%","ml_pred":"Miami Heat","ou_conf":"54.0%","ou_pred":"UNDER 218"},{"away_team":"New Orleans Pelicans","home_team":"Toronto Raptors","id":"5","ml_conf":"69.0%","ml_pred":"New Orleans Pelicans","ou_conf":"50.7%","ou_pred":"UNDER 228.5"},{"away_team":"San Antonio Spurs","home_team":"Houston Rockets","id":"6","ml_conf":"74.2%","ml_pred":"Houston Rockets","ou_conf":"50.0%","ou_pred":"OVER 229"},{"away_team":"Indiana Pacers","home_team":"Dallas Mavericks","id":"7","ml_conf":"55.0%","ml_pred":"Dallas Mavericks","ou_conf":"54.3%","ou_pred":"UNDER 246"},{"away_team":"Phoenix Suns","home_team":"Denver Nuggets","id":"8","ml_conf":"59.4%","ml_pred":"Denver Nuggets","ou_conf":"60.2%","ou_pred":"UNDER 224"}])
+        setGamePreds([{"away_team":"Orlando Magic","home_team":"Washington Wizards","id":"0","ml_conf":"71.9%","ml_pred":"Orlando Magic","ou_conf":"50.9%","ou_pred":"UNDER 223.5"},{"away_team":"Memphis Grizzlies","home_team":"Philadelphia 76ers","id":"1","ml_conf":"69.7%","ml_pred":"Philadelphia 76ers","ou_conf":"53.5%","ou_pred":"OVER 209.5"},{"away_team":"LA Clippers","home_team":"Houston Rockets","id":"2","ml_conf":"67.3%","ml_pred":"LA Clippers","ou_conf":"55.8%","ou_pred":"OVER 224.5"},{"away_team":"Cleveland Cavaliers","home_team":"Atlanta Hawks","id":"3","ml_conf":"59.8%","ml_pred":"Cleveland Cavaliers","ou_conf":"61.7%","ou_pred":"OVER 215"},{"away_team":"Chicago Bulls","home_team":"Utah Jazz","id":"4","ml_conf":"50.1%","ml_pred":"Utah Jazz","ou_conf":"60.2%","ou_pred":"OVER 223"},{"away_team":"Milwaukee Bucks","home_team":"Golden State Warriors","id":"5","ml_conf":"50.1%","ml_pred":"Milwaukee Bucks","ou_conf":"57.3%","ou_pred":"UNDER 226.5"},{"away_team":"Oklahoma City Thunder","home_team":"Portland Trail Blazers","id":"6","ml_conf":"65.9%","ml_pred":"Oklahoma City Thunder","ou_conf":"55.3%","ou_pred":"UNDER 224"},{"away_team":"Sacramento Kings","home_team":"Los Angeles Lakers","id":"7","ml_conf":"54.9%","ml_pred":"Los Angeles Lakers","ou_conf":"67.0%","ou_pred":"UNDER 237.5"}])
     };
     useEffect(() => {
         // Fetch NBA game schedules when the component mount
@@ -179,10 +179,29 @@ const HomePage = () => {
         console.log("STATE CHECK", gameSchedules)
         fetchGameOdds();
         fetchGamePredictions();
+        const dates = [];
+        const today = new Date();
+
+        // Generate dates from two days ago through the next four days
+        for (let i = -2; i <= 4; i++) {
+        const date = new Date(today);
+        date.setDate(today.getDate() + i);
+
+        // Use "Today" for the current date, otherwise format as "March 3", etc.
+        if (i === 0) {
+            dates.push("Today");
+        } else {
+            const month = date.toLocaleString('default', { month: 'long' });
+            const day = date.getDate();
+            dates.push(`${month} ${day}`);
+        }
+        }
+
+        setTabOptions(dates);
     }, []);
     const open = Boolean(anchorEl);
     const [value, setValue] = useState(0);
-    const [tabOptions, setTabOptions] = useState(['March 3', 'March 4' ,'March 5', 'Today', 'March 7', 'March 8', 'March 9' ])
+    
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         if (event.currentTarget.classList.contains('select-game-button')) {
             // Handle the "Select an NBA Game" button action
@@ -228,11 +247,10 @@ const HomePage = () => {
         <div style={{display : "flex", flexDirection : "column", alignItems:"center", height: "100vh", overflow: 'hidden'}} >
             <div className={styles.header_container} style={{display : "flex", flexDirection : "column",alignItems:"center",justifyContent:"center"}}>
                 <p className={styles.header}>Sports Betting AI</p>
-                <p className={styles.description}>Select an upcoming NBA game and click the predict button to generate a prediction using our latest AI Model!</p>
             </div>
-            <div style={{display : "flex", flexDirection : "column", width:'80%', alignItems:"start", marginBottom:'15px'}}>
+            <div className={styles.tabs} style={{display : "flex", flexDirection : "column", width:'80%', marginBottom:'15px'}}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                    <Tabs value={value} onChange={handleChange} variant="scrollable" aria-label="basic tabs example">
                         {tabOptions.map((option, index) => (
                         <Tab label={option} {...a11yProps(index)} key={index} />
                         ))}
