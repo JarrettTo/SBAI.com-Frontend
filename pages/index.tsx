@@ -10,15 +10,18 @@ import axios from 'axios';
 import dotenv from 'dotenv';
 import { Predictions } from "../types/Predictions";
 import styles from './index.module.css'
-
+import { Tabs, Tab, Box } from '@mui/material';
+import TabPanel from "@components/TabsPanel";
 dotenv.config();
 
 
 const HomePage = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [selectedGame, setSelectedGame] = useState<INBAGame | null>(null);
-    const [gameSchedules, setGameSchedules] = useState<INBAGame[]>([]);
+    const [gameSchedules, setGameSchedules] = useState<INBAGame[][]>([[],[],[],[],[],[],[]]);
     const [gameOdds, setGameOdds] = useState<Odds[]>([]);
+ 
+    
     const [gamePreds, setGamePreds] = useState<Predictions[]>([]);
     const fetchGameSchedules = async () => {
         try {
@@ -27,13 +30,48 @@ const HomePage = () => {
                 api_key: process.env.ODDS_API_KEY, /// Access API key from environment variables
                 },
             });
-            setGameSchedules(response.data);
+            setGameSchedules(currentGameSchedules =>
+                currentGameSchedules.map((item, index) => 
+                  index === 3 ? response.data : item
+                )
+            );
+
             console.log(response.data);
         } catch (error) {
             console.error('Error fetching game schedules:', error);
         }
     };
-        
+    const fetchPastGames = async () => {
+        try {
+            const response = await axios.get('/api/past_games');
+
+            console.log("PAST:", response.data);
+        } catch (error) {
+            console.error('Error fetching game schedules:', error);
+            
+        }
+    }; 
+    const fetchFutureGames = async () => {
+        try {
+            const response = await axios.get('/api/future_games');
+
+            console.log("PRESENT:",response.data);
+            setGameSchedules(currentGameSchedules => {
+                let updatedSchedules = [...currentGameSchedules];
+                response.data.forEach((dataArr, index) => {
+                  // Calculate the target index (starting from 4 in this case)
+                  const targetIndex = 4 + index;
+                  updatedSchedules[targetIndex] = dataArr;
+                });
+              
+                // Return the updated schedules array
+                return updatedSchedules;
+              });
+
+        } catch (error) {
+            console.error('Error fetching game schedules:', error);
+        }
+    };    
     const fetchGameOdds = async () => {
         try {
             const response = await axios.get('/api/odds',{
@@ -135,137 +173,92 @@ const HomePage = () => {
         setGamePreds([{"away_team":"Orlando Magic","home_team":"Charlotte Hornets","id":"0","ml_conf":"74.6%","ml_pred":"Orlando Magic","ou_conf":"53.4%","ou_pred":"OVER 207.5"},{"away_team":"Atlanta Hawks","home_team":"New York Knicks","id":"1","ml_conf":"66.5%","ml_pred":"New York Knicks","ou_conf":"65.5%","ou_pred":"OVER 216.5"},{"away_team":"Boston Celtics","home_team":"Cleveland Cavaliers","id":"2","ml_conf":"53.7%","ml_pred":"Cleveland Cavaliers","ou_conf":"55.8%","ou_pred":"UNDER 219"},{"away_team":"Philadelphia 76ers","home_team":"Brooklyn Nets","id":"3","ml_conf":"58.9%","ml_pred":"Philadelphia 76ers","ou_conf":"65.6%","ou_pred":"OVER 217.5"},{"away_team":"Detroit Pistons","home_team":"Miami Heat","id":"4","ml_conf":"79.4%","ml_pred":"Miami Heat","ou_conf":"54.0%","ou_pred":"UNDER 218"},{"away_team":"New Orleans Pelicans","home_team":"Toronto Raptors","id":"5","ml_conf":"69.0%","ml_pred":"New Orleans Pelicans","ou_conf":"50.7%","ou_pred":"UNDER 228.5"},{"away_team":"San Antonio Spurs","home_team":"Houston Rockets","id":"6","ml_conf":"74.2%","ml_pred":"Houston Rockets","ou_conf":"50.0%","ou_pred":"OVER 229"},{"away_team":"Indiana Pacers","home_team":"Dallas Mavericks","id":"7","ml_conf":"55.0%","ml_pred":"Dallas Mavericks","ou_conf":"54.3%","ou_pred":"UNDER 246"},{"away_team":"Phoenix Suns","home_team":"Denver Nuggets","id":"8","ml_conf":"59.4%","ml_pred":"Denver Nuggets","ou_conf":"60.2%","ou_pred":"UNDER 224"}])
     };
     useEffect(() => {
-        // Fetch NBA game schedules when the component mounts
+        // Fetch NBA game schedules when the component mount
         fetchGameSchedules();
+        fetchFutureGames();
+        console.log("STATE CHECK", gameSchedules)
         fetchGameOdds();
         fetchGamePredictions();
     }, []);
     const open = Boolean(anchorEl);
-
-
+    const [value, setValue] = useState(0);
+    const [tabOptions, setTabOptions] = useState(['March 3', 'March 4' ,'March 5', 'Today', 'March 7', 'March 8', 'March 9' ])
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         if (event.currentTarget.classList.contains('select-game-button')) {
             // Handle the "Select an NBA Game" button action
             setAnchorEl(event.currentTarget);
-          } else if (event.currentTarget.classList.contains('predict-button')) {
+            } else if (event.currentTarget.classList.contains('predict-button')) {
             // Handle the "Predict" button action
             // Add your logic for the "Predict" button action here
             console.log('Predict button clicked');
-          }
-      };
+        }
+    };
     
-      const handleClose = () => {
+    const handleClose = () => {
         setAnchorEl(null);
-      };
+    };
 
-      const handleGameSelect = (game: INBAGame) => {
+    const handleGameSelect = (game: INBAGame) => {
         setSelectedGame(game);
         handleClose();
-      };
+    };
 
-      const formatTime = (gameDate: Date) => {
+    const formatTime = (gameDate: Date) => {
         return new Intl.DateTimeFormat('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: '2-digit',
-          hour: 'numeric',
-          minute: '2-digit',
-          hour12: true,
+            year: 'numeric',
+            month: 'long',
+            day: '2-digit',
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true,
         }).format(gameDate);
-      };
-      
-    
+    };
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+    function a11yProps(index) {
+        return {
+          id: `simple-tab-${index}`,
+          'aria-controls': `simple-tabpanel-${index}`,
+        };
+    }
+    const options = ['Tab 1', 'Tab 2', 'Tab 3'];
     return (
         
         <div style={{display : "flex", flexDirection : "column", alignItems:"center", height: "100vh", overflow: 'hidden'}} >
             <div className={styles.header_container} style={{display : "flex", flexDirection : "column",alignItems:"center",justifyContent:"center"}}>
                 <p className={styles.header}>Sports Betting AI</p>
                 <p className={styles.description}>Select an upcoming NBA game and click the predict button to generate a prediction using our latest AI Model!</p>
-                {/*<div>
-                    <Button
-                        variant="contained"
-                        className="select-game-button"
-                        endIcon={<ArrowDropDownIcon />}
-                        onClick={handleClick}
-                        style={{
-                            fontSize:'20px',
-                            width: '50vw',
-                            backgroundColor: '#fff', // Set the background color
-                            color: '#aaa', // Set the text color to gray
-                            borderRadius: '10px', // Rounded corners
-                            textTransform: 'none', // Avoid uppercase transformation
-                            marginRight:'30px',
-                            whiteSpace: 'pre-line',
-                        }}
-                    >
-                        {selectedGame
-                            ? `${selectedGame.homeTeam} vs ${selectedGame.awayTeam} \n${formatTime(selectedGame.schedule)}`
-                            : 'Select an NBA Game'}
-                    </Button>
-                
-                    <Menu
-                        id="simple-menu"
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        MenuListProps={{
-                            'aria-labelledby': 'basic-button',
-                        }}
-                        PaperProps={{
-                            style: {
-                                borderRadius: '10px', // Rounded corners
-                                width: '50vw',
-                                
-                            },
-                        }}
-                    >
-                        {gameSchedules.map((game) => (
-                            <MenuItem key={game.id} onClick={() => handleGameSelect(game)} style={{justifyContent:'center'}}>
-                                <GameDisplay
-                                    id={game.id}
-                                    homeTeam={game.homeTeam}
-                                    homeTeamLogo={game.homeTeamLogo}
-                                    awayTeam={game.awayTeam}
-                                    awayTeamLogo={game.awayTeamLogo}
-                                    schedule={game.schedule}
-                                    isInDropdown={true}
-                                    odds={gameOdds.find((odds) => odds.home_team === game.homeTeam)}
-                                    predictions={gamePreds.find((odds) => odds.home_team === game.homeTeam)}
-                                />
-                            </MenuItem>
-                        ))}
-                    </Menu>
-                    <Button
-                        variant="contained"
-                        className="predict-button"
-                        onClick={handleClick}
-                        style={{
-                            fontSize:'20px',
-                            width: '10vw',
-                            backgroundColor: '#068FFF', // Set the background color
-                            color: '#EEEEEE', // Set the text color to gray
-                            borderRadius: '10px', // Rounded corners
-                            textTransform: 'none', // Avoid uppercase transformation
-                        }}
-                    >
-                        Predict
-                    </Button>
-                    </div>*/}
             </div>
+            <div style={{display : "flex", flexDirection : "column", width:'80%', alignItems:"start", marginBottom:'15px'}}>
+                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                        {tabOptions.map((option, index) => (
+                        <Tab label={option} {...a11yProps(index)} key={index} />
+                        ))}
+                    </Tabs>
+                </Box>
+            </div>
+            
             <div className={styles.game_display}>
-                {gameSchedules.map((game) => (
+                
+                    
+                {gameSchedules[value]?.map((game) => (
                     <GameDisplay 
                         key={game.id} 
                         id={game.id} 
                         homeTeam={game.homeTeam}
-                        homeTeamLogo={game.homeTeamLogo}
+                      
                         awayTeam={game.awayTeam}
-                        awayTeamLogo={game.awayTeamLogo}
+                     
                         schedule={game.schedule}
                         odds={gameOdds.find((odds) => odds.home_team === game.homeTeam && odds.away_team === game.awayTeam)}
                         predictions={gamePreds.find((preds) => preds.home_team === game.homeTeam)}
                     />
                 ))}
+                    
+                
+                
             </div>
         </div>
     )
