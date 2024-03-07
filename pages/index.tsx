@@ -184,7 +184,7 @@ const HomePage = () => {
         const today = new Date();
     
         // Generate dates from two days ago through the next four days, adjusted for Alabama time
-        for (let i = -2; i <= 4; i++) {
+        for (let i = -2; i <= 2; i++) {
             // Create a date object for 'America/Chicago' time zone
             const date = new Date().toLocaleString("en-US", { timeZone: 'America/Chicago' });
             const localDate = new Date(date); // Convert the string back to a Date object for manipulation

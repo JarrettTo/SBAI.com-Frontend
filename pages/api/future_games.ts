@@ -13,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Get the current date in the format YYYY-MM-DD
     let retval = []
     const currentDate = new Date()
-    for(let i=1; i<=3;i++){
+    for(let i=1; i<=2;i++){
       currentDate.setDate(currentDate.getDate() + 1);
       let formattedDate = currentDate.toISOString().slice(0, 10).replace(/-/g, '/');
       console.log(formattedDate);
