@@ -5,8 +5,10 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import GameDisplay from '../components/GameDisplay'
 import { INBAGame } from '../types/Game';
+import { Odds } from '../types/Odds';
 import axios from 'axios';
 import dotenv from 'dotenv';
+import { Predictions } from "../types/Predictions";
 
 dotenv.config();
 
@@ -15,24 +17,128 @@ const HomePage = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [selectedGame, setSelectedGame] = useState<INBAGame | null>(null);
     const [gameSchedules, setGameSchedules] = useState<INBAGame[]>([]);
+    const [gameOdds, setGameOdds] = useState<Odds[]>([]);
+    const [gamePreds, setGamePreds] = useState<Predictions[]>([]);
     const fetchGameSchedules = async () => {
         try {
             const response = await axios.get('/api/nba_games',{
             params: {
-                api_key: process.env.API_KEY, /// Access API key from environment variables
+                api_key: process.env.ODDS_API_KEY, /// Access API key from environment variables
                 },
             });
             setGameSchedules(response.data);
             console.log(response.data);
         } catch (error) {
             console.error('Error fetching game schedules:', error);
-            }
-        };
-    
-        useEffect(() => {
-            // Fetch NBA game schedules when the component mounts
-            fetchGameSchedules();
-        }, []);
+        }
+    };
+        
+    const fetchGameOdds = async () => {
+        try {
+            const response = await axios.get('/api/odds',{
+                params: {
+                    apiKey: process.env.ODDS_API_KEY, // Include the API key as a query parameter
+                    },
+                });
+            setGameOdds(response.data);
+            console.log(response.data);
+        } catch (error) {
+            console.error('Error fetching game odds:', error);
+        }
+    };
+    const fetchGamePredictions = async () => {
+        const prediction1 : Predictions = {"away_team":"Golden State Warriors","home_team":"Washington Wizards","id":"0","ml_conf":"73.4%","ml_pred":"Golden State Warriors","ou_conf":"61.9%","ou_pred":"OVER 243"}
+
+        const prediction2 : Predictions = {"away_team":"Brooklyn Nets","home_team":"Orlando Magic","id":"1","ml_conf":"72.4%","ml_pred":"Orlando Magic","ou_conf":"56.7%","ou_pred":"UNDER 215"}
+        const prediction3 : Predictions = {
+            "away_team": "Brooklyn Nets",
+            "home_team": "Memphis Grizzlies",
+            "id": "2",
+            "ml_conf": "57.2%",
+            "ml_pred": "Brooklyn Nets",
+            "ou_conf": "67.8%",
+            "ou_pred": "UNDER 214.5"
+        }
+        const prediction4 : Predictions = {
+            "away_team": "Miami Heat",
+            "home_team": "Sacramento Kings",
+            "id": "3",
+            "ml_conf": "52.5%",
+            "ml_pred": "Sacramento Kings",
+            "ou_conf": "52.8%",
+            "ou_pred": "OVER 226.5"
+        }
+        const prediction5 : Predictions = {
+            "away_team": "Denver Nuggets",
+            "home_team": "Golden State Warriors",
+            "id": "4",
+            "ml_conf": "57.0%",
+            "ml_pred": "Golden State Warriors",
+            "ou_conf": "55.2%",
+            "ou_pred": "UNDER 232"
+        }
+        const prediction6 : Predictions = {
+            "away_team": "Chicago Bulls",
+            "home_team": "New Orleans Pelicans",
+            "id": "5",
+            "ml_conf": "67.7%",
+            "ml_pred": "New Orleans Pelicans",
+            "ou_conf": "56.3%",
+            "ou_pred": "UNDER 222.5"
+        }
+        const prediction7 : Predictions = {
+            "away_team": "Orlando Magic",
+            "home_team": "Atlanta Hawks",
+            "id": "6",
+            "ml_conf": "52.2%",
+            "ml_pred": "Orlando Magic",
+            "ou_conf": "59.0%",
+            "ou_pred": "UNDER 226.5"
+        }
+        const prediction8 : Predictions = {
+            "away_team": "Oklahoma City Thunder",
+            "home_team": "Houston Rockets",
+            "id": "7",
+            "ml_conf": "62.6%",
+            "ml_pred": "Oklahoma City Thunder",
+            "ou_conf": "63.9%",
+            "ou_pred": "UNDER 235.5"
+        }
+        const prediction9 : Predictions = {
+            "away_team": "San Antonio Spurs",
+            "home_team": "Utah Jazz",
+            "id": "8",
+            "ml_conf": "70.0%",
+            "ml_pred": "Utah Jazz",
+            "ou_conf": "51.6%",
+            "ou_pred": "OVER 242"
+        }
+        const prediction10 : Predictions = {
+            "away_team": "Charlotte Hornets",
+            "home_team": "Portland Trail Blazers",
+            "id": "9",
+            "ml_conf": "54.0%",
+            "ml_pred": "Charlotte Hornets",
+            "ou_conf": "62.3%",
+            "ou_pred": "UNDER 219.5"
+        }
+        const prediction11 : Predictions = {
+            "away_team": "Sacramento Kings",
+            "home_team": "Los Angeles Clippers",
+            "id": "10",
+            "ml_conf": "68.7%",
+            "ml_pred": "Los Angeles Clippers",
+            "ou_conf": "51.7%",
+            "ou_pred": "UNDER 239"
+        }
+        setGamePreds([{"away_team":"New Orleans Pelicans","home_team":"Indiana Pacers","id":"0","ml_conf":"52.1%","ml_pred":"Indiana Pacers","ou_conf":"95.3%","ou_pred":"OVER None"},{"away_team":"Dallas Mavericks","home_team":"Toronto Raptors","id":"1","ml_conf":"57.4%","ml_pred":"Dallas Mavericks","ou_conf":"72.0%","ou_pred":"UNDER 242.5"},{"away_team":"Cleveland Cavaliers","home_team":"Chicago Bulls","id":"2","ml_conf":"54.4%","ml_pred":"Cleveland Cavaliers","ou_conf":"60.4%","ou_pred":"UNDER 219.5"},{"away_team":"Memphis Grizzlies","home_team":"Minnesota Timberwolves","id":"3","ml_conf":"79.2%","ml_pred":"Minnesota Timberwolves","ou_conf":"64.9%","ou_pred":"OVER 215"},{"away_team":"Sacramento Kings","home_team":"Denver Nuggets","id":"4","ml_conf":"60.2%","ml_pred":"Denver Nuggets","ou_conf":"51.7%","ou_pred":"OVER 229.5"},{"away_team":"Los Angeles Lakers","home_team":"LA Clippers","id":"5","ml_conf":"73.1%","ml_pred":"LA Clippers","ou_conf":"65.9%","ou_pred":"UNDER 236.5"}])
+    };
+    useEffect(() => {
+        // Fetch NBA game schedules when the component mounts
+        fetchGameSchedules();
+        fetchGameOdds();
+        fetchGamePredictions();
+    }, []);
     const open = Boolean(anchorEl);
 
 
@@ -74,7 +180,7 @@ const HomePage = () => {
             <div style={{display : "flex", flexDirection : "column",alignItems:"center",justifyContent:"center", marginTop: '105px'}}>
                 <h1 style={{fontWeight: 700, fontSize:'80px'}}>Sports Betting AI</h1>
                 <p style={{fontWeight: 500, fontSize:'15px', width: '30vw', textAlign:'center', marginBottom: '30px'}}>Select an upcoming NBA game and click the predict button to generate a prediciton using our latest AI Model!</p>
-                <div>
+                {/*<div>
                     <Button
                         variant="contained"
                         className="select-game-button"
@@ -122,7 +228,8 @@ const HomePage = () => {
                                     awayTeamLogo={game.awayTeamLogo}
                                     schedule={game.schedule}
                                     isInDropdown={true}
-                                    
+                                    odds={gameOdds.find((odds) => odds.home_team === game.homeTeam)}
+                                    predictions={gamePreds.find((odds) => odds.home_team === game.homeTeam)}
                                 />
                             </MenuItem>
                         ))}
@@ -142,7 +249,7 @@ const HomePage = () => {
                     >
                         Predict
                     </Button>
-                </div>
+                    </div>*/}
             </div>
             <div
                 style={{
@@ -167,6 +274,8 @@ const HomePage = () => {
                         awayTeam={game.awayTeam}
                         awayTeamLogo={game.awayTeamLogo}
                         schedule={game.schedule}
+                        odds={gameOdds.find((odds) => odds.home_team === game.homeTeam && odds.away_team === game.awayTeam)}
+                        predictions={gamePreds.find((preds) => preds.home_team === game.homeTeam)}
                     />
                 ))}
             </div>
