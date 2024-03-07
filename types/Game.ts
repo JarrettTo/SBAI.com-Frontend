@@ -5,9 +5,9 @@ import { Predictions } from "./Predictions";
 export type INBAGame = {
     id: number;
     homeTeam : string;
-    homeTeamLogo : string;
+
     awayTeam : string;
-    awayTeamLogo : string;
+
     schedule: Date;
     odds?: Odds;
     predictions?: Predictions;

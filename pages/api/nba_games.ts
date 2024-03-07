@@ -10,9 +10,10 @@ const BASE_URL = 'https://api.the-odds-api.com/v4/sports/basketball_nba/odds/?re
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
+ 
     const response = await axios.get(`${BASE_URL}`, {
       params: {
-        apiKey: process.env.ODDS_API_KEY, // Include the API key as a query parameter
+        apiKey: process.env.ODDS_API_KEY,
       },
     });
 
