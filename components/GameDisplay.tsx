@@ -1,4 +1,5 @@
 import React, { useEffect, useState} from 'react';
+import { useRouter } from 'next/router';
 import { INBAGame} from '../types/Game';
 import * as NBAIcons from 'react-nba-logos';
 import { Button } from '@mui/material';
@@ -99,6 +100,18 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
         // If a matching component was found, render it; otherwise, return null or a default icon
         return IconComponent ? <IconComponent /> : null;
     };
+    const formatTime = (gameDate : Date) =>{
+        const scheduleFormatted = new Intl.DateTimeFormat('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: '2-digit',
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true,
+        }).format(gameDate);
+        return scheduleFormatted
+    }
+
     const getMiniTeamIcon = (teamName: string) => {
         // Look up the component in the teamIconMap by teamName
         const IconComponent = teamIconMap[teamName];
@@ -106,9 +119,10 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
         // If a matching component was found, render it; otherwise, return null or a default icon
         return <IconComponent size={40}/>;// ? <IconComponent /> : null;
     };
-    
+
     const handleBoxScoreClick= ()=>{
         //TODO: Redirect to page that shows box score of game
+        window.open('/box-score', '_blank');
     }
     const handleOddsClick= ()=>{
         //TODO: Redirect to page that shows Odds of game
