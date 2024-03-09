@@ -170,7 +170,7 @@ const HomePage = () => {
             "ou_conf": "51.7%",
             "ou_pred": "UNDER 239"
         }
-        setGamePreds([{"away_team":"Chicago Bulls","home_team":"LA Clippers","id":"0","ml_conf":"71.9%","ml_pred":"LA Clippers","ou_conf":"52.3%","ou_pred":"OVER 221"},{"away_team":"Dallas Mavericks","home_team":"Detroit Pistons","id":"1","ml_conf":"73.1%","ml_pred":"Dallas Mavericks","ou_conf":"68.4%","ou_pred":"OVER 235.5"},{"away_team":"Brooklyn Nets","home_team":"Charlotte Hornets","id":"2","ml_conf":"70.1%","ml_pred":"Brooklyn Nets","ou_conf":"61.2%","ou_pred":"UNDER 208"},{"away_team":"San Antonio Spurs","home_team":"Golden State Warriors","id":"3","ml_conf":"80.9%","ml_pred":"Golden State Warriors","ou_conf":"73.9%","ou_pred":"UNDER 230.5"},{"away_team":"Boston Celtics","home_team":"Phoenix Suns","id":"4","ml_conf":"53.0%","ml_pred":"Boston Celtics","ou_conf":"49.3%","ou_pred":"UNDER 227.5"},{"away_team":"Utah Jazz","home_team":"Denver Nuggets","id":"5","ml_conf":"75.2%","ml_pred":"Denver Nuggets","ou_conf":"54.6%","ou_pred":"UNDER 233"},{"away_team":"Toronto Raptors","home_team":"Portland Trail Blazers","id":"6","ml_conf":"68.8%","ml_pred":"Toronto Raptors","ou_conf":"75.3%","ou_pred":"UNDER 223.5"}])
+        setGamePreds([{"away_team":"Chicago Bulls","home_team":"Los Angeles Clippers","id":"0","ml_conf":"71.9%","ml_pred":"Los Angeles Clippers","ou_conf":"52.3%","ou_pred":"OVER 221"},{"away_team":"Dallas Mavericks","home_team":"Detroit Pistons","id":"1","ml_conf":"73.1%","ml_pred":"Dallas Mavericks","ou_conf":"68.4%","ou_pred":"OVER 235.5"},{"away_team":"Brooklyn Nets","home_team":"Charlotte Hornets","id":"2","ml_conf":"70.1%","ml_pred":"Brooklyn Nets","ou_conf":"61.2%","ou_pred":"UNDER 208"},{"away_team":"San Antonio Spurs","home_team":"Golden State Warriors","id":"3","ml_conf":"80.9%","ml_pred":"Golden State Warriors","ou_conf":"73.9%","ou_pred":"UNDER 230.5"},{"away_team":"Boston Celtics","home_team":"Phoenix Suns","id":"4","ml_conf":"53.0%","ml_pred":"Boston Celtics","ou_conf":"49.3%","ou_pred":"UNDER 227.5"},{"away_team":"Utah Jazz","home_team":"Denver Nuggets","id":"5","ml_conf":"75.2%","ml_pred":"Denver Nuggets","ou_conf":"54.6%","ou_pred":"UNDER 233"},{"away_team":"Toronto Raptors","home_team":"Portland Trail Blazers","id":"6","ml_conf":"68.8%","ml_pred":"Toronto Raptors","ou_conf":"75.3%","ou_pred":"UNDER 223.5"}])
     };
     useEffect(() => {
         // Fetch NBA game schedules when the component mounts
@@ -275,7 +275,7 @@ const HomePage = () => {
                      
                         schedule={game.schedule}
                         odds={gameOdds.find((odds) => odds.home_team === game.homeTeam && odds.away_team === game.awayTeam)}
-                        predictions={gamePreds.find((preds) => preds.home_team === game.homeTeam)}
+                        predictions={gamePreds.find((preds) => preds.home_team === game.homeTeam && preds.away_team === game.awayTeam)}
                     />
                 ))}
                     
