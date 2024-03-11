@@ -39,7 +39,8 @@ const HomePage = () => {
                 const options = { timeZone: 'America/Chicago', year: 'numeric', month: '2-digit', day: '2-digit' };
                 const gameDateString = gameDate.toLocaleDateString("en-US", options);
                 const currentDateString = currentDate.toLocaleDateString("en-US", options);
-                
+                console.log("game date:", gameDateString)
+                console.log("current date:", currentDateString)
                 // Compare only date (not time)
                 return gameDateString === currentDateString;
             });
