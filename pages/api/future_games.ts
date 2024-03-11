@@ -12,7 +12,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     // Get the current date in the format YYYY-MM-DD
     let retval = []
-    const currentDate = new Date()
+    const date = new Date().toLocaleString("en-US", { timeZone: 'America/Chicago' });
+    const currentDate = new Date(date); // Convert the string back to a Date object for manipulation
     for(let i=1; i<=2;i++){
       currentDate.setDate(currentDate.getDate() + 1);
       let formattedDate = currentDate.toISOString().slice(0, 10).replace(/-/g, '/');
