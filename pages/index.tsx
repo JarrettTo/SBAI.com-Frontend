@@ -32,18 +32,16 @@ const HomePage = () => {
             });
             console.log("CHECK: ", response.data)
             const filteredGames = response.data.filter((value) => {
-                const date = new Date(value.commence_time).toLocaleString("en-US", { timeZone: 'America/Chicago' });
-                const gameDate = new Date(date);
-                const todayDate = new Date().toLocaleString("en-US", { timeZone: 'America/Chicago' });
-                
-                // Convert todayDate to Central Time Zone for comparison
-                const todayDateInCT = new Date(todayDate);
-                todayDateInCT.setMinutes(todayDateInCT.getMinutes() + todayDateInCT.getTimezoneOffset());
+                const gameDate = new Date(value.schedule);
+                const currentDate = new Date();
+            
+                // Convert both gameDate and currentDate to Central Time Zone for comparison
+                const options = { timeZone: 'America/Chicago', year: 'numeric', month: '2-digit', day: '2-digit' };
+                const gameDateString = gameDate.toLocaleDateString("en-US", options);
+                const currentDateString = currentDate.toLocaleDateString("en-US", options);
                 
                 // Compare only date (not time)
-                return gameDate.getFullYear() === todayDateInCT.getFullYear() &&
-                        gameDate.getMonth() === todayDateInCT.getMonth() &&
-                        gameDate.getDate() === todayDateInCT.getDate();
+                return gameDateString === currentDateString;
             });
               
             setGameSchedules(currentGameSchedules =>
