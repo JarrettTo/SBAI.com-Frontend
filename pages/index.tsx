@@ -32,18 +32,39 @@ const HomePage = () => {
             });
             console.log("CHECK: ", response.data)
             const filteredGames = response.data.filter((value) => {
-                const gameDate = new Date(value.schedule);
-                const currentDate = new Date();
+                // Parse the schedule time to a Date object
+                const gameDateUTC = new Date(value.schedule);
             
-                // Convert both gameDate and currentDate to Central Time Zone for comparison
-                const options = { timeZone: 'America/Chicago', year: 'numeric', month: '2-digit', day: '2-digit' };
-                const gameDateString = gameDate.toLocaleDateString("en-US", options);
-                const currentDateString = currentDate.toLocaleDateString("en-US", options);
-                console.log("game date:", gameDateString)
-                console.log("current date:", currentDateString)
-                // Compare only date (not time)
+                // Create a Date object for the current time in UTC
+                const currentDateUTC = new Date();
+            
+                // Function to convert a date to Central Time and strip the time part
+                function toCSTDateString(date) {
+                    // Convert to Central Time
+                    const cstDate = new Date(date.toLocaleString("en-US", { timeZone: 'America/Chicago' }));
+                    
+                    // Extract the year, month, and day part
+                    const year = cstDate.getFullYear();
+                    const month = cstDate.getMonth(); // Note: getMonth() returns 0-11
+                    const day = cstDate.getDate();
+            
+                    // Return the date in string form
+                    return `${year}-${month}-${day}`;
+                }
+            
+                // Convert both gameDate and currentDate to Central Time without the time part
+                const gameDateString = toCSTDateString(gameDateUTC);
+                const currentDateString = toCSTDateString(currentDateUTC);
+            
+                console.log("game date:", gameDateString);
+                console.log("current date:", currentDateString);
+            
+                // Compare only the date parts (year, month, day)
                 return gameDateString === currentDateString;
             });
+            
+            console.log(filteredGames);
+            
               
             setGameSchedules(currentGameSchedules =>
                 currentGameSchedules.map((item, index) => 
