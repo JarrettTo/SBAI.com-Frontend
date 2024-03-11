@@ -30,6 +30,7 @@ const HomePage = () => {
                 api_key: process.env.ODDS_API_KEY, /// Access API key from environment variables
                 },
             });
+            console.log("CHECK: ", response.data)
             const filteredGames = response.data.filter((value) => {
                 const date = new Date(value.commence_time).toLocaleString("en-US", { timeZone: 'America/Chicago' });
                 const gameDate = new Date(date);
