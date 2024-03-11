@@ -30,13 +30,49 @@ const HomePage = () => {
                 api_key: process.env.ODDS_API_KEY, /// Access API key from environment variables
                 },
             });
+            console.log("CHECK: ", response.data)
+            const filteredGames = response.data.filter((value) => {
+                // Parse the schedule time to a Date object
+                const gameDateUTC = new Date(value.schedule);
+            
+                // Create a Date object for the current time in UTC
+                const currentDateUTC = new Date();
+            
+                // Function to convert a date to Central Time and strip the time part
+                function toCSTDateString(date) {
+                    // Convert to Central Time
+                    const cstDate = new Date(date.toLocaleString("en-US", { timeZone: 'America/Chicago' }));
+                    
+                    // Extract the year, month, and day part
+                    const year = cstDate.getFullYear();
+                    const month = cstDate.getMonth(); // Note: getMonth() returns 0-11
+                    const day = cstDate.getDate();
+            
+                    // Return the date in string form
+                    return `${year}-${month}-${day}`;
+                }
+            
+                // Convert both gameDate and currentDate to Central Time without the time part
+                const gameDateString = toCSTDateString(gameDateUTC);
+                const currentDateString = toCSTDateString(currentDateUTC);
+            
+                console.log("game date:", gameDateString);
+                console.log("current date:", currentDateString);
+            
+                // Compare only the date parts (year, month, day)
+                return gameDateString === currentDateString;
+            });
+            
+            console.log(filteredGames);
+            
+              
             setGameSchedules(currentGameSchedules =>
                 currentGameSchedules.map((item, index) => 
-                  index === 2 ? response.data : item
+                  index === 2 ? filteredGames : item
                 )
             );
-
-            console.log(response.data);
+            
+            console.log(filteredGames);
         } catch (error) {
             console.error('Error fetching game schedules:', error);
         }
