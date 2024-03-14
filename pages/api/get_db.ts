@@ -14,8 +14,15 @@ export default async function handler(req, res) {
             password: process.env.DB_PASSWORD,
         });
 
-        const query = "SELECT id, home_team, away_team, date, location, odds, prediction, result FROM Games";
+        const query = `
+            SELECT g.id, g.home_team, g.away_team, g.date, g.location, g.odds, g.prediction, g.result,
+                   p.ml_pred, p.ml_conf, p.ou_pred, p.ou_conf
+            FROM Games g
+            JOIN Predictions p ON g.id = p.id
+        `;
+        
         const [results] = await connection.execute(query);
+
         res.status(200).json(results);
     } catch (error) {
         console.error("Error connecting to the database:", error.message);
