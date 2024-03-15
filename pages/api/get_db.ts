@@ -6,6 +6,15 @@ dotenv.config();
 export default async function handler(req, res) {
     let connection;
     try {
+        const dateParam = req.query.date;
+        if (!dateParam) {
+            res.status(400).json({ error: "No date provided" });
+            return;
+        }
+        const requestedDate = new Date(dateParam).toISOString().split('T')[0];
+        const nextDay = new Date(requestedDate);
+        nextDay.setDate(nextDay.getDate() + 1);
+        const nextDayStr = nextDay.toISOString().split('T')[0];
         connection = await mysql.createConnection({
             host: process.env.DB_HOST,
             database: process.env.DB_DATABASE,
@@ -15,13 +24,15 @@ export default async function handler(req, res) {
         });
 
         const query = `
-            SELECT g.id, g.home_team, g.away_team, g.date, g.location, g.odds, g.prediction, g.result,
-                   p.ml_pred, p.ml_conf, p.ou_pred, p.ou_conf
-            FROM Games g
-            JOIN Predictions p ON g.id = p.id
+        SELECT g.id, g.home_team, g.away_team, g.date, g.location, g.odds,
+        p.ml_pred, p.ml_conf, p.ou_pred, p.ou_conf
+        FROM Games g
+        JOIN Predictions p ON g.id = p.id
+        WHERE CONVERT_TZ(g.date, 'UTC', 'America/Chicago') >= ?
+        AND CONVERT_TZ(g.date, 'UTC', 'America/Chicago') < ?;
         `;
         
-        const [results] = await connection.execute(query);
+        const [results] = await connection.execute(query, [requestedDate + ' 00:00:00', nextDayStr + ' 00:00:00']);
 
         res.status(200).json(results);
     } catch (error) {

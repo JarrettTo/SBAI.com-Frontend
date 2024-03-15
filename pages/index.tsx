@@ -79,9 +79,40 @@ const HomePage = () => {
     };
     const fetchPastGames = async () => {
         try {
-            const response = await axios.get('/api/past_games');
+            const alabamaTime = new Intl.DateTimeFormat('en-US', {
+                timeZone: 'America/Chicago',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+              }).format(new Date());
+          
+            const [month, day, year] = alabamaTime.split('/');
+            const alabamaDate = new Date(`${year}-${month}-${day}T00:00:00-06:00`);
+        
+            alabamaDate.setDate(alabamaDate.getDate() - 1);
+        
+            let previousDate = alabamaDate.toISOString().split('T')[0];
+            const response = await axios.get(`/api/get_db?date=${encodeURIComponent(previousDate)}`);
 
             console.log("PAST:", response.data);
+
+            setGameSchedules(currentGameSchedules =>
+                currentGameSchedules.map((item, index) => 
+                  index === 1 ? response.data : item
+                )
+            );
+
+            alabamaDate.setDate(alabamaDate.getDate() - 1);
+            previousDate = alabamaDate.toISOString().split('T')[0];
+            const response2 = await axios.get(`/api/get_db?date=${encodeURIComponent(previousDate)}`);
+
+            console.log("PAST2:", response2.data);
+
+            setGameSchedules(currentGameSchedules =>
+                currentGameSchedules.map((item, index) => 
+                  index === 0 ? response2.data : item
+                )
+            );
         } catch (error) {
             console.error('Error fetching game schedules:', error);
             
@@ -206,7 +237,7 @@ const HomePage = () => {
             "ou_conf": "51.7%",
             "ou_pred": "UNDER 239"
         }
-        setGamePreds([{"away_team":"Phoenix Suns","home_team":"Charlotte Hornets","id":"0","ml_conf":"71.7%","ml_pred":"Phoenix Suns","ou_conf":"61.3%","ou_pred":"UNDER 216.5"},{"away_team":"Miami Heat","home_team":"Detroit Pistons","id":"1","ml_conf":"74.9%","ml_pred":"Miami Heat","ou_conf":"50.4%","ou_pred":"UNDER 215"},{"away_team":"Orlando Magic","home_team":"Toronto Raptors","id":"2","ml_conf":"68.2%","ml_pred":"Orlando Magic","ou_conf":"51.2%","ou_pred":"UNDER 217"},{"away_team":"Los Angeles Clippers","home_team":"New Orleans Pelicans","id":"3","ml_conf":"62.4%","ml_pred":"New Orleans Pelicans","ou_conf":"61.9%","ou_pred":"UNDER 217"},{"away_team":"Denver Nuggets","home_team":"San Antonio Spurs","id":"4","ml_conf":"66.7%","ml_pred":"Denver Nuggets","ou_conf":"60.3%","ou_pred":"UNDER 221"},{"away_team":"Atlanta Hawks","home_team":"Utah Jazz","id":"5","ml_conf":"53.6%","ml_pred":"Atlanta Hawks","ou_conf":"56.5%","ou_pred":"OVER 223.5"}])
+        setGamePreds([{"away_team":"Phoenix Suns","home_team":"Charlotte Hornets","id":"0","ml_conf":"70.6%","ml_pred":"Phoenix Suns","ou_conf":"60.7%","ou_pred":"UNDER 219.5"},{"away_team":"Miami Heat","home_team":"Detroit Pistons","id":"1","ml_conf":"70.2%","ml_pred":"Miami Heat","ou_conf":"51.4%","ou_pred":"UNDER 216"},{"away_team":"Orlando Magic","home_team":"Toronto Raptors","id":"2","ml_conf":"63.4%","ml_pred":"Orlando Magic","ou_conf":"52.1%","ou_pred":"UNDER 217.5"},{"away_team":"LA Clippers","home_team":"New Orleans Pelicans","id":"3","ml_conf":"61.0%","ml_pred":"New Orleans Pelicans","ou_conf":"61.8%","ou_pred":"UNDER 217.5"},{"away_team":"Denver Nuggets","home_team":"San Antonio Spurs","id":"4","ml_conf":"63.9%","ml_pred":"Denver Nuggets","ou_conf":"55.8%","ou_pred":"UNDER 223.5"},{"away_team":"Atlanta Hawks","home_team":"Utah Jazz","id":"5","ml_conf":"53.1%","ml_pred":"Atlanta Hawks","ou_conf":"58.9%","ou_pred":"OVER 223"}])
     };
     useEffect(() => {
         // Fetch NBA game schedules when the component mounts
@@ -301,7 +332,24 @@ const HomePage = () => {
             <div className={styles.game_display}>
                 
                     
-                {gameSchedules[value]?.map((game) => (
+                {value==0 || value == 1? 
+                
+                gameSchedules[value]?.map((game) => (
+                    
+                    <GameDisplay 
+                        key={game.id} 
+                        id={game.id} 
+                        homeTeam={game.homeTeam}
+                      
+                        awayTeam={game.awayTeam}
+                     
+                        schedule={game.schedule}
+                        odds={game.odds}
+                        predictions={game.predictions}
+                    />
+                )):
+                gameSchedules[value]?.map((game) => (
+                    
                     <GameDisplay 
                         key={game.id} 
                         id={game.id} 
@@ -313,7 +361,8 @@ const HomePage = () => {
                         odds={gameOdds.find((odds) => odds.home_team === game.homeTeam && odds.away_team === game.awayTeam)}
                         predictions={gamePreds.find((preds) => preds.home_team === game.homeTeam && preds.away_team === game.awayTeam)}
                     />
-                ))}
+                ))
+                }
                     
                 
                 
