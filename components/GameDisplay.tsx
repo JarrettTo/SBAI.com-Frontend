@@ -125,11 +125,13 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
             hour: 'numeric',
             minute: 'numeric',
             hour12: true,
+            timeZone: 'America/Chicago'
         };
     
         const date = new Date(dateString);
         return date.toLocaleDateString('en-US', options);
     }
+    
    return(
     <div className={styles.main} style={{marginBottom: '7px', borderRadius: '10px'}}>
         <div className={styles.row_container} style={{display: 'flex', flexDirection:'row', justifyContent: 'space-between', paddingTop: '10px', paddingBottom: '20px', paddingLeft: '30px', width: '100%'}}>

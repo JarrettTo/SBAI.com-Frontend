@@ -30,22 +30,89 @@ const HomePage = () => {
                 api_key: process.env.ODDS_API_KEY, /// Access API key from environment variables
                 },
             });
+            console.log("CHECK: ", response.data)
+            const filteredGames = response.data.filter((value) => {
+                // Parse the schedule time to a Date object
+                const gameDateUTC = new Date(value.schedule);
+            
+                // Create a Date object for the current time in UTC
+                const currentDateUTC = new Date();
+            
+                // Function to convert a date to Central Time and strip the time part
+                function toCSTDateString(date) {
+                    // Convert to Central Time
+                    const cstDate = new Date(date.toLocaleString("en-US", { timeZone: 'America/Chicago' }));
+                    
+                    // Extract the year, month, and day part
+                    const year = cstDate.getFullYear();
+                    const month = cstDate.getMonth(); // Note: getMonth() returns 0-11
+                    const day = cstDate.getDate();
+            
+                    // Return the date in string form
+                    return `${year}-${month}-${day}`;
+                }
+            
+                // Convert both gameDate and currentDate to Central Time without the time part
+                const gameDateString = toCSTDateString(gameDateUTC);
+                const currentDateString = toCSTDateString(currentDateUTC);
+            
+                console.log("game date:", gameDateString);
+                console.log("current date:", currentDateString);
+            
+                // Compare only the date parts (year, month, day)
+                return gameDateString === currentDateString;
+            });
+            
+            console.log(filteredGames);
+            
+              
             setGameSchedules(currentGameSchedules =>
                 currentGameSchedules.map((item, index) => 
-                  index === 2 ? response.data : item
+                  index === 2 ? filteredGames : item
                 )
             );
-
-            console.log(response.data);
+            
+            console.log(filteredGames);
         } catch (error) {
             console.error('Error fetching game schedules:', error);
         }
     };
     const fetchPastGames = async () => {
         try {
-            const response = await axios.get('/api/past_games');
+            const alabamaTime = new Intl.DateTimeFormat('en-US', {
+                timeZone: 'America/Chicago',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+              }).format(new Date());
+          
+            const [month, day, year] = alabamaTime.split('/');
+            const alabamaDate = new Date(`${year}-${month}-${day}T00:00:00-06:00`);
+        
+            alabamaDate.setDate(alabamaDate.getDate() - 1);
+        
+            let previousDate = alabamaDate.toISOString().split('T')[0];
+            const response = await axios.get(`/api/get_db?date=${encodeURIComponent(previousDate)}`);
 
             console.log("PAST:", response.data);
+
+            setGameSchedules(currentGameSchedules =>
+                currentGameSchedules.map((item, index) => 
+                  index === 1 ? response.data : item
+                )
+            );
+
+            alabamaDate.setDate(alabamaDate.getDate() - 1);
+            previousDate = alabamaDate.toISOString().split('T')[0];
+            const response2 = await axios.get(`/api/get_db?date=${encodeURIComponent(previousDate)}`);
+
+            console.log("PAST2:", response2.data);
+
+            setGameSchedules(currentGameSchedules =>
+                currentGameSchedules.map((item, index) => 
+                  index === 0 ? response2.data : item
+                )
+            );
         } catch (error) {
             console.error('Error fetching game schedules:', error);
             
@@ -170,7 +237,7 @@ const HomePage = () => {
             "ou_conf": "51.7%",
             "ou_pred": "UNDER 239"
         }
-        setGamePreds([{"away_team":"Brooklyn Nets","home_team":"Detroit Pistons","id":"0","ml_conf":"70.5%","ml_pred":"Brooklyn Nets","ou_conf":"54.5%","ou_pred":"UNDER 215.5"},{"away_team":"Minnesota Timberwolves","home_team":"Indiana Pacers","id":"1","ml_conf":"57.5%","ml_pred":"Minnesota Timberwolves","ou_conf":"68.8%","ou_pred":"UNDER 228"},{"away_team":"Miami Heat","home_team":"Dallas Mavericks","id":"2","ml_conf":"55.7%","ml_pred":"Miami Heat","ou_conf":"50.1%","ou_pred":"UNDER 231"},{"away_team":"Toronto Raptors","home_team":"Phoenix Suns","id":"3","ml_conf":"77.6%","ml_pred":"Phoenix Suns","ou_conf":"55.2%","ou_pred":"UNDER 231.5"},{"away_team":"Chicago Bulls","home_team":"Golden State Warriors","id":"4","ml_conf":"67.8%","ml_pred":"Golden State Warriors","ou_conf":"68.8%","ou_pred":"UNDER 223.5"},{"away_team":"San Antonio Spurs","home_team":"Sacramento Kings","id":"5","ml_conf":"75.8%","ml_pred":"Sacramento Kings","ou_conf":"61.8%","ou_pred":"OVER 238.5"},{"away_team":"Boston Celtics","home_team":"Denver Nuggets","id":"6","ml_conf":"51.9%","ml_pred":"Denver Nuggets","ou_conf":"75.7%","ou_pred":"UNDER 221.5"}])
+        setGamePreds([{"away_team":"Phoenix Suns","home_team":"Charlotte Hornets","id":"0","ml_conf":"70.6%","ml_pred":"Phoenix Suns","ou_conf":"60.7%","ou_pred":"UNDER 219.5"},{"away_team":"Miami Heat","home_team":"Detroit Pistons","id":"1","ml_conf":"70.2%","ml_pred":"Miami Heat","ou_conf":"51.4%","ou_pred":"UNDER 216"},{"away_team":"Orlando Magic","home_team":"Toronto Raptors","id":"2","ml_conf":"63.4%","ml_pred":"Orlando Magic","ou_conf":"52.1%","ou_pred":"UNDER 217.5"},{"away_team":"LA Clippers","home_team":"New Orleans Pelicans","id":"3","ml_conf":"61.0%","ml_pred":"New Orleans Pelicans","ou_conf":"61.8%","ou_pred":"UNDER 217.5"},{"away_team":"Denver Nuggets","home_team":"San Antonio Spurs","id":"4","ml_conf":"63.9%","ml_pred":"Denver Nuggets","ou_conf":"55.8%","ou_pred":"UNDER 223.5"},{"away_team":"Atlanta Hawks","home_team":"Utah Jazz","id":"5","ml_conf":"53.1%","ml_pred":"Atlanta Hawks","ou_conf":"58.9%","ou_pred":"OVER 223"}])
     };
     useEffect(() => {
         // Fetch NBA game schedules when the component mounts
@@ -265,7 +332,24 @@ const HomePage = () => {
             <div className={styles.game_display}>
                 
                     
-                {gameSchedules[value]?.map((game) => (
+                {value==0 || value == 1? 
+                
+                gameSchedules[value]?.map((game) => (
+                    
+                    <GameDisplay 
+                        key={game.id} 
+                        id={game.id} 
+                        homeTeam={game.homeTeam}
+                      
+                        awayTeam={game.awayTeam}
+                     
+                        schedule={game.schedule}
+                        odds={game.odds}
+                        predictions={game.predictions}
+                    />
+                )):
+                gameSchedules[value]?.map((game) => (
+                    
                     <GameDisplay 
                         key={game.id} 
                         id={game.id} 
@@ -275,9 +359,10 @@ const HomePage = () => {
                      
                         schedule={game.schedule}
                         odds={gameOdds.find((odds) => odds.home_team === game.homeTeam && odds.away_team === game.awayTeam)}
-                        predictions={gamePreds.find((preds) => preds.home_team === game.homeTeam)}
+                        predictions={gamePreds.find((preds) => preds.home_team === game.homeTeam && preds.away_team === game.awayTeam)}
                     />
-                ))}
+                ))
+                }
                     
                 
                 
