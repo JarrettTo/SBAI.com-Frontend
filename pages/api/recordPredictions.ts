@@ -23,8 +23,10 @@ export default async function handler(req, res) {
               api_key: process.env.API_KEY, // Include the API key as a query parameter
             },
         });
-        const gamesFromApi = response.data; // Assuming this is an array of INBAGame
+        const gamesFromApi = response.data[0]; // Assuming this is an array of INBAGame
         console.log("RESPONSE:", gamesFromApi);
+
+        
 
         connection = await mysql.createConnection({
             host: process.env.DB_HOST,
@@ -36,12 +38,16 @@ export default async function handler(req, res) {
 
         // Insert games and predictions
         for (const game of gamesFromApi) {
-            // Insert into Games table
+
+            // Convert date format to MySQL TIMESTAMP format
+            const scheduleTimestamp = new Date(game.schedule).toISOString().slice(0, 19).replace('T', ' ');
+
+            console.log("GAME:", game.id, game.homeTeam, game.awayTeam , scheduleTimestamp)
             const gameQuery = `
                 INSERT INTO Games (id, home_team, away_team, date)
                 VALUES (?, ?, ?, ?)
             `;
-            await connection.execute(gameQuery, [game.id, game.homeTeam, game.awayTeam, game.schedule]);
+            await connection.execute(gameQuery, [game.id, game.homeTeam, game.awayTeam, scheduleTimestamp]);
 
             // Find matching predictions
             const matchingPrediction = gamePredictions.find(p => 
