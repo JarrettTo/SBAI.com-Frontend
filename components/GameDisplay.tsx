@@ -150,7 +150,7 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
                 </div>
                 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginLeft:'10px', marginRight:'10px', width: '33%'}}>
                     <p className={styles.vs}>VS</p>
-                    <p className={styles.time} style={{fontSize:'14px', fontWeight:'400', textAlign: 'center'}}>{formatDate(schedule.toString())}</p>
+                    <p className={styles.time} style={{fontSize:'14px', fontWeight:'400', textAlign: 'center'}}>{formatDate(schedule.toString() || '')}</p>
                 </div>
                 <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', width: '33%', justifyContent: 'end'}}>
                     
