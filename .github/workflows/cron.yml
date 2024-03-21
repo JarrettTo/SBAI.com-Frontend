@@ -1,0 +1,12 @@
+name: Daily Cron Job
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Run daily at midnight
+
+jobs:
+  run-cron:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vercel Webhook
+        run: curl -X POST https://sbai-com-frontend-vercel.app/api/cron
