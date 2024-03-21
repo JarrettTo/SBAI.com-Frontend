@@ -4,6 +4,19 @@ import axios from "axios";
 
 dotenv.config();
 
+// Function to convert UTC to Chicago time
+// Function to convert Chicago time to MySQL timestamp format
+function convertToMySQLTimestamp(chicagoDateString) {
+    const chicagoDate = new Date(chicagoDateString);
+    const year = chicagoDate.getFullYear();
+    const month = (chicagoDate.getMonth() + 1).toString().padStart(2, '0');
+    const day = chicagoDate.getDate().toString().padStart(2, '0');
+    const hours = chicagoDate.getHours().toString().padStart(2, '0');
+    const minutes = chicagoDate.getMinutes().toString().padStart(2, '0');
+    const seconds = chicagoDate.getSeconds().toString().padStart(2, '0');
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
 
 export default async function handler(req, res) {
     let connection;
@@ -23,10 +36,8 @@ export default async function handler(req, res) {
               api_key: process.env.API_KEY, // Include the API key as a query parameter
             },
         });
-        const gamesFromApi = response.data[0]; // Assuming this is an array of INBAGame
+        const gamesFromApi = response.data[0]; // Access the inner array
         console.log("RESPONSE:", gamesFromApi);
-
-        
 
         connection = await mysql.createConnection({
             host: process.env.DB_HOST,
@@ -38,16 +49,17 @@ export default async function handler(req, res) {
 
         // Insert games and predictions
         for (const game of gamesFromApi) {
+            
+            // Convert schedule to Chicago time in MySQL timestamp format
+            const chicagoTimestamp = convertToMySQLTimestamp(game.schedule);
 
-            // Convert date format to MySQL TIMESTAMP format
-            const scheduleTimestamp = new Date(game.schedule).toISOString().slice(0, 19).replace('T', ' ');
 
-            console.log("GAME:", game.id, game.homeTeam, game.awayTeam , scheduleTimestamp)
+            // Insert into Games table
             const gameQuery = `
-                INSERT INTO Games (id, home_team, away_team, date)
+                INSERT INTO Games (id, homeTeam, awayTeam, schedule)
                 VALUES (?, ?, ?, ?)
             `;
-            await connection.execute(gameQuery, [game.id, game.homeTeam, game.awayTeam, scheduleTimestamp]);
+            await connection.execute(gameQuery, [game.id, game.homeTeam, game.awayTeam, chicagoTimestamp]);
 
             // Find matching predictions
             const matchingPrediction = gamePredictions.find(p => 

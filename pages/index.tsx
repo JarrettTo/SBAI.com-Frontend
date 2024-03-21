@@ -23,6 +23,8 @@ const HomePage = () => {
     const [tabOptions, setTabOptions] = useState([])
     
     const [gamePreds, setGamePreds] = useState<Predictions[]>([]);
+    
+
     const fetchGameSchedules = async () => {
         try {
             const response = await axios.get('/api/nba_games',{
@@ -92,8 +94,9 @@ const HomePage = () => {
             alabamaDate.setDate(alabamaDate.getDate() - 1);
         
             let previousDate = alabamaDate.toISOString().split('T')[0];
+            
             const response = await axios.get(`/api/get_db?date=${encodeURIComponent(previousDate)}`);
-
+            console.log("PAST DATE:", previousDate)
             console.log("PAST:", response.data);
 
             setGameSchedules(currentGameSchedules =>
@@ -246,6 +249,7 @@ const HomePage = () => {
         console.log("STATE CHECK", gameSchedules);
         fetchGameOdds();
         fetchGamePredictions();
+        fetchPastGames();
     
         const dates = [];
         const today = new Date();
