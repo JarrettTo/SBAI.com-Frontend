@@ -23,21 +23,21 @@ export default async function handler(req, res) {
             password: process.env.DB_PASSWORD,
         });
 
+        // const query = `
+        // SELECT g.id, g.homeTeam, g.awayTeam, g.schedule, g.location, g.odds
+        // FROM Games g
+        // WHERE CONVERT_TZ(g.schedule, 'UTC', 'America/Chicago') >= ?
+        // AND CONVERT_TZ(g.schedule, 'UTC', 'America/Chicago') < ?;
+        // `;
+
         const query = `
-        SELECT g.id, g.homeTeam, g.awayTeam, g.schedule, g.location, g.odds
+        SELECT g.id, g.homeTeam, g.awayTeam, g.schedule, g.location, g.odds,
+        p.ml_pred, p.ml_conf, p.ou_pred, p.ou_conf
         FROM Games g
+        JOIN Predictions p ON g.id = p.id
         WHERE CONVERT_TZ(g.schedule, 'UTC', 'America/Chicago') >= ?
         AND CONVERT_TZ(g.schedule, 'UTC', 'America/Chicago') < ?;
         `;
-
-        // const query = `
-        // SELECT g.id, g.home_team, g.away_team, g.date, g.location, g.odds,
-        // p.ml_pred, p.ml_conf, p.ou_pred, p.ou_conf
-        // FROM Games g
-        // JOIN Predictions p ON g.id = p.id
-        // WHERE CONVERT_TZ(g.date, 'UTC', 'America/Chicago') >= ?
-        // AND CONVERT_TZ(g.date, 'UTC', 'America/Chicago') < ?;
-        // `;
         
         const [results] = await connection.execute(query, [requestedDate + ' 00:00:00', nextDayStr + ' 00:00:00']);
 
