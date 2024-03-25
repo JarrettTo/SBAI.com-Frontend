@@ -22,14 +22,7 @@ export default async function handler(req, res) {
     let connection;
     const url = process.env.URL;
     const gamePredictions = [
-        {"away_team":"Indiana Pacers","home_team":"Detroit Pistons","id":"0","ml_conf":"61.8%","ml_pred":"Indiana Pacers","ou_conf":"59.8%","ou_pred":"OVER 232.5"},
-{"away_team":"Miami Heat","home_team":"Cleveland Cavaliers","id":"1","ml_conf":"67.1%","ml_pred":"Cleveland Cavaliers","ou_conf":"56.4%","ou_pred":"OVER 203.5"},
-{"away_team":"Milwaukee Bucks","home_team":"Boston Celtics","id":"2","ml_conf":"76.4%","ml_pred":"Boston Celtics","ou_conf":"69.2%","ou_pred":"UNDER 225.5"},
-{"away_team":"Sacramento Kings","home_team":"Toronto Raptors","id":"3","ml_conf":"62.9%","ml_pred":"Sacramento Kings","ou_conf":"66.5%","ou_pred":"OVER 230"},
-{"away_team":"Utah Jazz","home_team":"Oklahoma City Thunder","id":"4","ml_conf":"76.0%","ml_pred":"Oklahoma City Thunder","ou_conf":"52.1%","ou_pred":"OVER 231"},
-{"away_team":"Memphis Grizzlies","home_team":"Golden State Warriors","id":"5","ml_conf":"74.5%","ml_pred":"Golden State Warriors","ou_conf":"54.4%","ou_pred":"OVER 219.5"},
-{"away_team":"Philadelphia 76ers","home_team":"Phoenix Suns","id":"6","ml_conf":"68.5%","ml_pred":"Phoenix Suns","ou_conf":"53.6%","ou_pred":"OVER 220"},
-{"away_team":"Los Angeles Clippers","home_team":"Portland Trail Blazers","id":"7","ml_conf":"79.3%","ml_pred":"Los Angeles Clippers","ou_conf":"56.8%","ou_pred":"UNDER 217.5"}
+        {"away_team":"Brooklyn Nets","home_team":"New York Knicks","id":"0","ml_conf":"72.2%","ml_pred":"New York Knicks","ou_conf":"53.8%","ou_pred":"OVER 205"},{"away_team":"Sacramento Kings","home_team":"Orlando Magic","id":"1","ml_conf":"57.9%","ml_pred":"Orlando Magic","ou_conf":"65.9%","ou_pred":"OVER 216.5"},{"away_team":"Charlotte Hornets","home_team":"Atlanta Hawks","id":"2","ml_conf":"69.0%","ml_pred":"Atlanta Hawks","ou_conf":"58.1%","ou_pred":"OVER 214.5"},{"away_team":"Boston Celtics","home_team":"Chicago Bulls","id":"3","ml_conf":"60.4%","ml_pred":"Boston Celtics","ou_conf":"59.6%","ou_pred":"UNDER 221"},{"away_team":"Phoenix Suns","home_team":"San Antonio Spurs","id":"4","ml_conf":"71.9%","ml_pred":"Phoenix Suns","ou_conf":"55.6%","ou_pred":"OVER 228.5"},{"away_team":"Utah Jazz","home_team":"Houston Rockets","id":"5","ml_conf":"66.3%","ml_pred":"Houston Rockets","ou_conf":"74.9%","ou_pred":"OVER 228.5"},{"away_team":"Toronto Raptors","home_team":"Washington Wizards","id":"6","ml_conf":"59.2%","ml_pred":"Toronto Raptors","ou_conf":"51.6%","ou_pred":"OVER 232"},{"away_team":"Denver Nuggets","home_team":"Portland Trail Blazers","id":"7","ml_conf":"74.2%","ml_pred":"Denver Nuggets","ou_conf":"81.8%","ou_pred":"UNDER 210.5"}
     ];
     try {
         const response = await axios.get(`${url}today_games`, {
