@@ -3,6 +3,7 @@ import { INBAGame} from '../types/Game';
 import * as NBAIcons from 'react-nba-logos';
 import { Button } from '@mui/material';
 import styles from './GameDisplay.module.css'
+import { motion, AnimatePresence } from "framer-motion"
 
 interface GameDisplayProps extends INBAGame {
     isInDropdown?: boolean;
@@ -133,7 +134,7 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
     }
     
    return(
-    <div className={styles.main} style={{marginBottom: '7px', borderRadius: '10px'}}>
+    <div className={styles.main} style={{marginBottom: '7px', borderRadius: '10px', height: 'auto'}}>
         <div className={styles.row_container} style={{display: 'flex', flexDirection:'row', justifyContent: 'space-between', paddingTop: '10px', paddingBottom: '20px', paddingLeft: '30px', width: '100%'}}>
         
             <div className={styles.game_display}style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', justifyContent: 'space-between'}}>
@@ -215,9 +216,15 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
             </div>
             )}
         </div>
-
-        {showOdds && odds && (
-            <div className={styles.odds} style={{ display: 'flex', flexDirection: 'column', padding: '10px 20px'}}>
+        <AnimatePresence>
+            {showOdds && odds && (
+            <motion.div layout
+                initial={{ opacity: 0, maxHeight: '0px',  }}
+                animate={{ opacity: 1,  maxHeight: '500px', }}
+                exit={{ opacity: 0, maxHeight: '0px' }}
+                transition={{ duration: 0.5, ease: 'easeInOut' }}
+            >
+                <div className={styles.odds} style={{ display: 'flex', flexDirection: 'column', padding: '10px 20px 30px'}}>
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                     <div style={{ width: '30%', padding:'10px 0px', fontSize: '12px', color: '#555'}}>TOMORROW</div>
                     <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', color: '#555'}}>SPREAD</div>
@@ -239,9 +246,19 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
                     <div style={{ width: '20%', textAlign: 'center', padding:'15px 0px', margin: '2px', backgroundColor: '#f5f5f5', color: '#555'}}>{oddsMap['away_h2h_price'] ? oddsMap['away_h2h_price'] : '&emsp;'}</div>
                 </div>
             </div>
-        )}
-        {showPreds && predictions && (
-            <div className={styles.prediction} style={{display: 'flex', flexDirection:'row', marginTop:'30px',alignItems:'center'}}>
+            </motion.div>
+            )}
+        </AnimatePresence>
+        <AnimatePresence>
+            {showPreds && predictions && (
+            <motion.div layout
+            initial={{ opacity: 0, maxHeight: '0px',}}
+            animate={{ opacity: 1,  maxHeight: '500px', }}
+            exit={{ opacity: 0, maxHeight: '0px' }}
+            transition={{ duration: 0.4, ease: 'easeInOut' }}
+            >
+        
+            <div className={styles.prediction} style={{display: 'flex', flexDirection:'row', marginTop:'20px',alignItems:'center', paddingBottom: '10px'}}>
                 <div style={{display: 'flex', flexDirection:'column', marginRight:'5%',justifyContent:'center' ,  marginBottom:'15px'}} >
                     <p className={styles.prediction_type} style={{color: '#555'}}>Moneyline Prediction:</p>
                     <div style={{display:'flex', flexDirection:'row',  alignItems:'center'}}>
@@ -258,8 +275,11 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
                     </div>
                 </div>
             </div>
-        )}
+            </motion.div>
+            )}
+        </AnimatePresence>
     </div>
+    
     )
     
     } 
