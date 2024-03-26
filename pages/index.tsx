@@ -240,7 +240,7 @@ const HomePage = () => {
             "ou_conf": "51.7%",
             "ou_pred": "UNDER 239"
         }
-        setGamePreds([{"away_team":"Charlotte Hornets","home_team":"Cleveland Cavaliers","id":"0","ml_conf":"78.5%","ml_pred":"Cleveland Cavaliers","ou_conf":"52.4%","ou_pred":"OVER 205"},{"away_team":"Boston Celtics","home_team":"Atlanta Hawks","id":"1","ml_conf":"67.2%","ml_pred":"Boston Celtics","ou_conf":"50.1%","ou_pred":"UNDER 226"},{"away_team":"Detroit Pistons","home_team":"New York Knicks","id":"2","ml_conf":"85.5%","ml_pred":"New York Knicks","ou_conf":"68.0%","ou_pred":"OVER 207"},{"away_team":"Brooklyn Nets","home_team":"Toronto Raptors","id":"3","ml_conf":"57.4%","ml_pred":"Brooklyn Nets","ou_conf":"54.6%","ou_pred":"UNDER 215.5"},{"away_team":"Phoenix Suns","home_team":"San Antonio Spurs","id":"4","ml_conf":"72.6%","ml_pred":"Phoenix Suns","ou_conf":"60.4%","ou_pred":"OVER 233"},{"away_team":"Washington Wizards","home_team":"Chicago Bulls","id":"5","ml_conf":"76.8%","ml_pred":"Chicago Bulls","ou_conf":"54.9%","ou_pred":"OVER 225"},{"away_team":"Portland Trail Blazers","home_team":"Houston Rockets","id":"6","ml_conf":"80.0%","ml_pred":"Houston Rockets","ou_conf":"53.1%","ou_pred":"UNDER 221"},{"away_team":"Memphis Grizzlies","home_team":"Denver Nuggets","id":"7","ml_conf":"76.1%","ml_pred":"Denver Nuggets","ou_conf":"65.0%","ou_pred":"OVER 213.5"},{"away_team":"Dallas Mavericks","home_team":"Utah Jazz","id":"8","ml_conf":"62.3%","ml_pred":"Dallas Mavericks","ou_conf":"51.2%","ou_pred":"UNDER 234"},{"away_team":"Philadelphia 76ers","home_team":"Sacramento Kings","id":"9","ml_conf":"61.6%","ml_pred":"Sacramento Kings","ou_conf":"63.0%","ou_pred":"OVER 219"},{"away_team":"Indiana Pacers","home_team":"Los Angeles Clippers","id":"10","ml_conf":"77.4%","ml_pred":"Los Angeles Clippers","ou_conf":"57.3%","ou_pred":"OVER 233.5"}])
+        setGamePreds([{"away_team":"Golden State Warriors","home_team":"Miami Heat","id":"0","ml_conf":"60.4%","ml_pred":"Miami Heat","ou_conf":"61.5%","ou_pred":"OVER 218.5"},{"away_team":"Los Angeles Lakers","home_team":"Milwaukee Bucks","id":"1","ml_conf":"72.4%","ml_pred":"Milwaukee Bucks","ou_conf":"71.7%","ou_pred":"UNDER 232"},{"away_team":"Oklahoma City Thunder","home_team":"New Orleans Pelicans","id":"2","ml_conf":"51.1%","ml_pred":"New Orleans Pelicans","ou_conf":"59.5%","ou_pred":"UNDER 223.5"},{"away_team":"Dallas Mavericks","home_team":"Sacramento Kings","id":"3","ml_conf":"55.0%","ml_pred":"Sacramento Kings","ou_conf":"67.7%","ou_pred":"UNDER 236"}])
     };
     useEffect(() => {
         // Fetch NBA game schedules when the component mounts
@@ -321,7 +321,7 @@ const HomePage = () => {
         
         <div style={{display : "flex", flexDirection : "column", alignItems:"center", height: "100vh", overflow: 'hidden'}} >
             <div className={styles.header_container} style={{display : "flex", flexDirection : "column",alignItems:"center",justifyContent:"center"}}>
-                <p className={styles.header}>Sports Betting AI</p>
+                <p className={styles.header}>Sports X AI</p>
             </div>
             <div className={styles.tabs} style={{display : "flex", flexDirection : "column", width:'80%', marginBottom:'15px'}}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
