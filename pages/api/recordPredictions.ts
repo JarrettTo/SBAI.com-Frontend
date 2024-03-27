@@ -11,7 +11,7 @@ export default async function handler(req, res) {
         {"away_team":"Golden State Warriors","home_team":"Miami Heat","id":"0","ml_conf":"60.4%","ml_pred":"Miami Heat","ou_conf":"61.5%","ou_pred":"OVER 218.5"},{"away_team":"Los Angeles Lakers","home_team":"Milwaukee Bucks","id":"1","ml_conf":"72.4%","ml_pred":"Milwaukee Bucks","ou_conf":"71.7%","ou_pred":"UNDER 232"},{"away_team":"Oklahoma City Thunder","home_team":"New Orleans Pelicans","id":"2","ml_conf":"51.1%","ml_pred":"New Orleans Pelicans","ou_conf":"59.5%","ou_pred":"UNDER 223.5"},{"away_team":"Dallas Mavericks","home_team":"Sacramento Kings","id":"3","ml_conf":"55.0%","ml_pred":"Sacramento Kings","ou_conf":"67.7%","ou_pred":"UNDER 236"}
     ];
     try {
-        const response = await axios.get(`${url}past_games`, {
+        const response = await axios.get(`${url}today_games`, {
             params: {
               api_key: process.env.API_KEY, // Include the API key as a query parameter
             },

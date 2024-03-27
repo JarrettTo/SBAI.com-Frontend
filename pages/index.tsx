@@ -223,22 +223,77 @@ const HomePage = () => {
             ou_conf: (prediction.ou_conf * 100).toFixed(2) + '%', // Convert ou_conf to percentage with two decimal places
             }));
 
-            setGamePreds(gamePreds);
+            setGamePreds(prevGamePreds => [...prevGamePreds, ...gamePreds]); // Append to previous state
             console.log('Yesterday Preds:',response.data);
         } catch (error) {
             console.error('Error fetching game predictions:', error);
         }
     };
+
+    const fetchTodayGamePredictions = async () => {
+        try {
+            const date = new Date().toLocaleString("en-US", { timeZone: 'America/Chicago' });
+            const currentDate = new Date(date); // Convert the string back to a Date object for manipulation
+            let formattedDate = currentDate.toISOString().slice(0, 10);
+            console.log('Today Prediction Date:',formattedDate);
+
+            const response = await axios.get('/api/get_db',{
+                params: {
+                    date: formattedDate 
+                    },
+                });
+            
+            // Convert ml_conf and ou_conf values to percentages
+            const gamePreds = response.data.map(prediction => ({
+            ...prediction,
+            ml_conf: (prediction.ml_conf * 100).toFixed(2) + '%', // Convert ml_conf to percentage with two decimal places
+            ou_conf: (prediction.ou_conf * 100).toFixed(2) + '%', // Convert ou_conf to percentage with two decimal places
+            }));
+
+            setGamePreds(prevGamePreds => [...prevGamePreds, ...gamePreds]); // Append to previous state
+            console.log('Today Preds:',response.data);
+        } catch (error) {
+            console.error('Error fetching game predictions:', error);
+        }
+    }
+
+    const fetchTomorrowGamePredictions = async () => {
+        try {
+            const date = new Date().toLocaleString("en-US", { timeZone: 'America/Chicago' });
+            const currentDate = new Date(date); // Convert the string back to a Date object for manipulation
+            currentDate.setDate(currentDate.getDate() + 1);
+            let formattedDate = currentDate.toISOString().slice(0, 10);
+            console.log('Tomorrow Prediction Date:',formattedDate);
+
+            const response = await axios.get('/api/get_db',{
+                params: {
+                    date: formattedDate 
+                    },
+                });
+            
+            // Convert ml_conf and ou_conf values to percentages
+            const gamePreds = response.data.map(prediction => ({
+            ...prediction,
+            ml_conf: (prediction.ml_conf * 100).toFixed(2) + '%', // Convert ml_conf to percentage with two decimal places
+            ou_conf: (prediction.ou_conf * 100).toFixed(2) + '%', // Convert ou_conf to percentage with two decimal places
+            }));
+
+            setGamePreds(prevGamePreds => [...prevGamePreds, ...gamePreds]); // Append to previous state
+            console.log('Tomorrow Preds:',response.data);
+        } catch (error) {
+            console.error('Error fetching game predictions:', error);
+        }
+    }
+
     useEffect(() => {
         // Fetch NBA game schedules when the component mounts
-        // fetchGameSchedules();
         fetchFutureGames();
         console.log("STATE CHECK", gameSchedules);
         fetchGameOdds();
         fetchYesterdayGamePredictions();
-        // fetchPastGames();
         fetchTodayGame();
         fetchYesterdayGame();
+        fetchTodayGamePredictions();
     
         const dates = [];
         const today = new Date();
