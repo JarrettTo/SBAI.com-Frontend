@@ -4,28 +4,14 @@ import axios from "axios";
 
 dotenv.config();
 
-// Function to convert UTC to Chicago time
-// Function to convert Chicago time to MySQL timestamp format
-function convertToMySQLTimestamp(chicagoDateString) {
-    const chicagoDate = new Date(chicagoDateString);
-    const year = chicagoDate.getFullYear();
-    const month = (chicagoDate.getMonth() + 1).toString().padStart(2, '0');
-    const day = chicagoDate.getDate().toString().padStart(2, '0');
-    const hours = chicagoDate.getHours().toString().padStart(2, '0');
-    const minutes = chicagoDate.getMinutes().toString().padStart(2, '0');
-    const seconds = chicagoDate.getSeconds().toString().padStart(2, '0');
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-}
-
-
 export default async function handler(req, res) {
     let connection;
     const url = process.env.URL;
     const gamePredictions = [
-        {"away_team":"Brooklyn Nets","home_team":"New York Knicks","id":"0","ml_conf":"72.2%","ml_pred":"New York Knicks","ou_conf":"53.8%","ou_pred":"OVER 205"},{"away_team":"Sacramento Kings","home_team":"Orlando Magic","id":"1","ml_conf":"57.9%","ml_pred":"Orlando Magic","ou_conf":"65.9%","ou_pred":"OVER 216.5"},{"away_team":"Charlotte Hornets","home_team":"Atlanta Hawks","id":"2","ml_conf":"69.0%","ml_pred":"Atlanta Hawks","ou_conf":"58.1%","ou_pred":"OVER 214.5"},{"away_team":"Boston Celtics","home_team":"Chicago Bulls","id":"3","ml_conf":"60.4%","ml_pred":"Boston Celtics","ou_conf":"59.6%","ou_pred":"UNDER 221"},{"away_team":"Phoenix Suns","home_team":"San Antonio Spurs","id":"4","ml_conf":"71.9%","ml_pred":"Phoenix Suns","ou_conf":"55.6%","ou_pred":"OVER 228.5"},{"away_team":"Utah Jazz","home_team":"Houston Rockets","id":"5","ml_conf":"66.3%","ml_pred":"Houston Rockets","ou_conf":"74.9%","ou_pred":"OVER 228.5"},{"away_team":"Toronto Raptors","home_team":"Washington Wizards","id":"6","ml_conf":"59.2%","ml_pred":"Toronto Raptors","ou_conf":"51.6%","ou_pred":"OVER 232"},{"away_team":"Denver Nuggets","home_team":"Portland Trail Blazers","id":"7","ml_conf":"74.2%","ml_pred":"Denver Nuggets","ou_conf":"81.8%","ou_pred":"UNDER 210.5"}
+        {"away_team":"Golden State Warriors","home_team":"Miami Heat","id":"0","ml_conf":"60.4%","ml_pred":"Miami Heat","ou_conf":"61.5%","ou_pred":"OVER 218.5"},{"away_team":"Los Angeles Lakers","home_team":"Milwaukee Bucks","id":"1","ml_conf":"72.4%","ml_pred":"Milwaukee Bucks","ou_conf":"71.7%","ou_pred":"UNDER 232"},{"away_team":"Oklahoma City Thunder","home_team":"New Orleans Pelicans","id":"2","ml_conf":"51.1%","ml_pred":"New Orleans Pelicans","ou_conf":"59.5%","ou_pred":"UNDER 223.5"},{"away_team":"Dallas Mavericks","home_team":"Sacramento Kings","id":"3","ml_conf":"55.0%","ml_pred":"Sacramento Kings","ou_conf":"67.7%","ou_pred":"UNDER 236"}
     ];
     try {
-        const response = await axios.get(`${url}today_games`, {
+        const response = await axios.get(`${url}past_games`, {
             params: {
               api_key: process.env.API_KEY, // Include the API key as a query parameter
             },
@@ -45,7 +31,7 @@ export default async function handler(req, res) {
         for (const game of gamesFromApi) {
             
             // Convert schedule to Chicago time in MySQL timestamp format
-            const chicagoTimestamp = convertToMySQLTimestamp(game.schedule);
+            const mysqlTimestamp = new Date(game.schedule).toISOString().slice(0, 19).replace('T', ' ');
 
 
             // Insert into Games table
@@ -53,7 +39,7 @@ export default async function handler(req, res) {
                 INSERT INTO Games (id, homeTeam, awayTeam, schedule)
                 VALUES (?, ?, ?, ?)
             `;
-            await connection.execute(gameQuery, [game.id, game.homeTeam, game.awayTeam, chicagoTimestamp]);
+            await connection.execute(gameQuery, [game.id, game.homeTeam, game.awayTeam, mysqlTimestamp]);
 
             // Find matching predictions
             const matchingPrediction = gamePredictions.find(p => 

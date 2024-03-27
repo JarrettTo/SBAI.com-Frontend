@@ -25,112 +25,159 @@ const HomePage = () => {
     const [gamePreds, setGamePreds] = useState<Predictions[]>([]);
     
 
-    const fetchGameSchedules = async () => {
+    const fetchTodayGame = async () => {
         try {
-            const response = await axios.get('/api/nba_games',{
-            params: {
-                api_key: process.env.ODDS_API_KEY, /// Access API key from environment variables
-                },
-            });
-            console.log("CHECK: ", response.data)
-            const filteredGames = response.data.filter((value) => {
-                // Parse the schedule time to a Date object
-                const gameDateUTC = new Date(value.schedule);
-            
-                // Create a Date object for the current time in UTC
-                const currentDateUTC = new Date();
-            
-                // Function to convert a date to Central Time and strip the time part
-                function toCSTDateString(date) {
-                    // Convert to Central Time
-                    const cstDate = new Date(date.toLocaleString("en-US", { timeZone: 'America/Chicago' }));
-                    
-                    // Extract the year, month, and day part
-                    const year = cstDate.getFullYear();
-                    const month = cstDate.getMonth(); // Note: getMonth() returns 0-11
-                    const day = cstDate.getDate();
-            
-                    // Return the date in string form
-                    return `${year}-${month}-${day}`;
-                }
-            
-                // Convert both gameDate and currentDate to Central Time without the time part
-                const gameDateString = toCSTDateString(gameDateUTC);
-                const currentDateString = toCSTDateString(currentDateUTC);
-            
-                console.log("game date:", gameDateString);
-                console.log("current date:", currentDateString);
-            
-                // Compare only the date parts (year, month, day)
-                return gameDateString === currentDateString;
-            });
-            
-            console.log(filteredGames);
-            
-              
-            setGameSchedules(currentGameSchedules =>
-                currentGameSchedules.map((item, index) => 
-                  index === 2 ? filteredGames : item
-                )
-            );
-            
-            console.log(filteredGames);
-        } catch (error) {
-            console.error('Error fetching game schedules:', error);
-        }
-    };
-    const fetchPastGames = async () => {
-        try {
-            const alabamaTime = new Intl.DateTimeFormat('en-US', {
-                timeZone: 'America/Chicago',
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-              }).format(new Date());
-          
-            const [month, day, year] = alabamaTime.split('/');
-            const alabamaDate = new Date(`${year}-${month}-${day}T00:00:00-06:00`);
-        
-            alabamaDate.setDate(alabamaDate.getDate() - 1);
-        
-            let previousDate = alabamaDate.toISOString().split('T')[0];
-            
-            const response = await axios.get(`/api/get_db?date=${encodeURIComponent(previousDate)}`);
-            console.log("PAST DATE:", previousDate)
-            console.log("PAST:", response.data);
-
-            setGameSchedules(currentGameSchedules =>
-                currentGameSchedules.map((item, index) => 
-                  index === 1 ? response.data : item
-                )
-            );
-
-            alabamaDate.setDate(alabamaDate.getDate() - 1);
-            previousDate = alabamaDate.toISOString().split('T')[0];
-            const response2 = await axios.get(`/api/get_db?date=${encodeURIComponent(previousDate)}`);
-
-            console.log("PAST2:", response2.data);
-
-            setGameSchedules(currentGameSchedules =>
-                currentGameSchedules.map((item, index) => 
-                  index === 0 ? response2.data : item
-                )
-            );
-        } catch (error) {
-            console.error('Error fetching game schedules:', error);
-            
-        }
-    }; 
-    const fetchFutureGames = async () => {
-        try {
-            const response = await axios.get('/api/future_games');
+            const response = await axios.get('/api/today_games');
 
             console.log("PRESENT:",response.data);
             setGameSchedules(currentGameSchedules => {
                 let updatedSchedules = [...currentGameSchedules];
                 response.data.forEach((dataArr, index) => {
                   // Calculate the target index (starting from 4 in this case)
-                  const targetIndex = 3 + index;
+                  const targetIndex = 1 + index;
+                  updatedSchedules[targetIndex] = dataArr;
+                });
+              
+                // Return the updated schedules array
+                return updatedSchedules;
+              });
+
+        } catch (error) {
+            console.error('Error fetching yesterday schedules:', error);
+        }
+    };
+
+    const fetchYesterdayGame = async () => {
+        try {
+            const response = await axios.get('/api/past_games');
+
+            console.log("Yesterday:",response.data);
+            setGameSchedules(currentGameSchedules => {
+                let updatedSchedules = [...currentGameSchedules];
+                response.data.forEach((dataArr, index) => {
+                  // Calculate the target index (starting from 4 in this case)
+                  const targetIndex = index;
+                  updatedSchedules[targetIndex] = dataArr;
+                });
+              
+                // Return the updated schedules array
+                return updatedSchedules;
+              });
+
+        } catch (error) {
+            console.error('Error fetching yesterday schedules:', error);
+        }
+    };
+    
+
+    // const fetchGameSchedules = async () => {
+    //     try {
+    //         const response = await axios.get('/api/nba_games',{
+    //         params: {
+    //             api_key: process.env.ODDS_API_KEY, /// Access API key from environment variables
+    //             },
+    //         });
+    //         console.log("CHECK: ", response.data)
+    //         const filteredGames = response.data.filter((value) => {
+    //             // Parse the schedule time to a Date object
+    //             const gameDateUTC = new Date(value.schedule);
+            
+    //             // Create a Date object for the current time in UTC
+    //             const currentDateUTC = new Date();
+            
+    //             // Function to convert a date to Central Time and strip the time part
+    //             function toCSTDateString(date) {
+    //                 // Convert to Central Time
+    //                 const cstDate = new Date(date.toLocaleString("en-US", { timeZone: 'America/Chicago' }));
+                    
+    //                 // Extract the year, month, and day part
+    //                 const year = cstDate.getFullYear();
+    //                 const month = cstDate.getMonth(); // Note: getMonth() returns 0-11
+    //                 const day = cstDate.getDate();
+            
+    //                 // Return the date in string form
+    //                 return `${year}-${month}-${day}`;
+    //             }
+            
+    //             // Convert both gameDate and currentDate to Central Time without the time part
+    //             const gameDateString = toCSTDateString(gameDateUTC);
+    //             const currentDateString = toCSTDateString(currentDateUTC);
+            
+    //             console.log("game date:", gameDateString);
+    //             console.log("current date:", currentDateString);
+            
+    //             // Compare only the date parts (year, month, day)
+    //             return gameDateString === currentDateString;
+    //         });
+            
+    //         console.log(filteredGames);
+            
+              
+    //         setGameSchedules(currentGameSchedules =>
+    //             currentGameSchedules.map((item, index) => 
+    //               index === 2 ? filteredGames : item
+    //             )
+    //         );
+            
+    //         console.log(filteredGames);
+    //     } catch (error) {
+    //         console.error('Error fetching game schedules:', error);
+    //     }
+    // };
+    
+    
+    // const fetchPastGames = async () => {
+    //     try {
+    //         const alabamaTime = new Intl.DateTimeFormat('en-US', {
+    //             timeZone: 'America/Chicago',
+    //             year: 'numeric',
+    //             month: '2-digit',
+    //             day: '2-digit',
+    //           }).format(new Date());
+          
+    //         const [month, day, year] = alabamaTime.split('/');
+    //         const alabamaDate = new Date(`${year}-${month}-${day}T00:00:00-06:00`);
+        
+    //         alabamaDate.setDate(alabamaDate.getDate() - 1);
+        
+    //         let previousDate = alabamaDate.toISOString().split('T')[0];
+            
+    //         const response = await axios.get(`/api/get_db?date=${encodeURIComponent(previousDate)}`);
+    //         console.log("PAST DATE:", previousDate)
+    //         console.log("PAST:", response.data);
+
+    //         setGameSchedules(currentGameSchedules =>
+    //             currentGameSchedules.map((item, index) => 
+    //               index === 1 ? response.data : item
+    //             )
+    //         );
+
+    //         alabamaDate.setDate(alabamaDate.getDate() - 1);
+    //         previousDate = alabamaDate.toISOString().split('T')[0];
+    //         const response2 = await axios.get(`/api/get_db?date=${encodeURIComponent(previousDate)}`);
+
+    //         console.log("PAST2:", response2.data);
+
+    //         setGameSchedules(currentGameSchedules =>
+    //             currentGameSchedules.map((item, index) => 
+    //               index === 0 ? response2.data : item
+    //             )
+    //         );
+    //     } catch (error) {
+    //         console.error('Error fetching game schedules:', error);
+            
+    //     }
+    // }; 
+    const fetchFutureGames = async () => {
+        try {
+            const response = await axios.get('/api/future_games');
+
+            console.log("Tomorrow:",response.data);
+            setGameSchedules(currentGameSchedules => {
+                let updatedSchedules = [...currentGameSchedules];
+                response.data.forEach((dataArr, index) => {
+                  // Calculate the target index (starting from 4 in this case)
+                  const targetIndex = 2 + index;
                   updatedSchedules[targetIndex] = dataArr;
                 });
               
@@ -155,121 +202,69 @@ const HomePage = () => {
             console.error('Error fetching game odds:', error);
         }
     };
-    const fetchGamePredictions = async () => {
-        const prediction1 : Predictions = {"away_team":"Golden State Warriors","home_team":"Washington Wizards","id":"0","ml_conf":"73.4%","ml_pred":"Golden State Warriors","ou_conf":"61.9%","ou_pred":"OVER 243"}
+    const fetchYesterdayGamePredictions = async () => {
+        try {
+            const date = new Date().toLocaleString("en-US", { timeZone: 'America/Chicago' });
+            const currentDate = new Date(date); // Convert the string back to a Date object for manipulation
+            currentDate.setDate(currentDate.getDate() - 1);
+            let formattedDate = currentDate.toISOString().slice(0, 10);
+            console.log('Yesterday Prediction Date:',formattedDate);
 
-        const prediction2 : Predictions = {"away_team":"Brooklyn Nets","home_team":"Orlando Magic","id":"1","ml_conf":"72.4%","ml_pred":"Orlando Magic","ou_conf":"56.7%","ou_pred":"UNDER 215"}
-        const prediction3 : Predictions = {
-            "away_team": "Brooklyn Nets",
-            "home_team": "Memphis Grizzlies",
-            "id": "2",
-            "ml_conf": "57.2%",
-            "ml_pred": "Brooklyn Nets",
-            "ou_conf": "67.8%",
-            "ou_pred": "UNDER 214.5"
+            const response = await axios.get('/api/get_db',{
+                params: {
+                    date: formattedDate 
+                    },
+                });
+            
+            // Convert ml_conf and ou_conf values to percentages
+            const gamePreds = response.data.map(prediction => ({
+            ...prediction,
+            ml_conf: (prediction.ml_conf * 100).toFixed(2) + '%', // Convert ml_conf to percentage with two decimal places
+            ou_conf: (prediction.ou_conf * 100).toFixed(2) + '%', // Convert ou_conf to percentage with two decimal places
+            }));
+
+            setGamePreds(gamePreds);
+            console.log('Yesterday Preds:',response.data);
+        } catch (error) {
+            console.error('Error fetching game predictions:', error);
         }
-        const prediction4 : Predictions = {
-            "away_team": "Miami Heat",
-            "home_team": "Sacramento Kings",
-            "id": "3",
-            "ml_conf": "52.5%",
-            "ml_pred": "Sacramento Kings",
-            "ou_conf": "52.8%",
-            "ou_pred": "OVER 226.5"
-        }
-        const prediction5 : Predictions = {
-            "away_team": "Denver Nuggets",
-            "home_team": "Golden State Warriors",
-            "id": "4",
-            "ml_conf": "57.0%",
-            "ml_pred": "Golden State Warriors",
-            "ou_conf": "55.2%",
-            "ou_pred": "UNDER 232"
-        }
-        const prediction6 : Predictions = {
-            "away_team": "Chicago Bulls",
-            "home_team": "New Orleans Pelicans",
-            "id": "5",
-            "ml_conf": "67.7%",
-            "ml_pred": "New Orleans Pelicans",
-            "ou_conf": "56.3%",
-            "ou_pred": "UNDER 222.5"
-        }
-        const prediction7 : Predictions = {
-            "away_team": "Orlando Magic",
-            "home_team": "Atlanta Hawks",
-            "id": "6",
-            "ml_conf": "52.2%",
-            "ml_pred": "Orlando Magic",
-            "ou_conf": "59.0%",
-            "ou_pred": "UNDER 226.5"
-        }
-        const prediction8 : Predictions = {
-            "away_team": "Oklahoma City Thunder",
-            "home_team": "Houston Rockets",
-            "id": "7",
-            "ml_conf": "62.6%",
-            "ml_pred": "Oklahoma City Thunder",
-            "ou_conf": "63.9%",
-            "ou_pred": "UNDER 235.5"
-        }
-        const prediction9 : Predictions = {
-            "away_team": "San Antonio Spurs",
-            "home_team": "Utah Jazz",
-            "id": "8",
-            "ml_conf": "70.0%",
-            "ml_pred": "Utah Jazz",
-            "ou_conf": "51.6%",
-            "ou_pred": "OVER 242"
-        }
-        const prediction10 : Predictions = {
-            "away_team": "Charlotte Hornets",
-            "home_team": "Portland Trail Blazers",
-            "id": "9",
-            "ml_conf": "54.0%",
-            "ml_pred": "Charlotte Hornets",
-            "ou_conf": "62.3%",
-            "ou_pred": "UNDER 219.5"
-        }
-        const prediction11 : Predictions = {
-            "away_team": "Sacramento Kings",
-            "home_team": "Los Angeles Clippers",
-            "id": "10",
-            "ml_conf": "68.7%",
-            "ml_pred": "Los Angeles Clippers",
-            "ou_conf": "51.7%",
-            "ou_pred": "UNDER 239"
-        }
-        setGamePreds([{"away_team":"Golden State Warriors","home_team":"Miami Heat","id":"0","ml_conf":"60.4%","ml_pred":"Miami Heat","ou_conf":"61.5%","ou_pred":"OVER 218.5"},{"away_team":"Los Angeles Lakers","home_team":"Milwaukee Bucks","id":"1","ml_conf":"72.4%","ml_pred":"Milwaukee Bucks","ou_conf":"71.7%","ou_pred":"UNDER 232"},{"away_team":"Oklahoma City Thunder","home_team":"New Orleans Pelicans","id":"2","ml_conf":"51.1%","ml_pred":"New Orleans Pelicans","ou_conf":"59.5%","ou_pred":"UNDER 223.5"},{"away_team":"Dallas Mavericks","home_team":"Sacramento Kings","id":"3","ml_conf":"55.0%","ml_pred":"Sacramento Kings","ou_conf":"67.7%","ou_pred":"UNDER 236"}])
     };
     useEffect(() => {
         // Fetch NBA game schedules when the component mounts
-        fetchGameSchedules();
+        // fetchGameSchedules();
         fetchFutureGames();
         console.log("STATE CHECK", gameSchedules);
         fetchGameOdds();
-        fetchGamePredictions();
-        fetchPastGames();
+        fetchYesterdayGamePredictions();
+        // fetchPastGames();
+        fetchTodayGame();
+        fetchYesterdayGame();
     
         const dates = [];
         const today = new Date();
     
-        // Generate dates from two days ago through the next four days, adjusted for Alabama time
-        for (let i = -2; i <= 2; i++) {
-            // Create a date object for 'America/Chicago' time zone
-            const date = new Date().toLocaleString("en-US", { timeZone: 'America/Chicago' });
-            const localDate = new Date(date); // Convert the string back to a Date object for manipulation
-            localDate.setDate(localDate.getDate() + i);
-    
-            // Use "Today" for the current date, otherwise format as "March 3", etc.
-            if (i === 0) {
-                dates.push("Upcoming");
-            } else {
-                const month = localDate.toLocaleString('default', { month: 'long', timeZone: 'America/Chicago' });
-                const day = localDate.getDate();
-                dates.push(`${month} ${day}`);
-            }
+// Generate dates from two days ago through the next four days, adjusted for Alabama time
+    for (let i = -1; i <= 1; i++) {
+        // Create a date object for 'America/Chicago' time zone
+        const date = new Date().toLocaleString("en-US", { timeZone: 'America/Chicago' });
+        const localDate = new Date(date); // Convert the string back to a Date object for manipulation
+        localDate.setDate(localDate.getDate() + i);
+
+        // Use "Yesterday", "Today", and "Tomorrow" for the respective dates
+        if (i === -1) {
+            dates.push("Yesterday");
+        } else if (i === 0) {
+            dates.push("Today");
+        } else if (i === 1) {
+            dates.push("Tomorrow");
+        } else {
+            // For other days, format as "March 3", etc.
+            const month = localDate.toLocaleString('default', { month: 'long', timeZone: 'America/Chicago' });
+            const day = localDate.getDate();
+            dates.push(`${month} ${day}`);
         }
+    }
+
     
         setTabOptions(dates);
     }, []);
@@ -336,7 +331,7 @@ const HomePage = () => {
             <div className={styles.game_display}>
                 
                     
-                {value==0 || value == 1? 
+                {value==0 || value == 1 || value == 2 ? 
                 
                 gameSchedules[value]?.map((game) => (
                     
@@ -346,26 +341,25 @@ const HomePage = () => {
                         homeTeam={game.homeTeam}
                       
                         awayTeam={game.awayTeam}
-                     
-                        schedule={game.schedule}
-                        odds={game.odds}
-                        predictions={game.predictions}
-                    />
-                )):
-                gameSchedules[value]?.map((game) => (
-                    
-                    <GameDisplay 
-                        key={game.id} 
-                        id={game.id} 
-                        homeTeam={game.homeTeam}
-                      
-                        awayTeam={game.awayTeam}
-                     
                         schedule={game.schedule}
                         odds={gameOdds.find((odds) => odds.home_team === game.homeTeam && odds.away_team === game.awayTeam)}
                         predictions={gamePreds.find((preds) => preds.home_team === game.homeTeam && preds.away_team === game.awayTeam)}
                     />
-                ))
+                )): null
+                // gameSchedules[value]?.map((game) => (
+                    
+                //     <GameDisplay 
+                //         key={game.id} 
+                //         id={game.id} 
+                //         homeTeam={game.homeTeam}
+                      
+                //         awayTeam={game.awayTeam}
+                     
+                //         schedule={game.schedule}
+                //         odds={gameOdds.find((odds) => odds.home_team === game.homeTeam && odds.away_team === game.awayTeam)}
+                //         predictions={gamePreds.find((preds) => preds.home_team === game.homeTeam && preds.away_team === game.awayTeam)}
+                //     />
+                // ))
                 }
                     
                 
