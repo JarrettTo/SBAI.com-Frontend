@@ -189,7 +189,7 @@ const HomePage = () => {
             console.error('Error fetching game schedules:', error);
         }
     };    
-    const fetchGameOdds = async () => {
+    const fetchTodayGameOdds = async () => {
         try {
             const response = await axios.get('/api/odds',{
                 params: {
@@ -289,7 +289,7 @@ const HomePage = () => {
         // Fetch NBA game schedules when the component mounts
         fetchFutureGames();
         console.log("STATE CHECK", gameSchedules);
-        fetchGameOdds();
+        fetchTodayGameOdds();
         fetchYesterdayGamePredictions();
         fetchTodayGame();
         fetchYesterdayGame();
