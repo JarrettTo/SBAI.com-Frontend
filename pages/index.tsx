@@ -423,7 +423,7 @@ const HomePage = () => {
                 </Paper>
             </div>
             <div className={styles.tabs} style={{display : "flex", flexDirection : "column", width:'80%', marginBottom:'15px'}}>
-                <Box sx={{ borderBottom: 1, borderColor: 'divider', display: 'flex', justifyContent: "space-between"}}>
+                <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
                     
                     <Tabs value={value} onChange={handleChange} variant="scrollable" aria-label="basic tabs example">
                         {tabOptions.map((option, index) => (
