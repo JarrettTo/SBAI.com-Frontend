@@ -10,8 +10,12 @@ import axios from 'axios';
 import dotenv from 'dotenv';
 import { Predictions } from "../types/Predictions";
 import styles from './index.module.css'
-import { Tabs, Tab, Box } from '@mui/material';
+import { Tabs, Tab, Box, Autocomplete } from '@mui/material';
 import TabPanel from "@components/TabsPanel";
+import Paper from '@mui/material/Paper';
+import InputBase from '@mui/material/InputBase';
+import IconButton from '@mui/material/IconButton';
+import SearchIcon from '@mui/icons-material/Search';
 dotenv.config();
 
 
@@ -21,10 +25,42 @@ const HomePage = () => {
     const [gameSchedules, setGameSchedules] = useState<INBAGame[][]>([[],[],[],[],[],[],[]]);
     const [gameOdds, setGameOdds] = useState<Odds[]>([]);
     const [tabOptions, setTabOptions] = useState([])
-    
+    const [searchInput, setSearchInput] = useState('');
     const [gamePreds, setGamePreds] = useState<Predictions[]>([]);
-    
 
+    const teamAbbMap = {
+        "atl": "atlanta hawks",
+        "bos": "boston celtics",
+        "bkn": "brooklyn nets",
+        "cha": "charlotte hornets",
+        "chi": "chicago bulls",
+        "cle": "cleveland cavaliers",
+        "dal": "dallas mavericks",
+        "den": "denver nuggets",
+        "det": "detroit pistons",
+        "gsw": "golden state warriors",
+        "hou": "houston rockets",
+        "ind": "indiana pacers",
+        "lac": "la clippers",
+        "lal": "los angeles lakers",
+        "mem": "memphis grizzlies",
+        "mia": "miami heat",
+        "mil": "milwaukee bucks",
+        "min": "minnesota timberwolves",
+        "nop": "new orleans pelicans",
+        "nyk": "new york knicks",
+        "okc": "oklahoma city thunder",
+        "orl": "orlando magic",
+        "phi": "philadelphia 76ers",
+        "phx": "phoenix suns",
+        "por": "portland trail blazers",
+        "sac": "sacramento kings",
+        "sas": "san antonio spurs",
+        "tor": "toronto raptors",
+        "uta": "utah jazz",
+        "was": "washington wizards"
+    }
+    
     const fetchTodayGame = async () => {
         try {
             const response = await axios.get('/api/today_games');
@@ -366,6 +402,11 @@ const HomePage = () => {
           'aria-controls': `simple-tabpanel-${index}`,
         };
     }
+
+    const handleSearch = (e) => {
+        setSearchInput(e.target.value);
+      };
+
     const options = ['Tab 1', 'Tab 2', 'Tab 3'];
     return (
         
@@ -373,13 +414,25 @@ const HomePage = () => {
             <div className={styles.header_container} style={{display : "flex", flexDirection : "column",alignItems:"center",justifyContent:"center"}}>
                 <p className={styles.header}>Sports X AI</p>
             </div>
+            <div style={{width: '80%', marginBottom: '20px'}}>
+                <Paper component="form"sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: '100%', }}>
+                <InputBase value={searchInput} onChange={handleSearch} sx={{ ml: 1, flex: 1 }} placeholder="Search for a Team" inputProps={{style: {fontFamily: 'Inter, sans-serif', fontSize: '14px', }, 'aria-label': 'search for a team' }}/>
+                <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+                    <SearchIcon />
+                </IconButton>
+                </Paper>
+            </div>
             <div className={styles.tabs} style={{display : "flex", flexDirection : "column", width:'80%', marginBottom:'15px'}}>
-                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <Box sx={{ borderBottom: 1, borderColor: 'divider', display: 'flex', justifyContent: "space-between"}}>
+                    
                     <Tabs value={value} onChange={handleChange} variant="scrollable" aria-label="basic tabs example">
                         {tabOptions.map((option, index) => (
                         <Tab label={option} {...a11yProps(index)} key={index} />
                         ))}
                     </Tabs>
+                    
+                    
+                        
                 </Box>
             </div>
             
@@ -388,7 +441,12 @@ const HomePage = () => {
                     
                 {value==0 || value == 1 || value == 2 ? 
                 
-                gameSchedules[value]?.map((game) => (
+                gameSchedules[value]?.filter((game) =>
+                game.homeTeam.toLowerCase().includes(searchInput.toLowerCase()) ||
+                game.awayTeam.toLowerCase().includes(searchInput.toLowerCase()) ||
+                game.homeTeam.toLowerCase().includes(teamAbbMap[searchInput.toLowerCase()]) ||
+                game.awayTeam.toLowerCase().includes(teamAbbMap[searchInput.toLowerCase()])
+                ).map((game) => (
                     
                     <GameDisplay 
                         key={game.id} 
