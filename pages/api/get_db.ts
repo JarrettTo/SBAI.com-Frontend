@@ -35,12 +35,9 @@ export default async function handler(req, res) {
 
         const query = `
         SELECT g.id, g.home_team, g.away_team, g.schedule, g.location, g.odds,
-        p.ml_pred, p.ml_conf, p.ou_pred, p.ou_conf,
-        o.away_spread_point, o.away_spread_price, o.away_totals_name, o.away_totals_point, o.away_totals_price, o.away_h2h_price,
-        o.home_spread_point, o.home_spread_price, o.home_totals_name, o.home_totals_point, o.home_totals_price, o.home_h2h_price
+        p.ml_pred, p.ml_conf, p.ou_pred, p.ou_conf
         FROM Games g
         JOIN Predictions p ON g.id = p.id
-        JOIN Odds o ON g.id = o.id
         WHERE CONVERT_TZ(g.schedule, 'UTC', 'America/Chicago') >= ?
         AND CONVERT_TZ(g.schedule, 'UTC', 'America/Chicago') < ?;
         `;
