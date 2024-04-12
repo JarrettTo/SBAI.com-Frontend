@@ -16,6 +16,9 @@ import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
+import NewsDisplay from "@components/NewsDisplay";
+import { News } from '../types/News';
+import Pagination from "@components/Pagination";
 dotenv.config();
 
 
@@ -27,6 +30,18 @@ const HomePage = () => {
     const [tabOptions, setTabOptions] = useState([])
     const [searchInput, setSearchInput] = useState('');
     const [gamePreds, setGamePreds] = useState<Predictions[]>([]);
+    const [news, setNews] = useState<News[]>([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const pageSize = 10;
+
+    const sourceMap = {
+        "nba": "NBA", 
+        "nba_canada": "NBA Canada",
+        "espn": "ESPN",
+        "bleacher_report": "Bleacher Report",
+        "slam": "Slam",
+        "yahoo": "Yahoo",
+    }
 
     const teamAbbMap = {
         "atl": "atlanta hawks",
@@ -61,6 +76,19 @@ const HomePage = () => {
         "was": "washington wizards"
     }
     
+    const fetchNews = async () => {
+        try {
+            const response = await axios.get('/api/get_news',{
+                params: {
+                    },
+                });
+            setNews(response.data);
+            console.log(response.data);
+        } catch (error) {
+            console.error('Error fetching news:', error);
+        }
+    };
+
     const fetchTodayGame = async () => {
         try {
             const response = await axios.get('/api/today_games');
@@ -330,6 +358,7 @@ const HomePage = () => {
         fetchTodayGame();
         fetchYesterdayGame();
         fetchTodayGamePredictions();
+        fetchNews();
     
         const dates = [];
         const today = new Date();
@@ -405,7 +434,13 @@ const HomePage = () => {
 
     const handleSearch = (e) => {
         setSearchInput(e.target.value);
+    };
+    
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
       };
+    
+    const displayedArticles = news.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
     const options = ['Tab 1', 'Tab 2', 'Tab 3'];
     return (
@@ -429,6 +464,7 @@ const HomePage = () => {
                         {tabOptions.map((option, index) => (
                         <Tab label={option} {...a11yProps(index)} key={index} />
                         ))}
+                        <Tab label='News' style={{marginLeft: 'auto'}}/>
                     </Tabs>
                     
                     
@@ -458,7 +494,15 @@ const HomePage = () => {
                         odds={gameOdds.find((odds) => odds.home_team === game.homeTeam && odds.away_team === game.awayTeam)}
                         predictions={gamePreds.find((preds) => preds.home_team === game.homeTeam && preds.away_team === game.awayTeam)}
                     />
-                )): null
+                )): (
+                    <div style={{display: "flex", flexDirection: "column"}}>
+                    <NewsDisplay 
+                        news={news}
+                        currentPage={currentPage}
+                        pageSize={pageSize}
+                    />
+                    </div>
+                )
                 // gameSchedules[value]?.map((game) => (
                     
                 //     <GameDisplay 
@@ -478,6 +522,13 @@ const HomePage = () => {
                 
                 
             </div>
+            {value==3 ? 
+                <Pagination
+                        totalCount={news.length}
+                        currentPage={currentPage}
+                        pageSize={pageSize}
+                        onPageChange={handlePageChange}
+                /> : null}
         </div>
     )
   };

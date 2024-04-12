@@ -6,7 +6,7 @@ const Pagination = ({ totalCount, currentPage, pageSize, onPageChange }) => {
   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
-    <div className="pagination" style={{display: 'flex', marginTop: 'auto', padding: '20px 0px'}}>
+    <div className="pagination" style={{display: "flex", alignItems: "center", marginTop: "auto", padding: "15px 0px"}}>
         <button
             className={classNames('page-button', { disabled: currentPage === 1 })}
             onClick={() => currentPage > 1 && onPageChange(currentPage - 1)}
