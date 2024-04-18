@@ -19,6 +19,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import NewsDisplay from "@components/NewsDisplay";
 import { News } from '../types/News';
 import Pagination from "@components/Pagination";
+import { parse } from "path";
 dotenv.config();
 
 
@@ -32,6 +33,9 @@ const HomePage = () => {
     const [gamePreds, setGamePreds] = useState<Predictions[]>([]);
     const [news, setNews] = useState<News[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [placeholderText, setPlaceholderText] = useState('Search for a team');
+    const [value, setValue] = useState(1);
+    const [parsedSearch, setParsedSearch] = useState(['','']);
     const pageSize = 10;
 
     const sourceMap = {
@@ -43,47 +47,32 @@ const HomePage = () => {
         "yahoo": "Yahoo",
     }
 
-    const teamAbbMap = {
-        "atl": "atlanta hawks",
-        "bos": "boston celtics",
-        "bkn": "brooklyn nets",
-        "cha": "charlotte hornets",
-        "chi": "chicago bulls",
-        "cle": "cleveland cavaliers",
-        "dal": "dallas mavericks",
-        "den": "denver nuggets",
-        "det": "detroit pistons",
-        "gsw": "golden state warriors",
-        "hou": "houston rockets",
-        "ind": "indiana pacers",
-        "lac": "la clippers",
-        "lal": "los angeles lakers",
-        "mem": "memphis grizzlies",
-        "mia": "miami heat",
-        "mil": "milwaukee bucks",
-        "min": "minnesota timberwolves",
-        "nop": "new orleans pelicans",
-        "nyk": "new york knicks",
-        "okc": "oklahoma city thunder",
-        "orl": "orlando magic",
-        "phi": "philadelphia 76ers",
-        "phx": "phoenix suns",
-        "por": "portland trail blazers",
-        "sac": "sacramento kings",
-        "sas": "san antonio spurs",
-        "tor": "toronto raptors",
-        "uta": "utah jazz",
-        "was": "washington wizards"
-    }
+    const teamList = [ "atlanta", "hawks", "boston", "celtics", "brooklyn", "nets", "charlotte", "hornets", "chicago", "bulls", "cleveland", "cavaliers", "cavs", "dallas", "mavericks", "mavs", "denver", "nuggets", "detroit", "pistons", "golden", "state", "warriors", "houston", "rockets", "indiana", "pacers", "la", "clippers", "los angeles", "lakers", "memphis", "grizzlies", "miami", "heat", "milwaukee", "bucks", "minnesota", "timberwolves", "new orleans", "pelicans", "new york", "knicks", "oklahoma", "thunder", "orlando", "magic", "philadelphia", "76ers", "phoenix", "suns", "portland", "trail blazers", "sacramento", "kings", "san antonio", "spurs", "toronto", "raptors", "utah", "jazz", "washington", "wizards", "atl", "bos", "bkn", "cha", "chi", "cle", "dal", "den", "det", "gsw", "hou", "ind", "lac", "lal", "mem", "mia", "mil", "min", "nop", "nyk", "okc", "orl", "phi", "phx", "por", "sac", "sas", "tor", "uta", "was", ]
     
-    const fetchNews = async () => {
+    const teamAbbMap = { "atl": "atlanta hawks", "bos": "boston celtics", "bkn": "brooklyn nets", "cha": "charlotte hornets", "chi": "chicago bulls", "cle": "cleveland cavaliers", "dal": "dallas mavericks", "den": "denver nuggets", "det": "detroit pistons", "gsw": "golden state warriors", "hou": "houston rockets", "ind": "indiana pacers", "lac": "la clippers", "lal": "los angeles lakers", "mem": "memphis grizzlies", "mia": "miami heat", "mil": "milwaukee bucks", "min": "minnesota timberwolves", "nop": "new orleans pelicans", "nyk": "new york knicks", "okc": "oklahoma city thunder", "orl": "orlando magic", "phi": "philadelphia 76ers", "phx": "phoenix suns", "por": "portland trail blazers", "sac": "sacramento kings", "sas": "san antonio spurs", "tor": "toronto raptors", "uta": "utah jazz", "was": "washington wizards" }
+    
+    const fetchNews = async (search) => {
         try {
-            const response = await axios.get('/api/get_news',{
-                params: {
+            if (teamList.includes(search.toLowerCase())) {
+                // Case 1: Team found in teamList
+                const response = await axios.get('/api/get_news', {
+                    params: {
+                        team: search,
                     },
                 });
-            setNews(response.data);
-            console.log(response.data);
+                setNews(response.data);
+                console.log(response.data); // Log the response data
+            } else {
+                // Case 2: Team not found, modify search for player
+                const modifiedSearch = search.replace(/\s+/g, '-'); // Replace spaces with hyphens
+                const response = await axios.get('/api/get_news', {
+                    params: {
+                        player: modifiedSearch,
+                    },
+                });
+                setNews(response.data);
+                console.log(response.data); // Log the response data
+            }
         } catch (error) {
             console.error('Error fetching news:', error);
         }
@@ -348,6 +337,15 @@ const HomePage = () => {
             console.error('Error fetching game predictions:', error);
         }
     }
+    const debounce = (func, delay) => {
+        let timer;
+        return (...args) => {
+          clearTimeout(timer);
+          timer = setTimeout(() => {
+            func(...args);
+          }, delay);
+        };
+      };
 
     useEffect(() => {
         // Fetch NBA game schedules when the component mounts
@@ -358,8 +356,9 @@ const HomePage = () => {
         fetchTodayGame();
         fetchYesterdayGame();
         fetchTodayGamePredictions();
-        fetchNews();
-    
+        value == 3 ? setPlaceholderText('Search for an article') : setPlaceholderText('Search for a team');
+        const delayedFetchNews = debounce(fetchNews, 500); // Adjust delay as needed
+        delayedFetchNews(searchInput.toLowerCase());
         const dates = [];
         const today = new Date();
     
@@ -387,10 +386,10 @@ const HomePage = () => {
 
     
         setTabOptions(dates);
-    }, []);
+    }, [value, searchInput]);
     
     const open = Boolean(anchorEl);
-    const [value, setValue] = useState(0);
+    
     
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         if (event.currentTarget.classList.contains('select-game-button')) {
@@ -425,13 +424,14 @@ const HomePage = () => {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+
     function a11yProps(index) {
         return {
           id: `simple-tab-${index}`,
           'aria-controls': `simple-tabpanel-${index}`,
         };
     }
-
+    
     const handleSearch = (e) => {
         setSearchInput(e.target.value);
     };
@@ -439,7 +439,7 @@ const HomePage = () => {
     const handlePageChange = (page) => {
         setCurrentPage(page);
       };
-    
+
     const displayedArticles = news.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
     const options = ['Tab 1', 'Tab 2', 'Tab 3'];
@@ -451,7 +451,7 @@ const HomePage = () => {
             </div>
             <div style={{width: '80%', marginBottom: '20px'}}>
                 <Paper component="form"sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: '100%', }}>
-                <InputBase value={searchInput} onChange={handleSearch} sx={{ ml: 1, flex: 1 }} placeholder="Search for a Team" inputProps={{style: {fontFamily: 'Inter, sans-serif', fontSize: '14px', }, 'aria-label': 'search for a team' }}/>
+                <InputBase value={searchInput} onChange={handleSearch} sx={{ ml: 1, flex: 1 }} placeholder={placeholderText} inputProps={{style: {fontFamily: 'Inter, sans-serif', fontSize: '14px', }, 'aria-label': 'search' }}/>
                 <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
                     <SearchIcon />
                 </IconButton>
