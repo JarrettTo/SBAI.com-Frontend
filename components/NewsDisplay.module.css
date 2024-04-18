@@ -18,7 +18,7 @@
     .game_display {
         margin-top: 0px;
         width: 100%;
-        min-height: 20vw;
+        min-height: 30vw;
         background-color: #EEEEEE; 
         color: #aaa;
         text-transform: none;
@@ -50,7 +50,7 @@
     .game_display {
         margin-top: 0px;
         width: 90%;
-        min-height: 20vw;
+        min-height: 30vw;
         background-color: #EEEEEE; 
         color: #aaa;
         text-transform: none;
@@ -81,7 +81,7 @@
     .game_display {
         margin-top: 0px;
         width: 90%;
-        min-height: 20vw;
+        min-height: 30vw;
         background-color: #EEEEEE; 
         color: #aaa;
         text-transform: none;
@@ -112,7 +112,7 @@
     .game_display {
         margin-top: 0px;
         width: 80%;
-        min-height: 20vw;
+        min-height: 30vw;
         background-color: #EEEEEE; 
         color: #aaa;
         text-transform: none;

@@ -10,9 +10,12 @@ const BASE_URL = 'https://nba-stories.onrender.com/articles';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
- 
+    const { team, player } = req.query;
+
     const response = await axios.get(`${BASE_URL}`, {
       params: {
+        team: team,
+        player: player,
       },
     });
 
