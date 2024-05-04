@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import GameDisplay from '../components/MLBGameDisplay'
-import { INBAGame } from '../types/Game';
+import { IMLBGame, INBAGame } from '../types/Game';
 import { Odds } from '../types/Odds';
 import axios from 'axios';
 import dotenv from 'dotenv';
@@ -20,10 +20,10 @@ import * as MLBIcons from 'react-mlb-logos';
 dotenv.config();
 
 
-const HomePage = () => {
+const MLBPage = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const [selectedGame, setSelectedGame] = useState<INBAGame | null>(null);
-    const [gameSchedules, setGameSchedules] = useState<INBAGame[][]>([[],[],[],[],[],[],[]]);
+    const [selectedGame, setSelectedGame] = useState<IMLBGame | null>(null);
+    const [gameSchedules, setGameSchedules] = useState<IMLBGame[][]>([[],[],[]]);
     const [gameOdds, setGameOdds] = useState<Odds[]>([]);
     const [tabOptions, setTabOptions] = useState([])
     const [searchInput, setSearchInput] = useState('');
@@ -64,67 +64,55 @@ const HomePage = () => {
    
     const fetchTodayGame = async () => {
         try {
-            const response = await axios.get('/api/today_games');
+            const response = await axios.get('/api/mlb/schedule/today');
 
             console.log("PRESENT:",response.data);
-            setGameSchedules(currentGameSchedules => {
-                let updatedSchedules = [...currentGameSchedules];
-                response.data.forEach((dataArr, index) => {
-                  // Calculate the target index (starting from 4 in this case)
-                  const targetIndex = 1 + index;
-                  updatedSchedules[targetIndex] = dataArr;
-                });
-              
-                // Return the updated schedules array
-                return updatedSchedules;
-              });
+            if(response.status == 200){
+                setGameSchedules( prev=>{
+                    const updatedSched = [...prev]
+                    updatedSched[1]= response.data
+                    return updatedSched
+                })
+            }
 
         } catch (error) {
-            console.error('Error fetching yesterday schedules:', error);
+            console.error('Error fetching today MLB schedules:', error);
         }
     };
 
     const fetchYesterdayGame = async () => {
         try {
-            const response = await axios.get('/api/past_games');
+            const response = await axios.get('/api/mlb/schedule/yesterday');
 
-            console.log("Yesterday:",response.data);
-            setGameSchedules(currentGameSchedules => {
-                let updatedSchedules = [...currentGameSchedules];
-                response.data.forEach((dataArr, index) => {
-                  // Calculate the target index (starting from 4 in this case)
-                  const targetIndex = index;
-                  updatedSchedules[targetIndex] = dataArr;
-                });
-              
-                // Return the updated schedules array
-                return updatedSchedules;
-              });
+            console.log("PRESENT:",response.data);
+            if(response.status == 200){
+                setGameSchedules( prev=>{
+                    const updatedSched = [...prev]
+                    updatedSched[0]= response.data
+                    return updatedSched
+                })
+            }
 
         } catch (error) {
-            console.error('Error fetching yesterday schedules:', error);
+            console.error('Error fetching today MLB schedules:', error);
         }
     };
     
-    const fetchFutureGames = async () => {
+    const fetchTomorrowGame = async () => {
         try {
-            const response = await axios.get('/api/future_games');
+            const response = await axios.get('/api/mlb/schedule/tomorrow');
 
-            console.log("Tomorrow:",response.data);
-            setGameSchedules(currentGameSchedules => {
-                let updatedSchedules = [...currentGameSchedules];
-                response.data.forEach((dataArr, index) => {
-                  // Calculate the target index (starting from 4 in this case)
-                  const targetIndex = 2 + index;
-                  updatedSchedules[targetIndex] = dataArr;
-                });
-              
-                // Return the updated schedules array
-                return updatedSchedules;
-              });
+            console.log("FUTURE:",response.data);
+            if(response.status == 200){
+                setGameSchedules( prev=>{
+                    const updatedSched = [...prev]
+                    updatedSched[2]= response.data
+                    return updatedSched
+                })
+            }
 
         } catch (error) {
-            console.error('Error fetching game schedules:', error);
+            console.error('Error fetching today MLB schedules:', error);
         }
     };    
     const fetchTodayGameOdds = async () => {
@@ -225,14 +213,10 @@ const HomePage = () => {
 
     useEffect(() => {
         // Fetch NBA game schedules when the component mounts
-        fetchFutureGames();
-        console.log("STATE CHECK", gameSchedules);
-        fetchTodayGameOdds();
-        fetchYesterdayGamePredictions();
-        fetchTodayGame();
-        fetchYesterdayGame();
-        fetchTodayGamePredictions();
-    
+       
+        fetchTodayGame()
+        fetchTomorrowGame()
+        fetchYesterdayGame()
         const dates = [];
         const today = new Date();
     
@@ -280,11 +264,7 @@ const HomePage = () => {
         setAnchorEl(null);
     };
 
-    const handleGameSelect = (game: INBAGame) => {
-        setSelectedGame(game);
-        handleClose();
-    };
-
+    
     const formatTime = (gameDate: Date) => {
         return new Intl.DateTimeFormat('en-US', {
             year: 'numeric',
@@ -353,8 +333,12 @@ const HomePage = () => {
                     <GameDisplay 
                         key={game.id} 
                         id={game.id} 
+                        tiebreaker={game.tiebreaker}
                         homeTeam={game.homeTeam}
-                      
+                        doubleHeader={game.doubleHeader}
+                        series={game.series}
+                        seriesGameNumber={game.seriesGameNumber}
+                        innings={game.innings}
                         awayTeam={game.awayTeam}
                         schedule={game.schedule}
                         odds={gameOdds.find((odds) => odds.home_team === game.homeTeam && odds.away_team === game.awayTeam)}
@@ -370,4 +354,4 @@ const HomePage = () => {
     )
   };
   
-export default HomePage;
+export default MLBPage;

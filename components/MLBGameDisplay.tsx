@@ -1,16 +1,16 @@
 import React, { useEffect, useState} from 'react';
-import { INBAGame} from '../types/Game';
+import { IMLBGame, INBAGame} from '../types/Game';
 import * as MLBIcons from 'react-mlb-logos';
 import { Button } from '@mui/material';
 import styles from './GameDisplay.module.css'
 import { motion, AnimatePresence } from "framer-motion"
 
-interface GameDisplayProps extends INBAGame {
+interface GameDisplayProps extends IMLBGame {
     isInDropdown?: boolean;
     }
 
 const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
-   const {id, homeTeam, awayTeam, schedule,  isInDropdown = false, odds, predictions} = props;
+   const {id, homeTeam, awayTeam, schedule,  isInDropdown = false, odds, predictions, seriesGameNumber, innings, series, doubleHeader, tiebreaker} = props;
    const [showOdds, setShowOdds] = useState<boolean>(false);
    const [showPreds, setShowPreds] = useState<boolean>(false);
    const teamIconMap = {
@@ -151,6 +151,10 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
                 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginLeft:'10px', marginRight:'10px', width: '33%'}}>
                     <p className={styles.vs}>VS</p>
                     <p className={styles.time} style={{fontSize:'14px', fontWeight:'400', textAlign: 'center'}}>{formatDate(schedule.toString() || '')}</p>
+                    <p className={styles.time} style={{fontSize:'14px', fontWeight:'400', textAlign: 'center'}}>{innings} Innings</p>
+                    <p className={styles.time} style={{fontSize:'14px', fontWeight:'400', textAlign: 'center'}}>Game {seriesGameNumber} of {series}</p>
+                    {doubleHeader &&(<p className={styles.time} style={{fontSize:'14px', fontWeight:'400', textAlign: 'center'}}>Double Header</p>)}
+                    {tiebreaker &&(<p className={styles.time} style={{fontSize:'14px', fontWeight:'400', textAlign: 'center'}}>Tie Breaker</p>)}
                 </div>
                 <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', width: '33%', justifyContent: 'end'}}>
                     
