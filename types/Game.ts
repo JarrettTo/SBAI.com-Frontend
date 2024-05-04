@@ -12,6 +12,21 @@ export type INBAGame = {
     odds?: Odds;
     predictions?: Predictions;
 }
+export type IMLBGame = {
+    id: number;
+    homeTeam : string;
+
+    awayTeam : string;
+    series: number;
+    seriesGameNumber: number;
+
+    schedule: Date;
+    innings: number;
+    doubleHeader: boolean;
+    tiebreaker: boolean;
+    odds?: Odds;
+    predictions?: Predictions;
+}
 
 export type INBATeam = {
     id: number;
