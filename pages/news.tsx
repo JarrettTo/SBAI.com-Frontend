@@ -6,6 +6,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import styles from './news.module.css'
 import Article from '@components/Article';
 import Pagination from '@components/Pagination';
+import NavBar from '@components/Navbar';
 
 const NewsPage: React.FC = () => {
     const [news, setNews] = useState<News[]>([]);
@@ -53,9 +54,7 @@ const NewsPage: React.FC = () => {
     return (
 
         <div style={{display : "flex", flexDirection : "column", alignItems:"center", height: "100vh", overflow: 'hidden'}} >
-            <div className={styles.header_container} style={{display : "flex", flexDirection : "column",alignItems:"center",justifyContent:"center"}}>
-                <p className={styles.header}>Sports X AI</p>
-            </div>
+            <NavBar/>
             <div style={{width: '80%', marginBottom: '20px'}}>
                 <Paper component="form"sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: '100%', }}>
                 <InputBase value={searchInput} onChange={handleSearch} sx={{ ml: 1, flex: 1 }} placeholder="Search for an Article" inputProps={{style: {fontFamily: 'Inter, sans-serif', fontSize: '14px', }, 'aria-label': 'search for a team' }}/>
