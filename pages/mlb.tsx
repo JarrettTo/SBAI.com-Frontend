@@ -17,6 +17,7 @@ import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import * as MLBIcons from 'react-mlb-logos';
+import NavBar from "@components/Navbar";
 dotenv.config();
 
 
@@ -293,9 +294,8 @@ const MLBPage = () => {
     return (
         
         <div style={{display : "flex", flexDirection : "column", alignItems:"center", height: "100vh", overflow: 'hidden'}} >
-            <div className={styles.header_container} style={{display : "flex", flexDirection : "column",alignItems:"center",justifyContent:"center"}}>
-                <p className={styles.header}>Sports X AI</p>
-            </div>
+            <NavBar/>
+            
             <div style={{width: '80%', marginBottom: '20px'}}>
                 <Paper component="form"sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: '100%', }}>
                 <InputBase value={searchInput} onChange={handleSearch} sx={{ ml: 1, flex: 1 }} placeholder="Search for a Team" inputProps={{style: {fontFamily: 'Inter, sans-serif', fontSize: '14px', }, 'aria-label': 'search for a team' }}/>
