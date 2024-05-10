@@ -177,12 +177,14 @@ const MLBPage = () => {
         "bos": "Boston Red Sox",
         "chc": "Chicago Cubs",
         "cws": "Chicago White Sox",
+        "chw": "Chicago White Sox",
         "cin": "Cincinnati Reds",
         "cle": "Cleveland Guardians",
         "col": "Colorado Rockies",
         "det": "Detroit Tigers",
         "hou": "Houston Astros",
         "kan": "Kansas City Royals",
+        "kcr": "Kansas City Royals",
         "laa": "Los Angeles Angels",
         "lad": "Los Angeles Dodgers",
         "mia": "Miami Marlins",
@@ -200,6 +202,7 @@ const MLBPage = () => {
         "tbr": "Tampa Bay Rays",
         "tex": "Texas Rangers",
         "tor": "Toronto Blue Jays",
+        "wsn": "Washington Nationals",
         "was": "Washington Nationals"
     }
     function getFullTeamName(abbrev: string): string {
