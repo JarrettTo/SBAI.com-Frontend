@@ -9,7 +9,7 @@ interface GameDisplayProps extends IMLBGame {
     isInDropdown?: boolean;
     }
 
-const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
+const MLBGameDisplay: React.FC<GameDisplayProps> = (props) =>{
    const {id, homeTeam, awayTeam, schedule,  isInDropdown = false, odds, predictions, seriesGameNumber, innings, series, doubleHeader, tiebreaker} = props;
    const [showOdds, setShowOdds] = useState<boolean>(false);
    const [showPreds, setShowPreds] = useState<boolean>(false);
@@ -37,10 +37,13 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
         "PHI": MLBIcons.PHI,
         "PIT": MLBIcons.PIT,
         "SD": MLBIcons.SD,
+        "SDP": MLBIcons.SD,
+        "SFG": MLBIcons.SF,
         "SF": MLBIcons.SF,
         "SEA": MLBIcons.SEA,
         "STL": MLBIcons.STL,
         "TB": MLBIcons.TB,
+        "TBR": MLBIcons.TB,
         "TEX": MLBIcons.TEX,
         "TOR": MLBIcons.TOR,
         "WAS": MLBIcons.WAS,
@@ -69,7 +72,7 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
         "Philadelphia Phillies": "PHI",
         "Pittsburgh Pirates": "PIT",
         "San Diego Padres": "SD",
-        "San Francisco Giants": "SF",
+        "San Francisco Giants": "SFG",
         "Seattle Mariners": "SEA",
         "St. Louis Cardinals": "STL",
         "Tampa Bay Rays": "TB",
@@ -95,7 +98,7 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
     const getTeamIcon = (teamName: string) => {
         // Look up the component in the teamIconMap by teamName
         const IconComponent = teamIconMap[teamName];
-    
+        console.log("CHECK")
         // If a matching component was found, render it; otherwise, return null or a default icon
         return IconComponent ? <IconComponent /> : null;
     };
@@ -114,6 +117,10 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
         //TODO: Redirect to page that shows Odds of game
         setShowOdds(!showOdds);
     }
+    function formatPercentage(value) {
+        return `${(parseFloat(value) * 100).toFixed(1)}%`;
+      }
+      
     const handlePredictClick= ()=>{
         setShowPreds(!showPreds)
     }
@@ -131,7 +138,9 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
         const date = new Date(dateString);
         return date.toLocaleDateString('en-US', options);
     }
-    
+    useEffect(()=>{
+        console.log("PREDS:", predictions)
+    },[])
    return(
     <div className={styles.main} style={{marginBottom: '7px', borderRadius: '10px', height: 'auto'}}>
         <div className={styles.row_container} style={{display: 'flex', flexDirection:'row', justifyContent: 'space-between', paddingTop: '10px', paddingBottom: '20px', paddingLeft: '30px', width: '100%'}}>
@@ -265,18 +274,18 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
                 <div style={{display: 'flex', flexDirection:'column', marginRight:'5%',justifyContent:'center' ,  marginBottom:'15px'}} >
                     <p className={styles.prediction_type} style={{color: '#555'}}>Moneyline Prediction:</p>
                     <div style={{display:'flex', flexDirection:'row',  alignItems:'center'}}>
-                        <div style={{ width: '4%',marginRight:'40px'}}>{getMiniTeamIcon(teamAbbMap[predictions.ml_pred])}</div>
+                        <div style={{ width: '4%',marginRight:'40px'}}>{getMiniTeamIcon(predictions.ml_pred)}</div>
                         <p className={styles.prediction_value} style={{color: 'green',fontWeight:'700',}}>{predictions.ml_pred}</p>
-                        <p className={styles.prediction_conf} style={{ fontWeight:'400', marginLeft:'8px'}}>{predictions.ml_conf}</p>
+                        <p className={styles.prediction_conf} style={{ fontWeight:'400', marginLeft:'8px'}}>{predictions.ml_conf?formatPercentage(predictions.ml_conf) : null}</p>
                     </div>
                 </div>
-                <div className={styles.ou_prediction} style={{display: 'flex', flexDirection:'column', marginLeft:'5%', justifyContent:'center' , marginBottom:'15px'}}>
+                {/*<div className={styles.ou_prediction} style={{display: 'flex', flexDirection:'column', marginLeft:'5%', justifyContent:'center' , marginBottom:'15px'}}>
                     <p className={styles.prediction_type_ou} style={{color: '#555'}}>OU Prediction:</p>
                     <div style={{display:'flex', flexDirection:'row',  alignItems:'center'}}>
                         <p className={styles.prediction_value} style={{color: ouPredColor, fontWeight:'700'}}>{predictions.ou_pred}</p>
                         <p className={styles.prediction_conf} style={{fontWeight:'400', marginLeft:'8px'}}>{predictions.ou_conf}</p>
                     </div>
-                </div>
+                </div>*/}
             </div>
             </motion.div>
             )}
@@ -286,5 +295,5 @@ const GameDisplay: React.FC<GameDisplayProps> = (props) =>{
     )
     
     } 
-export default GameDisplay;
+export default MLBGameDisplay;
 

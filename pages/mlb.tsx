@@ -18,6 +18,7 @@ import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import * as MLBIcons from 'react-mlb-logos';
 import NavBar from "@components/Navbar";
+import MLBGameDisplay from "../components/MLBGameDisplay";
 dotenv.config();
 
 
@@ -29,7 +30,146 @@ const MLBPage = () => {
     const [tabOptions, setTabOptions] = useState([])
     const [searchInput, setSearchInput] = useState('');
     const [gamePreds, setGamePreds] = useState<Predictions[]>([]);
-
+    useEffect(()=>{
+        const MLBPreds = [
+            {
+              "id": "0",
+              "home_team": "DET",
+              "away_team": "HOU",
+              "ml_pred": "DET",
+              "ml_conf": "0.8476117",
+              "ou_pred": "0",
+              "ou_conf": "0"
+            },
+            {
+              "id": "1",
+              "home_team": "PIT",
+              "away_team": "CHC",
+              "ml_pred": "PIT",
+              "ml_conf": "0.9281515",
+              "ou_pred": "0",
+              "ou_conf": "0"
+            },
+            {
+              "id": "2",
+              "home_team": "TBR",
+              "away_team": "NYY",
+              "ml_pred": "NYY",
+              "ml_conf": "0.5696792",
+              "ou_pred": "0",
+              "ou_conf": "0"
+            },
+            {
+              "id": "3",
+              "home_team": "BAL",
+              "away_team": "ARI",
+              "ml_pred": "BAL",
+              "ml_conf": "0.92766136",
+              "ou_pred": "0",
+              "ou_conf": "0"
+            },
+            {
+              "id": "4",
+              "home_team": "TOR",
+              "away_team": "MIN",
+              "ml_pred": "TOR",
+              "ml_conf": "0.96507925",
+              "ou_pred": "0",
+              "ou_conf": "0"
+            },
+            {
+              "id": "5",
+              "home_team": "BOS",
+              "away_team": "WSN",
+              "ml_pred": "BOS",
+              "ml_conf": "0.99340993",
+              "ou_pred": "0",
+              "ou_conf": "0"
+            },
+            {
+              "id": "6",
+              "home_team": "MIA",
+              "away_team": "PHI",
+              "ml_pred": "MIA",
+              "ml_conf": "0.9929612",
+              "ou_pred": "0",
+              "ou_conf": "0"
+            },
+            {
+              "id": "7",
+              "home_team": "NYM",
+              "away_team": "ATL",
+              "ml_pred": "NYM",
+              "ml_conf": "0.9994122",
+              "ou_pred": "0",
+              "ou_conf": "0"
+            },
+            {
+              "id": "8",
+              "home_team": "CHW",
+              "away_team": "CLE",
+              "ml_pred": "CHW",
+              "ml_conf": "0.8691642",
+              "ou_pred": "0",
+              "ou_conf": "0"
+            },
+            {
+              "id": "9",
+              "home_team": "MIL",
+              "away_team": "STL",
+              "ml_pred": "MIL",
+              "ml_conf": "0.99424464",
+              "ou_pred": "0",
+              "ou_conf": "0"
+            },
+            {
+              "id": "10",
+              "home_team": "COL",
+              "away_team": "TEX",
+              "ml_pred": "COL",
+              "ml_conf": "0.95496744",
+              "ou_pred": "0",
+              "ou_conf": "0"
+            },
+            {
+              "id": "11",
+              "home_team": "LAA",
+              "away_team": "KCR",
+              "ml_pred": "LAA",
+              "ml_conf": "0.97527415",
+              "ou_pred": "0",
+              "ou_conf": "0"
+            },
+            {
+              "id": "12",
+              "home_team": "SDP",
+              "away_team": "LAD",
+              "ml_pred": "SDP",
+              "ml_conf": "0.9312412",
+              "ou_pred": "0",
+              "ou_conf": "0"
+            },
+            {
+              "id": "13",
+              "home_team": "SEA",
+              "away_team": "OAK",
+              "ml_pred": "SEA",
+              "ml_conf": "0.9880201",
+              "ou_pred": "0",
+              "ou_conf": "0"
+            },
+            {
+              "id": "14",
+              "home_team": "SFG",
+              "away_team": "CIN",
+              "ml_pred": "SFG",
+              "ml_conf": "0.99775153",
+              "ou_pred": "0",
+              "ou_conf": "0"
+            }
+          ]
+          setGamePreds(MLBPreds)
+    },[])
     const teamAbbMap = {
         "ari": "Arizona Diamondbacks",
         "atl": "Atlanta Braves",
@@ -53,16 +193,20 @@ const MLBPage = () => {
         "oak": "Oakland Athletics",
         "phi": "Philadelphia Phillies",
         "pit": "Pittsburgh Pirates",
-        "sd": "San Diego Padres",
-        "sf": "San Francisco Giants",
+        "sdp": "San Diego Padres",
+        "sfg": "San Francisco Giants",
         "sea": "Seattle Mariners",
         "stl": "St. Louis Cardinals",
-        "tb": "Tampa Bay Rays",
+        "tbr": "Tampa Bay Rays",
         "tex": "Texas Rangers",
         "tor": "Toronto Blue Jays",
         "was": "Washington Nationals"
     }
-   
+    function getFullTeamName(abbrev: string): string {
+        const teamName = teamAbbMap[abbrev.toLowerCase()];
+        return teamName || "Team not found";
+    }
+    
     const fetchTodayGame = async () => {
         try {
             const response = await axios.get('/api/mlb/schedule/today');
@@ -85,7 +229,7 @@ const MLBPage = () => {
         try {
             const response = await axios.get('/api/mlb/schedule/yesterday');
 
-            console.log("PRESENT:",response.data);
+            console.log("PAST:",response.data);
             if(response.status == 200){
                 setGameSchedules( prev=>{
                     const updatedSched = [...prev]
@@ -330,7 +474,7 @@ const MLBPage = () => {
                 game.awayTeam.toLowerCase().includes(teamAbbMap[searchInput.toLowerCase()])
                 ).map((game) => (
                     
-                    <GameDisplay 
+                    <MLBGameDisplay 
                         key={game.id} 
                         id={game.id} 
                         tiebreaker={game.tiebreaker}
@@ -342,7 +486,7 @@ const MLBPage = () => {
                         awayTeam={game.awayTeam}
                         schedule={game.schedule}
                         odds={gameOdds.find((odds) => odds.home_team === game.homeTeam && odds.away_team === game.awayTeam)}
-                        predictions={gamePreds.find((preds) => preds.home_team === game.homeTeam && preds.away_team === game.awayTeam)}
+                        predictions={gamePreds.find((preds) => getFullTeamName(preds.home_team) === game.homeTeam && getFullTeamName(preds.away_team) === game.awayTeam)}
                     />
                 )): null
                 }

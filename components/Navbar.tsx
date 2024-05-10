@@ -62,7 +62,7 @@ const NavBar = () => {
                         borderRadius: '10px',
                         textTransform: 'none',
                         fontWeight: 'bold',
-                        '&:hover, &:focus': {
+                        '&:hover': {
                             backgroundColor: '#EEEEEE', // Set hover & focus to the same color as normal state
                     
                             }
@@ -81,7 +81,7 @@ const NavBar = () => {
                         borderRadius: '10px',
                         textTransform: 'none',
                         fontWeight: 'bold',
-                        '&:hover, &:focus': {
+                        '&:hover': {
                             backgroundColor: '#EEEEEE', // Set hover & focus to the same color as normal state
                         
                             }
@@ -100,7 +100,7 @@ const NavBar = () => {
                         borderRadius: '10px',
                         textTransform: 'none',
                         fontWeight: 'bold',
-                        '&:hover, &:focus': {
+                        '&:hover': {
                             backgroundColor: '#EEEEEE', // Set hover & focus to the same color as normal state
                             
                             }
