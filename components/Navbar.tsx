@@ -57,7 +57,7 @@ const NavBar = () => {
                     disableElevation
                     sx={{
                         fontSize: '14px',
-                        backgroundColor: '#EEEEEE',
+                        backgroundColor: '#FFFFFF',
                         color: selected === 'NBA' ? '#1C1C1C' : 'darkgray',
                         borderRadius: '10px',
                         textTransform: 'none',
@@ -76,7 +76,7 @@ const NavBar = () => {
                     disableElevation
                     sx={{
                         fontSize: '14px',
-                        backgroundColor: '#EEEEEE',
+                        backgroundColor: '#FFFFFF',
                         color: selected === 'MLB' ? '#1C1C1C' : 'darkgray',
                         borderRadius: '10px',
                         textTransform: 'none',
@@ -95,7 +95,7 @@ const NavBar = () => {
                     disableElevation
                     sx={{
                         fontSize: '14px',
-                        backgroundColor: '#EEEEEE',
+                        backgroundColor: '#FFFFFF',
                         color: selected === 'Premier League' ? '#1C1C1C' : 'darkgray',
                         borderRadius: '10px',
                         textTransform: 'none',
@@ -114,7 +114,7 @@ const NavBar = () => {
                     disableElevation
                     sx={{
                         fontSize: '14px',
-                        backgroundColor: '#EEEEEE',
+                        backgroundColor: '#FFFFFF',
                         color: selected === 'News' ? '#1C1C1C' : 'darkgray',
                         borderRadius: '10px',
                         textTransform: 'none',
@@ -133,7 +133,7 @@ const NavBar = () => {
                     disableElevation
                     sx={{
                         fontSize: '14px',
-                        backgroundColor: '#EEEEEE',
+                        backgroundColor: '#FFFFFF',
                         color: selected === 'Documentation' ? '#1C1C1C' : 'darkgray',
                         borderRadius: '10px',
                         textTransform: 'none',
