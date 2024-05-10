@@ -262,7 +262,7 @@ const MLBPage = () => {
     };    
     const fetchTodayGameOdds = async () => {
         try {
-            const response = await axios.get('/api/odds',{
+            const response = await axios.get('/api/mlb/odds',{
                 params: {
                     apiKey: process.env.ODDS_API_KEY, // Include the API key as a query parameter
                     },
@@ -362,6 +362,7 @@ const MLBPage = () => {
         fetchTodayGame()
         fetchTomorrowGame()
         fetchYesterdayGame()
+        fetchTodayGameOdds()
         const dates = [];
         const today = new Date();
     
