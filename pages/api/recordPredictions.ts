@@ -7,7 +7,7 @@ dotenv.config();
 export default async function handler(req, res) {
     let connection;
     const url = process.env.URL;
-    const gamePredictions =[{"away_team":"New York Knicks","home_team":"Indiana Pacers","id":"0","ml_conf":"52.9%","ml_pred":"Indiana Pacers","ou_conf":"57.5%","ou_pred":"OVER 218.5"},{"away_team":"Denver Nuggets","home_team":"Minnesota Timberwolves","id":"1","ml_conf":"64.6%","ml_pred":"Minnesota Timberwolves","ou_conf":"54.3%","ou_pred":"UNDER 204.5"}]
+    const gamePredictions =[{"away_team":"Cleveland Cavaliers","home_team":"Boston Celtics","id":"0","ml_conf":"72.6%","ml_pred":"Boston Celtics","ou_conf":"57.0%","ou_pred":"OVER 205.5"},{"away_team":"Dallas Mavericks","home_team":"Oklahoma City Thunder","id":"1","ml_conf":"68.8%","ml_pred":"Oklahoma City Thunder","ou_conf":"56.8%","ou_pred":"OVER 213"}]
     try {
         const response = await axios.get(`${url}today_games`, {
             params: {
