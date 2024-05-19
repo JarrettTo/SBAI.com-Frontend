@@ -7,7 +7,7 @@ dotenv.config();
 export default async function handler(req, res) {
     let connection;
     const url = process.env.URL;
-    const gamePredictions =[{"away_team":"Cleveland Cavaliers","home_team":"Boston Celtics","id":"0","ml_conf":"72.6%","ml_pred":"Boston Celtics","ou_conf":"57.0%","ou_pred":"OVER 205.5"},{"away_team":"Dallas Mavericks","home_team":"Oklahoma City Thunder","id":"1","ml_conf":"68.8%","ml_pred":"Oklahoma City Thunder","ou_conf":"56.8%","ou_pred":"OVER 213"}]
+    const gamePredictions = [{"away_team":"Indiana Pacers","home_team":"New York Knicks","id":"0","ml_conf":"68.5%","ml_pred":"New York Knicks","ou_conf":"60.4%","ou_pred":"OVER 208.5"},{"away_team":"Minnesota Timberwolves","home_team":"Denver Nuggets","id":"1","ml_conf":"51.7%","ml_pred":"Denver Nuggets","ou_conf":"52.8%","ou_pred":"UNDER 199"}]
     try {
         const response = await axios.get(`${url}today_games`, {
             params: {
@@ -21,7 +21,7 @@ export default async function handler(req, res) {
             host: process.env.DB_HOST,
             database: process.env.DB_DATABASE,
             port: parseInt(process.env.DB_PORT!!), // Convert port to a number
-            user: process.env.DB_USER,
+            user: process.env.DB_USER, 
             password: process.env.DB_PASSWORD,
         });
 
