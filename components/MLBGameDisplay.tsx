@@ -26,6 +26,7 @@ const MLBGameDisplay: React.FC<GameDisplayProps> = (props) =>{
         "DET": MLBIcons.DET,
         "HOU": MLBIcons.HOU,
         "KAN": MLBIcons.KAN,
+        "KCR": MLBIcons.KAN,
         "LAA": MLBIcons.LAA,
         "LAD": MLBIcons.LAD,
         "MIA": MLBIcons.MIA,
@@ -47,6 +48,7 @@ const MLBGameDisplay: React.FC<GameDisplayProps> = (props) =>{
         "TEX": MLBIcons.TEX,
         "TOR": MLBIcons.TOR,
         "WAS": MLBIcons.WAS,
+        "WSN": MLBIcons.WAS,
     };
     const teamAbbMap = {
         "Arizona Diamondbacks": "ARI",
@@ -279,13 +281,13 @@ const MLBGameDisplay: React.FC<GameDisplayProps> = (props) =>{
                         <p className={styles.prediction_conf} style={{ fontWeight:'400', marginLeft:'8px'}}>{predictions.ml_conf?formatPercentage(predictions.ml_conf) : null}</p>
                     </div>
                 </div>
-                {/*<div className={styles.ou_prediction} style={{display: 'flex', flexDirection:'column', marginLeft:'5%', justifyContent:'center' , marginBottom:'15px'}}>
-                    <p className={styles.prediction_type_ou} style={{color: '#555'}}>OU Prediction:</p>
+                <div className={styles.ou_prediction} style={{display: 'flex', flexDirection:'column', marginLeft:'5%', justifyContent:'center' , marginBottom:'15px'}}>
+                    <p className={styles.prediction_type_ou} style={{color: '#555'}}>Total Runs:</p>
                     <div style={{display:'flex', flexDirection:'row',  alignItems:'center'}}>
-                        <p className={styles.prediction_value} style={{color: ouPredColor, fontWeight:'700'}}>{predictions.ou_pred}</p>
-                        <p className={styles.prediction_conf} style={{fontWeight:'400', marginLeft:'8px'}}>{predictions.ou_conf}</p>
+                        <p className={styles.prediction_value} style={{color: ouPredColor, fontWeight:'700'}}>{predictions?.ou_pred}</p>
+                        {/*<p className={styles.prediction_conf} style={{fontWeight:'400', marginLeft:'8px'}}>{}</p>*/}
                     </div>
-                </div>*/}
+                </div>
             </div>
             </motion.div>
             )}
