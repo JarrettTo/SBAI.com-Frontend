@@ -1,0 +1,6 @@
+{
+    "crons": [{
+      "path": "/api/mlb/predict/model",
+      "schedule": "20 9 * * *"
+    }]
+  }
