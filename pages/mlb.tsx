@@ -26,14 +26,61 @@ const MLBPage = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [selectedGame, setSelectedGame] = useState<IMLBGame | null>(null);
     const [gameSchedules, setGameSchedules] = useState<IMLBGame[][]>([[],[],[]]);
-    const [gameOdds, setGameOdds] = useState<Odds[]>([]);
+    const [gameOdds, setGameOdds] = useState<Odds[][]>([[],[],[]]);
     const [tabOptions, setTabOptions] = useState([])
     const [searchInput, setSearchInput] = useState('');
-    const [gamePreds, setGamePreds] = useState<Predictions[]>([]);
+    const [gamePreds, setGamePreds] = useState<Predictions[][]>([[],[],[]]);
     useEffect(()=>{
-        const MLBPreds =[ { "id": "TOR202406020", "home_team": "TOR", "away_team": "PIT", "ml_pred": "PIT", "ml_conf": "0.6219274", "ou_pred": "9.138381", "ou_conf": "0" }, { "id": "BAL202406020", "home_team": "BAL", "away_team": "TBR", "ml_pred": "BAL", "ml_conf": "0.5062552", "ou_pred": "10.078046", "ou_conf": "0" }, { "id": "ATL202406020", "home_team": "ATL", "away_team": "OAK", "ml_pred": "OAK", "ml_conf": "0.5098", "ou_pred": "9.567623", "ou_conf": "0" }, { "id": "BOS202406020", "home_team": "BOS", "away_team": "DET", "ml_pred": "DET", "ml_conf": "0.63326997", "ou_pred": "9.731863", "ou_conf": "0" }, { "id": "CLE202406020", "home_team": "CLE", "away_team": "WSN", "ml_pred": "WSN", "ml_conf": "0.5165391", "ou_pred": "9.957818", "ou_conf": "0" }, { "id": "HOU202406020", "home_team": "HOU", "away_team": "MIN", "ml_pred": "HOU", "ml_conf": "0.5208164", "ou_pred": "9.464234", "ou_conf": "0" }, { "id": "KCR202406020", "home_team": "KCR", "away_team": "SDP", "ml_pred": "KCR", "ml_conf": "0.5166948", "ou_pred": "10.215334", "ou_conf": "0" }, { "id": "MIA202406020", "home_team": "MIA", "away_team": "TEX", "ml_pred": "MIA", "ml_conf": "0.53758854", "ou_pred": "9.856131", "ou_conf": "0" }, { "id": "MIL202406020", "home_team": "MIL", "away_team": "CHW", "ml_pred": "CHW", "ml_conf": "0.5780748", "ou_pred": "10.448371", "ou_conf": "0" }, { "id": "NYM202406020", "home_team": "NYM", "away_team": "ARI", "ml_pred": "ARI", "ml_conf": "0.5411922", "ou_pred": "9.461476", "ou_conf": "0" }, { "id": "CHC202406020", "home_team": "CHC", "away_team": "CIN", "ml_pred": "CHC", "ml_conf": "0.5363706", "ou_pred": "9.927235", "ou_conf": "0" }, { "id": "PHI202406020", "home_team": "PHI", "away_team": "STL", "ml_pred": "STL", "ml_conf": "0.5524291", "ou_pred": "9.899802", "ou_conf": "0" }, { "id": "SEA202406020", "home_team": "SEA", "away_team": "LAA", "ml_pred": "SEA", "ml_conf": "0.50330603", "ou_pred": "10.088048", "ou_conf": "0" }, { "id": "SFG202406020", "home_team": "SFG", "away_team": "NYY", "ml_pred": "SFG", "ml_conf": "0.5021372", "ou_pred": "10.032432", "ou_conf": "0" }, { "id": "LAD202406020", "home_team": "LAD", "away_team": "COL", "ml_pred": "COL", "ml_conf": "0.54457253", "ou_pred": "9.589187", "ou_conf": "0" } ]
-          setGamePreds(MLBPreds)
+        fetchTodayGame()
+        fetchTomorrowGame()
+        fetchYesterdayGame()
+        fetchTodayGameOdds()
+        fetchYesterdayGameOdds()
+        fetchTodayPredictions()
+        fetchYesterdayPredictions()
     },[])
+    const fetchTodayPredictions = async () =>{
+        try {
+            const response = await axios.get('/api/mlb/database/fetch_results');
+            if(response.status == 200){
+                setGamePreds( prev=>{
+                    const updatedSched = [...prev]
+                    const formattedData = response.data.map(game => ({
+                        ...game,
+                        ou_pred: parseFloat(game.ou_pred).toFixed(2)  // Format ou_pred to 2 decimal places
+                    }));
+                    updatedSched[1]= formattedData
+                    return updatedSched
+                })
+            }
+
+        } catch (error) {
+            console.error('Error fetching today MLB schedules:', error);
+        }
+    }
+    const fetchYesterdayPredictions = async () =>{
+        try {
+            const today = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Chicago" }));
+            today.setDate(today.getDate() - 1);  
+            const dateString = today.toISOString().split('T')[0];
+
+            const response = await axios.get(`/api/mlb/database/fetch_results?date=${dateString}`);
+            if(response.status == 200){
+                setGamePreds( prev=>{
+                    const updatedSched = [...prev]
+                    const formattedData = response.data.map(game => ({
+                        ...game,
+                        ou_pred: parseFloat(game.ou_pred).toFixed(2)  // Format ou_pred to 2 decimal places
+                    }));
+                    updatedSched[0]= formattedData
+                    return updatedSched
+                })
+            }
+
+        } catch (error) {
+            console.error('Error fetching today MLB schedules:', error);
+        }
+    }
     const teamAbbMap = {
         "ari": "Arizona Diamondbacks",
         "atl": "Atlanta Braves",
@@ -61,6 +108,7 @@ const MLBPage = () => {
         "pit": "Pittsburgh Pirates",
         "sdp": "San Diego Padres",
         "sfg": "San Francisco Giants",
+        "sf": "San Francisco Giants",
         "sea": "Seattle Mariners",
         "stl": "St. Louis Cardinals",
         "tbr": "Tampa Bay Rays",
@@ -134,126 +182,65 @@ const MLBPage = () => {
                     apiKey: process.env.ODDS_API_KEY, // Include the API key as a query parameter
                     },
                 });
-            setGameOdds(response.data);
+            setGameOdds(prev=>{
+                const updatedSched = [...prev]
+                updatedSched[1]= response.data
+                return updatedSched
+            });
             console.log(response.data);
         } catch (error) {
             console.error('Error fetching game odds:', error);
         }
     };
-    const fetchYesterdayGamePredictions = async () => {
+    const fetchYesterdayGameOdds = async () => {
         try {
-            const date = new Date().toLocaleString("en-US", { timeZone: 'America/Chicago' });
-            const currentDate = new Date(date); // Convert the string back to a Date object for manipulation
-            currentDate.setDate(currentDate.getDate() - 1);
-            let formattedDate = currentDate.toISOString().slice(0, 10);
-            console.log('Yesterday Prediction Date:',formattedDate);
-
-            const response = await axios.get('/api/get_db',{
+            const today = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Chicago" }));
+            today.setDate(today.getDate() - 1);  
+            const dateString = today.toISOString().split('T')[0];
+            const response = await axios.get(`/api/mlb/database/fetch_odds?date=${dateString}`,{
                 params: {
-                    date: formattedDate 
+                    apiKey: process.env.ODDS_API_KEY, // Include the API key as a query parameter
                     },
                 });
-            
-            // Convert ml_conf and ou_conf values to percentages
-            const gamePreds = response.data.map(prediction => ({
-            ...prediction,
-            ml_conf: (prediction.ml_conf * 100).toFixed(2) + '%', // Convert ml_conf to percentage with two decimal places
-            ou_conf: (prediction.ou_conf * 100).toFixed(2) + '%', // Convert ou_conf to percentage with two decimal places
-            }));
-
-            setGamePreds(prevGamePreds => [...prevGamePreds, ...gamePreds]); // Append to previous state
-            console.log('Yesterday Preds:',response.data);
+            setGameOdds(prev=>{
+                const updatedSched = [...prev]
+                updatedSched[0]= response.data
+                return updatedSched
+            });
+            console.log(response.data);
         } catch (error) {
-            console.error('Error fetching game predictions:', error);
+            console.error('Error fetching game odds:', error);
         }
     };
-
-    const fetchTodayGamePredictions = async () => {
-        try {
-            const date = new Date().toLocaleString("en-US", { timeZone: 'America/Chicago' });
-            const currentDate = new Date(date); // Convert the string back to a Date object for manipulation
-            let formattedDate = currentDate.toISOString().slice(0, 10);
-            console.log('Today Prediction Date:',formattedDate);
-
-            const response = await axios.get('/api/get_db',{
-                params: {
-                    date: formattedDate 
-                    },
-                });
-            
-            // Convert ml_conf and ou_conf values to percentages
-            const gamePreds = response.data.map(prediction => ({
-            ...prediction,
-            ml_conf: (prediction.ml_conf * 100).toFixed(2) + '%', // Convert ml_conf to percentage with two decimal places
-            ou_conf: (prediction.ou_conf * 100).toFixed(2) + '%', // Convert ou_conf to percentage with two decimal places
-            }));
-
-            setGamePreds(prevGamePreds => [...prevGamePreds, ...gamePreds]); // Append to previous state
-            console.log('Today Preds:',response.data);
-        } catch (error) {
-            console.error('Error fetching game predictions:', error);
-        }
-    }
-
-    const fetchTomorrowGamePredictions = async () => {
-        try {
-            const date = new Date().toLocaleString("en-US", { timeZone: 'America/Chicago' });
-            const currentDate = new Date(date); // Convert the string back to a Date object for manipulation
-            currentDate.setDate(currentDate.getDate() + 1);
-            let formattedDate = currentDate.toISOString().slice(0, 10);
-            console.log('Tomorrow Prediction Date:',formattedDate);
-
-            const response = await axios.get('/api/get_db',{
-                params: {
-                    date: formattedDate 
-                    },
-                });
-            
-            // Convert ml_conf and ou_conf values to percentages
-            const gamePreds = response.data.map(prediction => ({
-            ...prediction,
-            ml_conf: (prediction.ml_conf * 100).toFixed(2) + '%', // Convert ml_conf to percentage with two decimal places
-            ou_conf: (prediction.ou_conf * 100).toFixed(2) + '%', // Convert ou_conf to percentage with two decimal places
-            }));
-
-            setGamePreds(prevGamePreds => [...prevGamePreds, ...gamePreds]); // Append to previous state
-            console.log('Tomorrow Preds:',response.data);
-        } catch (error) {
-            console.error('Error fetching game predictions:', error);
-        }
-    }
 
     useEffect(() => {
         // Fetch NBA game schedules when the component mounts
        
-        fetchTodayGame()
-        fetchTomorrowGame()
-        fetchYesterdayGame()
-        fetchTodayGameOdds()
+        
         const dates = [];
         const today = new Date();
     
-// Generate dates from two days ago through the next four days, adjusted for Alabama time
-    for (let i = -1; i <= 1; i++) {
-        // Create a date object for 'America/Chicago' time zone
-        const date = new Date().toLocaleString("en-US", { timeZone: 'America/Chicago' });
-        const localDate = new Date(date); // Convert the string back to a Date object for manipulation
-        localDate.setDate(localDate.getDate() + i);
+    // Generate dates from two days ago through the next four days, adjusted for Alabama time
+        for (let i = -1; i <= 1; i++) {
+            // Create a date object for 'America/Chicago' time zone
+            const date = new Date().toLocaleString("en-US", { timeZone: 'America/Chicago' });
+            const localDate = new Date(date); // Convert the string back to a Date object for manipulation
+            localDate.setDate(localDate.getDate() + i);
 
-        // Use "Yesterday", "Today", and "Tomorrow" for the respective dates
-        if (i === -1) {
-            dates.push("Yesterday");
-        } else if (i === 0) {
-            dates.push("Today");
-        } else if (i === 1) {
-            dates.push("Tomorrow");
-        } else {
-            // For other days, format as "March 3", etc.
-            const month = localDate.toLocaleString('default', { month: 'long', timeZone: 'America/Chicago' });
-            const day = localDate.getDate();
-            dates.push(`${month} ${day}`);
+            // Use "Yesterday", "Today", and "Tomorrow" for the respective dates
+            if (i === -1) {
+                dates.push("Yesterday");
+            } else if (i === 0) {
+                dates.push("Today");
+            } else if (i === 1) {
+                dates.push("Tomorrow");
+            } else {
+                // For other days, format as "March 3", etc.
+                const month = localDate.toLocaleString('default', { month: 'long', timeZone: 'America/Chicago' });
+                const day = localDate.getDate();
+                dates.push(`${month} ${day}`);
+            }
         }
-    }
 
     
         setTabOptions(dates);
@@ -353,8 +340,8 @@ const MLBPage = () => {
                         innings={game.innings}
                         awayTeam={game.awayTeam}
                         schedule={game.schedule}
-                        odds={gameOdds.find((odds) => odds.home_team === game.homeTeam && odds.away_team === game.awayTeam)}
-                        predictions={gamePreds.find((preds) => getFullTeamName(preds.home_team) === game.homeTeam && getFullTeamName(preds.away_team) === game.awayTeam)}
+                        odds={gameOdds[value].find((odds) => odds.home_team === game.homeTeam && odds.away_team === game.awayTeam)}
+                        predictions={gamePreds[value].find((preds) => preds.home_team === game.homeTeam && preds.away_team === game.awayTeam)}
                     />
                 )): null
                 }

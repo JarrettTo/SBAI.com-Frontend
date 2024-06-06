@@ -14,9 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
 
     const response = await axios.get(`http://54.176.127.3:4000/predict`);
-    const predictions: Predictions[] = response.data
-    console.log("Predictions:", predictions)
-    res.status(200).json(predictions); 
+    res.status(200) 
   } catch (error) {
     console.error('Error fetching game predictions:', error);
     res.status(500).json({ message: 'Internal Server Error' });
