@@ -44,6 +44,7 @@ const MLBPage = () => {
     },[gamePreds])
     const fetchTodayPredictions = async () =>{
         try {
+            
             const response = await axios.get('/api/mlb/database/fetch_results');
             if(response.status == 200){
                 setGamePreds( prev=>{

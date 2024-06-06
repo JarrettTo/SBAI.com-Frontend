@@ -14,7 +14,7 @@ export default async function handler(req, res) {
   
       // Since your database stores dates 5 hours ahead of UTC, calculate that offset
       const dbStartDate = new Date(chicagoTime);
-      dbStartDate.setHours(dbStartDate.getHours() - 5); // Adjust for +5 hour offset in storage
+      dbStartDate.setHours(dbStartDate.getHours() - 10); // Adjust for +5 hour offset in storage
   
       const dbEndDate = new Date(dbStartDate);
       dbEndDate.setDate(dbEndDate.getDate() + 1); // End of the day
