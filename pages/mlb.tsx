@@ -39,6 +39,9 @@ const MLBPage = () => {
         fetchTodayPredictions()
         fetchYesterdayPredictions()
     },[])
+    useEffect(()=>{
+        console.log("PREDS:", gamePreds)
+    },[gamePreds])
     const fetchTodayPredictions = async () =>{
         try {
             const response = await axios.get('/api/mlb/database/fetch_results');
