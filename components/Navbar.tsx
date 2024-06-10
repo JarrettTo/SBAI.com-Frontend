@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { Button, Stack } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 const NavBar = () => {
     const [selected, setSelected] = useState('NBA');
     const router = useRouter();
@@ -48,7 +49,7 @@ const NavBar = () => {
     <div className='flex flex-row items-center justify-center mt-3 mb-3' style={{width:'90%', height:'100px'}}>
         <div className='flex flex-row items-center justify-between' style={{width:'90%', height:'100px'}}>
             <div style={{display : "flex", flexDirection : "column",alignItems:"center",justifyContent:"center", fontWeight:'800'}}>
-                <p style={{fontSize:'25px'}}>Sports X AI</p>
+                <Image src={"/images/logo.webp"} height={100} width={100} alt="Sports X AI logo"></Image>
             </div>
             <Stack direction="row" spacing={2} sx={{ p: 1, bgcolor: '#FFFFFF', borderRadius: '20px' }}>
                 <Button
