@@ -90,25 +90,7 @@ const NavBar = () => {
                 >
                     MLB
                 </Button>
-                <Button
-                    variant="contained"
-                    onClick={handlePLClick}
-                    disableElevation
-                    sx={{
-                        fontSize: '14px',
-                        backgroundColor: '#FFFFFF',
-                        color: selected === 'Premier League' ? '#1C1C1C' : 'darkgray',
-                        borderRadius: '10px',
-                        textTransform: 'none',
-                        fontWeight: 'bold',
-                        '&:hover': {
-                            backgroundColor: '#EEEEEE', // Set hover & focus to the same color as normal state
-                            
-                            }
-                    }}
-                >
-                    Premier League
-                </Button>
+                
                 <Button
                     variant="contained"
                     onClick={handleBlogClick}
@@ -128,25 +110,7 @@ const NavBar = () => {
                 >
                     News
                 </Button>
-                <Button
-                    variant="contained"
-                    onClick={handleDocumentationClick}
-                    disableElevation
-                    sx={{
-                        fontSize: '14px',
-                        backgroundColor: '#FFFFFF',
-                        color: selected === 'Documentation' ? '#1C1C1C' : 'darkgray',
-                        borderRadius: '10px',
-                        textTransform: 'none',
-                        fontWeight: 'bold',
-                        '&:hover': {
-                            backgroundColor: '#EEEEEE', // Set hover & focus to the same color as normal state
-                            
-                            }
-                    }}
-                >
-                    Documentation
-                </Button>
+                
             </Stack>
             <div style={{display : "flex", flexDirection : "row",alignItems:"center",justifyContent:"center", fontWeight:'800'}}>
                 <Button
